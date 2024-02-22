@@ -1,0 +1,7 @@
+{
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, tailwind.config.ts, tsconfig.json, postcss.config.js, .prettierrc, .prettierignore, .eslintrc.json, next.config.js, next-env.d.ts",
+    "compose.yaml": ".dockerignore"
+  }
+}
