@@ -1,10 +1,12 @@
 import dotenv from "dotenv";
+import Login from "@/components/login";
 
 dotenv.config();
 
 export default function Home() {
   return (
-    <main className="min-h-screen p-6">
+    <main className="h-screen flex justify-center items-center">
+      <Login />
     </main>
   );
 }
