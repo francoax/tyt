@@ -52,13 +52,13 @@ async function main() {
     data: [
       {
         name: "CAT 5e",
-        unitId: 2,
-        categoryId: 3,
+        unit_id: 2,
+        category_id: 3,
       },
       {
         name: "Fibra monomodo",
-        unitId: 1,
-        categoryId: 1,
+        unit_id: 1,
+        category_id: 1,
       },
     ],
     skipDuplicates: false,

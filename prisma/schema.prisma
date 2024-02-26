@@ -14,30 +14,32 @@ model User {
   id       Int    @id @default(autoincrement())
   username String @unique @db.VarChar(30)
   password String
+
+  @@map("users")
 }
 
 model Product {
-  id             Int                    @id @default(autoincrement())
-  name           String                 @unique @db.VarChar(30)
-  stock          Int                    @default(0)
-  category       Category               @relation(fields: [categoryId], references: [id])
-  categoryId     Int
-  unit           Unit                   @relation(fields: [unitId], references: [id])
-  unitId         Int
-  suppliers      ProductsPerSuppliers[]
-  stockMovements StockMovement[]
+  id              Int                    @id @default(autoincrement())
+  name            String                 @unique @db.VarChar(30)
+  stock           Int                    @default(0)
+  category        Category               @relation(fields: [category_id], references: [id])
+  category_id     Int
+  unit            Unit                   @relation(fields: [unit_id], references: [id])
+  unit_id         Int
+  suppliers       ProductsPerSuppliers[]
+  stock_movements StockMovement[]
 
   @@map("products")
 }
 
 model StockMovement {
-  productId      Int         @id
-  dateAction     DateTime
-  typeAction     ActionTypes
-  amountInvolved Int
-  dollarAtDate   Int
-  totalPrice     Int
-  Product        Product     @relation(fields: [productId], references: [id])
+  product_id      Int         @id
+  date_action     DateTime
+  type_action     ActionTypes
+  amount_involved Int
+  dollar_at_date  Int
+  total_price     Int
+  product         Product     @relation(fields: [product_id], references: [id])
 
   @@map("stockmovements")
 }
@@ -75,10 +77,11 @@ model Supplier {
 }
 
 model ProductsPerSuppliers {
-  product    Product  @relation(fields: [productId], references: [id])
-  productId  Int
-  supplier   Supplier @relation(fields: [supplierId], references: [id])
-  supplierId Int
+  product     Product  @relation(fields: [product_id], references: [id])
+  product_id  Int
+  supplier    Supplier @relation(fields: [supplier_id], references: [id])
+  supplier_id Int
 
-  @@id([productId, supplierId])
+  @@id([product_id, supplier_id])
+  @@map("products_suppliers")
 }
