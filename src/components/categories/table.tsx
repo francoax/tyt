@@ -1,30 +1,12 @@
-"use client"
+import { getCategories } from "@/lib/services/categories.service"
+import { Category } from "@/lib/definitions"
+import { DeleteCategory, UpdateCategory } from "./buttons"
 
-import Link from "next/link"
-import { ButtonPrimary, DeleteButton, EditButton } from "../buttons"
-import { useState } from "react"
+export default async function CategoriesTable() {
 
-export default function CategoriesTable() {
+  const categories = await getCategories()
   return (
-    <section className="container">
-      <div className="sm:flex sm:items-center sm:justify-between">
-        <div>
-          <div className="flex items-center gap-x-3">
-            <h2 className="text-lg font-medium text-gray-800 dark:text-white">Lista de categorias</h2>
-            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">
-              2 categorias
-            </span>
-          </div>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-300">
-            Detalle de cada categoria vigente.
-          </p>
-        </div>
-        <div className="flex items-center mt-4 gap-x-3">
-          <Link href={'?modal=true'}>
-            <ButtonPrimary content="Nueva categoria" type="button" />
-          </Link>
-        </div>
-      </div>
+    <>
       <div className="mt-6 md:flex md:items-center md:justify-between">
         <div className="relative flex items-center mt-4 md:mt-0">
           <span className="absolute">
@@ -39,16 +21,27 @@ export default function CategoriesTable() {
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
             <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-              <Table />
+              <Table categories={categories} />
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </>
   )
 }
 
-function Table() {
+function Table({
+  categories
+}: {
+  categories: Category[]
+}) {
+
+  if(categories.length === 0) {
+    return (
+      <p className="text-center text-gray-700">Sin categorias por el momento.</p>
+    )
+  }
+
   return (
     <>
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -63,7 +56,7 @@ function Table() {
             </th>
 
             <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-              Productos pertenecientes
+              Productos incluidos
             </th>
 
             <th scope="col" className="relative py-3.5 px-4">
@@ -72,34 +65,38 @@ function Table() {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-          <TableRow />
-          <TableRow />
-          <TableRow />
+          {categories.map(c => (
+            <TableRow key={c.id} category={c} />
+          ))}
         </tbody>
       </table>
     </>
   )
 }
 
-function TableRow() {
+async function TableRow({
+  category
+}: {
+  category: Category
+}) {
   return (
     <tr>
       <td className="px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
-        123jdnais892-01jd
+        {category.id}
       </td>
 
       <td className="px-8 py-4 text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap">
-        Fibra optica
+        {category.description}
       </td>
 
       <td className="px-4 py-4 text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap">
-        5
+        {category.total_products}
       </td>
 
       <td className="px-4 py-4 text-sm whitespace-nowrap">
         <div className="flex items-center gap-x-6">
-          <EditButton />
-          <DeleteButton />
+          <UpdateCategory id={category.id} />
+          <DeleteCategory id={category.id} />
         </div>
       </td>
     </tr>

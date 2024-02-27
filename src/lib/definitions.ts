@@ -1,3 +1,7 @@
+interface BaseModel {
+  id: number;
+}
+
 export interface StockHistoryMovement {
   productName: string;
   categoryName: string;
@@ -22,3 +26,20 @@ export interface StockDeposit {
   dollarAtDate: number;
   productId: string;
 }
+
+export interface Category extends BaseModel {
+  description: string;
+  total_products: number;
+}
+
+export interface CategoryForCreation {
+  description: string;
+}
+
+export type StateForm = {
+  status?: boolean;
+  errors?: {
+    [key: string]: string[] | undefined;
+  };
+  message?: string | null;
+};

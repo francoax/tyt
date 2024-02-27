@@ -1,4 +1,3 @@
-import { ButtonPrimary } from "./buttons";
 import { Input } from "./inputs";
 
 export default function Login() {
@@ -12,13 +11,13 @@ export default function Login() {
         <p className="mt-1 text-center text-gray-500 dark:text-gray-400">Login</p>
         <form>
           <div className="w-full mt-4">
-            <Input type="text" placeholder="Username" />
+            {/* <Input type="text" placeholder="Username" /> */}
           </div>
           <div className="w-full mt-4">
-            <Input type="password" placeholder="*********" />
+            {/* <Input type="password" placeholder="*********" /> */}
           </div>
           <div className="flex justify-center mt-4">
-            <ButtonPrimary content="Ingresar" type="button" />
+            
           </div>
         </form>
     </div>

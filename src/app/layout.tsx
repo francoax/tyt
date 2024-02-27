@@ -1,11 +1,15 @@
-import type { Metadata } from "next";
+import { Metadata } from 'next';
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Inicio",
+  title: {
+    template: '%s | T&T',
+    default: 'Ingresar | T&T',
+  },
 };
 
 export default function RootLayout({
@@ -16,6 +20,13 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${inter.className} antialiased min-h-screen`}>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            duration: 3000
+          }}
+        />
         {children}
       </body>
     </html>

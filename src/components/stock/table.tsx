@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, ButtonPrimary, ConfirmButton, DeleteButton, EditButton } from "../buttons"
+import { Button } from "../buttons"
 import { useState } from "react"
 
 export default function StockTable() {
@@ -22,8 +22,12 @@ export default function StockTable() {
           </p>
         </div>
         <div className="flex items-center mt-4 gap-x-3">
-          <Button content="Retirar" type="button" />
-          <ButtonPrimary content="Ingresar" type="button" />
+          <Button>
+            Retirar
+          </Button>
+          <Button primary={true}>
+            Ingresar
+          </Button>
         </div>
       </div>
       <div className="mt-6 md:flex md:items-center md:justify-between">
@@ -150,8 +154,6 @@ function TableRow() {
 
       <td className="px-4 py-4 text-sm whitespace-nowrap">
         <div className="flex items-center gap-x-6">
-          {/* <ConfirmButton /> */}
-          <DeleteButton />
         </div>
       </td>
     </tr>
