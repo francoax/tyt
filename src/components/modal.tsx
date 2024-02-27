@@ -29,11 +29,11 @@ export default function Modal(
       >
         <div className="flex items-end justify-center min-h-screen px-4 pt-4 text-center sm:block sm:p-0">
           <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-          <div className="relative inline-block px-4 pt-5 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl rtl:text-right dark:bg-gray-900 sm:my-8 sm:align-middle min-w-96 sm:max-w-6xl sm:p-6">
+          <div className="relative inline-block px-4 pt-5 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl rtl:text-right sm:my-8 sm:align-middle min-w-96 sm:max-w-6xl sm:p-6">
             <div>
               <div className="mt-2">
-                <h3 className="text-lg font-medium leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">{title}</h3>
-                <div className="mt-2 text-gray-500 dark:text-gray-400">
+                <h3 className="text-lg font-medium leading-6 text-gray-800 capitalize" id="modal-title">{title}</h3>
+                <div className="mt-2 text-gray-500">
                   {children}
                 </div>
               </div>

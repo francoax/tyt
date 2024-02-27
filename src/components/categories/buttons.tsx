@@ -34,7 +34,7 @@ export function DeleteCategory({ id }: { id: number }) {
     <>
       <button onClick={() => setShowModal(true)}>
         <span className="sr-only">Delete</span>
-        <TrashIcon className="w-5 text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none" />
+        <TrashIcon className="w-5 text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none" />
       </button>
 
       <Modal show={showModal} title="Eliminar categoria">
@@ -61,7 +61,7 @@ export function UpdateCategory({ id }: { id: number }) {
     <Link
       href={`/home/categories/${id}/edit`}
     >
-      <PencilIcon className="w-5 text-gray-500 transition-colors duration-200 dark:hover:text-yellow-500 dark:text-gray-300 hover:text-yellow-500 focus:outline-none" />
+      <PencilIcon className="w-5 text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none" />
     </Link>
   );
 }

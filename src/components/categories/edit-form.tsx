@@ -30,7 +30,7 @@ export default function Form({ category }: { category: Category }) {
   }
 
   return (
-    <form action={formAction} className="mt-5 p-12 rounded-md divide-gray-200 dark:divide-gray-700 bg-gray-50 dark:bg-gray-800">
+    <form action={formAction} className="mt-5 p-12 rounded-md divide-gray-200 bg-gray-50">
       <div className="flex justify-start gap-5 flex-wrap">
         <Input type="hidden" name="id" htmlFor="id" defaultValue={category.id} />
         <Input defaultValue={category.description} requiredInput={true} placeholder="Descripcion para categoria" label="Descripcion" htmlFor="description" name="description" state={state} errorFor="description-error"  />

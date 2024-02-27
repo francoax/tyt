@@ -51,14 +51,14 @@ export default function NavLinks() {
           className="space-y-3"
           key={section.section}
         >
-          <label className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">{section.section}</label>
+          <label className="px-3 text-xs text-gray-500 uppercase">{section.section}</label>
           {section.links.map(link => (
             <Link
               key={link.name}
               href={link.href}
               className={
                 clsx(
-                  'flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700',
+                  'flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700',
                   {
                     'bg-sky-100 text-blue-600': pathname === link.href,
                   },
