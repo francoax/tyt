@@ -27,7 +27,7 @@ export default function Modal(
         className="fixed inset-0 z-10 overflow-y-auto backdrop-blur-sm"
         aria-labelledby="modal-title" role="dialog" aria-modal="true"
       >
-        <div className="flex items-end justify-center min-h-screen px-4 pt-4 text-center sm:block sm:p-0">
+        <div className="flex items-center justify-center min-h-screen px-4 pt-4 text-center sm:block sm:p-0">
           <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
           <div className="relative inline-block px-4 pt-5 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl rtl:text-right sm:my-8 sm:align-middle min-w-96 sm:max-w-6xl sm:p-6">
             <div>
