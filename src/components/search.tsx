@@ -6,7 +6,11 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-export default function Search() {
+export default function Search({
+  placeholder
+}: {
+  placeholder: string
+}) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -35,7 +39,7 @@ export default function Search() {
         </span>
         <input
           type="text"
-          placeholder="Buscar por nombre de categoria"
+          placeholder={placeholder}
           className="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
           onChange={(e) => {
             handleSearch(e.target.value)

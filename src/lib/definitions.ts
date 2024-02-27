@@ -43,3 +43,12 @@ export type StateForm = {
   };
   message?: string | null;
 };
+
+export interface Unit extends BaseModel {
+  description: string;
+  total_products: number;
+}
+
+export interface UnitForCreation {
+  description: string;
+}

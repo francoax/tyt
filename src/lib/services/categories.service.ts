@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import prisma from "../prisma";
 import { CategoriesSchema } from "../validations";
-import { redirect } from "next/navigation";
 import { StateForm } from "../definitions";
 import { Prisma } from "@prisma/client";
 

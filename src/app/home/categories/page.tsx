@@ -1,5 +1,5 @@
 import { Button } from "@/components/buttons";
-import Search from "@/components/categories/search";
+import Search from "@/components/search";
 import CategoriesTable from "@/components/categories/table";
 import { Spinner, TableLoading } from "@/components/loaders";
 import { getAmountOfCategories } from "@/lib/services/categories.service";
@@ -44,7 +44,7 @@ export default async function CategoriesPage({
           </Link>
         </div>
       </div>
-      <Search />
+      <Search placeholder="Buscar por descripcion" />
       <Suspense key={query} fallback={<TableLoading />}>
         <CategoriesTable query={query} />
       </Suspense>
