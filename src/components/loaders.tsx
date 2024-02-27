@@ -14,3 +14,12 @@ export function TableLoading() {
     </div>
   )
 }
+
+export function FetchingData() {
+  return (
+    <div className="min-h-96 p-12 flex justify-center items-center gap-5">
+      <Spinner />
+      Obteniendo datos
+    </div>
+  )
+}
