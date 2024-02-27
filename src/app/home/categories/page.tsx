@@ -1,4 +1,5 @@
 import { Button } from "@/components/buttons";
+import Search from "@/components/categories/search";
 import CategoriesTable from "@/components/categories/table";
 import { Spinner, TableLoading } from "@/components/loaders";
 import { getAmountOfCategories } from "@/lib/services/categories.service";
@@ -11,7 +12,15 @@ export const metadata: Metadata = {
   title: 'Categorias'
 }
 
-export default async function CategoriesPage() {
+export default async function CategoriesPage({
+  searchParams
+}: {
+  searchParams?: {
+    query?: string
+  }
+}) {
+  const query = searchParams?.query || ''
+
   return (
     <section className="container">
       <div className="sm:flex sm:items-center sm:justify-between">
@@ -35,8 +44,9 @@ export default async function CategoriesPage() {
           </Link>
         </div>
       </div>
-      <Suspense fallback={<TableLoading />}>
-        <CategoriesTable />
+      <Search />
+      <Suspense key={query} fallback={<TableLoading />}>
+        <CategoriesTable query={query} />
       </Suspense>
     </section>
   )

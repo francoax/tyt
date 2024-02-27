@@ -7,15 +7,21 @@ import { redirect } from "next/navigation";
 import { StateForm } from "../definitions";
 import { Prisma } from "@prisma/client";
 
-export async function getCategories() {
+export async function getCategories(query?: string) {
   const data = await prisma.category.findMany({
     include: {
       _count: {
         select: { products: true },
       },
     },
+    where: {
+      description: {
+        contains: query,
+        mode: "insensitive",
+      },
+    },
     orderBy: {
-      id: "desc",
+      id: "asc",
     },
   });
 
