@@ -5,10 +5,11 @@ import { Button } from "../buttons";
 import { useFormState, useFormStatus } from "react-dom";
 import { updateCategory } from "@/lib/services/categories.service";
 import { Input } from "../inputs";
-import { Category, StateForm } from "@/lib/definitions";
+import { StateForm } from "@/lib/definitions";
 import toast from "react-hot-toast";
 import Alert from "../alerts";
 import { useRouter } from "next/navigation";
+import { Category } from "@prisma/client";
 
 export default function Form({ category }: { category: Category }) {
   const initialState : StateForm = { message: null, errors: {}, status: false}
