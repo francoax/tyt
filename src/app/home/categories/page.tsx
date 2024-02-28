@@ -1,4 +1,4 @@
-import { Button } from "@/components/buttons";
+import { Button, CreateButton } from "@/components/buttons";
 import Search from "@/components/search";
 import CategoriesTable from "@/components/categories/table";
 import { Spinner, TableLoading } from "@/components/loaders";
@@ -36,12 +36,9 @@ export default async function CategoriesPage({
           </p>
         </div>
         <div className="flex items-center mt-4 gap-x-3">
-          <Link href={'/home/categories/create'}>
-            <Button primary={true} className="flex">
-              Nueva categoria
-              <PlusIcon className="w-5" />
-            </Button>
-          </Link>
+          <CreateButton href={'/home/categories/create'}>
+            Nueva categoria
+          </CreateButton>
         </div>
       </div>
       <Search placeholder="Buscar por descripcion" />

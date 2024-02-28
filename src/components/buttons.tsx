@@ -1,4 +1,6 @@
+import { PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
+import Link from 'next/link';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -26,6 +28,17 @@ export function Button({ children, className, primary, ...rest }: ButtonProps) {
       {children}
     </button>
   );
+}
+
+export function CreateButton({ href, children } : { href: string, children: React.ReactNode}) {
+  return (
+    <Link href={href}>
+      <Button primary={true} className="flex items-center gap-5">
+        {children}
+        <PlusIcon className="w-5" />
+      </Button>
+    </Link>
+  )
 }
 
 // export const ConfirmButton = () => {

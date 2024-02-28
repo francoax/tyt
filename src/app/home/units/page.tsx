@@ -1,4 +1,4 @@
-import { Button } from "@/components/buttons";
+import { Button, CreateButton } from "@/components/buttons";
 import Search from "@/components/search";
 import { Spinner, TableLoading } from "@/components/loaders";
 import { PlusIcon } from "@heroicons/react/24/outline";
@@ -36,12 +36,9 @@ export default async function UnitsPage({
           </p>
         </div>
         <div className="flex items-center mt-4 gap-x-3">
-          <Link href={'/home/units/create'}>
-            <Button primary={true} className="flex">
-              Nuevo tipo de unidad
-              <PlusIcon className="w-5" />
-            </Button>
-          </Link>
+          <CreateButton href={'/home/units/create'}>
+            Nuevo tipo de unidad
+          </CreateButton>
         </div>
       </div>
       <Search placeholder="Buscar por tipo de unidad" />

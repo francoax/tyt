@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${inter.className} antialiased min-h-screen`}>
+      <body className={`${inter.className} antialiased`}>
         <Toaster
           position="top-center"
           reverseOrder={false}

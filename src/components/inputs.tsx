@@ -69,6 +69,7 @@ export function SelectInput({ name, options, placeholder, htmlFor, label, errorF
       <Select
         instanceId={htmlFor}
         inputId={htmlFor}
+        name={name}
         placeholder={placeholder}
         options={options}
         styles={customStyles}

@@ -100,7 +100,6 @@ function Table() {
             </th>
 
             <th scope="col" className="relative py-3.5 px-4">
-              <span className="sr-only">Edit</span>
             </th>
           </tr>
         </thead>

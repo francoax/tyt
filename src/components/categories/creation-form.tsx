@@ -30,11 +30,11 @@ export default function Form() {
 
   return (
     <form action={formAction} className="mt-5 p-12 rounded-md divide-gray-200 bg-gray-50">
-      <div className="flex justify-start gap-5 flex-wrap">
+      <div className="flex justify-center sm:justify-start flex-wrap">
         <Input requiredInput={true} placeholder="Descripcion para categoria" label="Descripcion" htmlFor="description" name="description" state={state} errorFor="description-error"  />
       </div>
       <div className="mt-8 sm:flex sm:items-center sm:justify-end">
-        <div className="sm:flex sm:items-center ">
+        <div className="flex gap-5 justify-center sm:items-center ">
           <Link href={'/home/categories'}>
             <Button type="button">
               Cancelar

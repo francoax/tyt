@@ -62,7 +62,6 @@ function Table({
             </th>
 
             <th scope="col" className="relative py-3.5 px-4">
-              <span className="sr-only">Edit</span>
             </th>
           </tr>
         </thead>
@@ -117,7 +116,7 @@ async function TableRow({
         </div>
       </td>
 
-      <td className="px-4 py-4 text-sm whitespace-nowrap">
+      <td className="px-8 py-4 text-sm whitespace-nowrap">
         <div className="flex items-center gap-x-6">
           <UpdateProduct id={product.id} />
           <DeleteProduct id={product.id} />

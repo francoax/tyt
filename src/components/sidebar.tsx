@@ -15,7 +15,7 @@ const SideBar = () => {
       <aside
         onClick={() => setShowSideBar(prevState => !prevState)}
         className={clsx(
-          "sm:flex flex-col w-full sm:w-64 h-screen px-5 py-5 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l",
+          "sm:flex flex-col w-full sm:w-64 px-5 py-5 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l",
           {
             "hidden" : !showSideBar
           },

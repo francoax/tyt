@@ -1,4 +1,4 @@
-import { Button } from "@/components/buttons";
+import { Button, CreateButton } from "@/components/buttons";
 import Search from "@/components/search";
 import CategoriesTable from "@/components/categories/table";
 import { Spinner, TableLoading } from "@/components/loaders";
@@ -38,12 +38,9 @@ export default function Page({
           </p>
         </div>
         <div className="flex items-center mt-4 gap-x-3">
-          <Link href={'/home/products/create'}>
-            <Button primary={true} className="flex items-center gap-5">
-              Nueva producto
-              <PlusIcon className="w-5" />
-            </Button>
-          </Link>
+          <CreateButton href={'/home/products/create'}>
+            Nueva producto
+          </CreateButton>
         </div>
       </div>
       <Search placeholder="Buscar por producto" />

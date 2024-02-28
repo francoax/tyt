@@ -8,8 +8,8 @@ import { ProductDataForCreation } from "@/lib/definitions";
 
 export default function Form({ data }: { data: ProductDataForCreation }) {
   return (
-    <form action={''} className="mt-5 p-12 rounded-md divide-gray-200 bg-gray-50">
-      <div className="flex justify-start gap-5 flex-wrap">
+    <form action={(e) => console.log(e)} className="mt-5 p-12 rounded-md divide-gray-200 bg-gray-50">
+      <div className="flex justify-center gap-y-5 sm:gap-5 sm:justify-start flex-wrap">
         <Input requiredInput={true} placeholder="Nombre producto" label="Nombre" htmlFor="name" name="name" errorFor="name-error"  />
         <SelectInput
           options={data.units}
@@ -40,7 +40,7 @@ export default function Form({ data }: { data: ProductDataForCreation }) {
         />
       </div>
       <div className="mt-8 sm:flex sm:items-center sm:justify-end">
-        <div className="sm:flex sm:items-center ">
+        <div className="flex gap-5 justify-center sm:items-center ">
           <Link href={'/home/products'}>
             <Button type="button">
               Cancelar

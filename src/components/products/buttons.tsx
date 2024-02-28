@@ -28,7 +28,6 @@ export function DeleteProduct({ id }: { id: number }) {
   return (
     <>
       <button onClick={() => setShowModal(true)}>
-        <span className="sr-only">Delete</span>
         <TrashIcon className="w-5 text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none" />
       </button>
 
