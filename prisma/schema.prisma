@@ -33,13 +33,14 @@ model Product {
 }
 
 model StockMovement {
-  product_id      Int         @id
-  date_action     DateTime
-  type_action     ActionTypes
-  amount_involved Int
-  dollar_at_date  Int
-  total_price     Int
-  product         Product     @relation(fields: [product_id], references: [id])
+  product_id       Int         @id
+  date_action      DateTime    @default(now())
+  type_action      ActionTypes
+  amount_involved  Int?
+  real_amount_used Int?
+  dollar_at_date   Int?
+  total_price      Int?
+  product          Product     @relation(fields: [product_id], references: [id])
 
   @@map("stockmovements")
 }
