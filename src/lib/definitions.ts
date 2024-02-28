@@ -52,3 +52,35 @@ export interface Unit extends BaseModel {
 export interface UnitForCreation {
   description: string;
 }
+
+export interface Product extends BaseModel {
+  name: string;
+  stock: number;
+  category_id: number;
+  unit_id: number;
+}
+
+export interface ProductForCreation {
+  name: string;
+  category_id: number;
+  unit_id: number;
+  suppliers?: number[];
+}
+
+export interface ProductTableFormatted extends BaseModel {
+  name: string;
+  category: string;
+  unit: string;
+  suppliers?: string[];
+}
+
+export interface SelectOption {
+  value: string;
+  label: string;
+}
+
+export interface ProductDataForCreation {
+  categories: SelectOption[];
+  units: SelectOption[];
+  //suppliers: SelectOption[];
+}

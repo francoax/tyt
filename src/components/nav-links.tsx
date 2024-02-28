@@ -18,8 +18,8 @@ const links = [
     section: "Productos",
     links: [
       {
-        name: "Lista de productos",
-        href: "/home/items"
+        name: "Productos",
+        href: "/home/products"
       },
       {
         name: "Categorias",
