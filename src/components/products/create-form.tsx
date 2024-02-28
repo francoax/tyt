@@ -3,15 +3,35 @@
 import Link from "next/link";
 import { Input, SelectInput } from "../inputs";
 import { Button } from "../buttons";
-import { useFormStatus } from "react-dom";
-import { ProductDataForCreation } from "@/lib/definitions";
+import { useFormState, useFormStatus } from "react-dom";
+import { ProductDataForCreation, ServerActionResponse } from "@/lib/definitions";
+import { createProduct } from "@/lib/services/products.service";
+import toast from "react-hot-toast";
+import Alert from "../alerts";
+import { SUCCESS_STATUS } from "@/lib/constants";
+import { redirect } from "next/navigation";
 
 export default function Form({ data }: { data: ProductDataForCreation }) {
+  const initialState : ServerActionResponse = { message: '', status: '', errors: {} }
+
+  const [state, formAction] = useFormState(createProduct, initialState)
+
+  if(state.status) {
+    toast((t) => (
+      <Alert title="Crear producto" reason={state.status!} description={state.message!} />
+    ))
+  }
+
+  if(state.status === SUCCESS_STATUS) {
+    redirect('/home/products')
+  }
+
   return (
-    <form action={(e) => console.log(e)} className="mt-5 p-12 rounded-md divide-gray-200 bg-gray-50">
+    <form action={formAction} className="mt-5 p-12 rounded-md divide-gray-200 bg-gray-50">
       <div className="flex justify-center gap-y-5 sm:gap-5 sm:justify-start flex-wrap">
-        <Input requiredInput={true} placeholder="Nombre producto" label="Nombre" htmlFor="name" name="name" errorFor="name-error"  />
+        <Input requiredInput={true} state={state} placeholder="Nombre producto" label="Nombre" htmlFor="name" name="name" errorFor="name-error"  />
         <SelectInput
+          state={state}
           options={data.units}
           placeholder="Seleccionar tipo de unidad"
           label="Tipo de unidad"
@@ -21,6 +41,7 @@ export default function Form({ data }: { data: ProductDataForCreation }) {
           requiredInput={true}
         />
         <SelectInput
+          state={state}
           options={data.categories}
           placeholder="Seleccionar categoria"
           label="Categoria"
@@ -30,8 +51,14 @@ export default function Form({ data }: { data: ProductDataForCreation }) {
           requiredInput={true}
         />
         <SelectInput
+          state={state}
           isMulti
-          options={[]}
+          options={[
+            { value: '2', label: 'test'},
+            { value: '3', label: 'test2'},
+            { value: '4', label: 'test3'},
+            { value: '5', label: 'test4'},
+          ]}
           placeholder="Seleccionar proveedores"
           label="Proveedores"
           name="suppliers"

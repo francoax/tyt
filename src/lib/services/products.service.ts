@@ -3,8 +3,9 @@
 import { revalidatePath } from "next/cache";
 import {
   ProductDataForCreation,
+  ProductForCreation,
   ProductTableFormatted,
-  SelectOption,
+  ServerActionResponse,
 } from "../definitions";
 import prisma from "../prisma";
 import {
@@ -15,6 +16,7 @@ import {
 } from "../constants";
 import { getCategories } from "./categories.service";
 import { getUnits } from "./units.service";
+import { ProductsSchema } from "../validations";
 
 export async function getProducts(query?: string) {
   const data = await prisma.product.findMany({
@@ -145,5 +147,61 @@ export async function initCreation() {
     return dataForCreation;
   } catch (error) {
     console.log(error);
+  }
+}
+
+const CreateProduct = ProductsSchema.omit({ id: true });
+export async function createProduct(
+  prevState: ServerActionResponse,
+  newProduct: FormData,
+): Promise<ServerActionResponse> {
+  let suppliersFormatted: number[] = [];
+  const suppliersFormData = newProduct.getAll("suppliers");
+
+  if (suppliersFormData.at(0) !== "") {
+    suppliersFormatted = suppliersFormData.map((s) =>
+      Number.parseInt(s.toString()),
+    );
+  }
+
+  const validate = CreateProduct.safeParse({
+    name: newProduct.get("name"),
+    category_id: newProduct.get("category_id"),
+    unit_id: newProduct.get("unit_id"),
+    suppliers: suppliersFormatted,
+  });
+
+  if (!validate.success) {
+    return {
+      message: "Por favor, revise el formulario",
+      errors: validate.error.flatten().fieldErrors,
+      status: ERROR_STATUS,
+    };
+  }
+
+  const productToCreate = validate.data as ProductForCreation;
+
+  try {
+    const productCreated = await prisma.product.create({
+      data: {
+        name: productToCreate.name,
+        category_id: productToCreate.category_id,
+        unit_id: productToCreate.unit_id,
+        // suppliers: {
+        //   create: productToCreate.suppliers.map(s => ({ supplier_id: s }))
+        // }
+      },
+    });
+
+    revalidatePath("/home/products");
+    return {
+      message: "Producto creado",
+      status: SUCCESS_STATUS,
+    };
+  } catch (error) {
+    return {
+      message: "error",
+      status: ERROR_STATUS,
+    };
   }
 }

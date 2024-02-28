@@ -36,12 +36,13 @@ export interface CategoryForCreation {
   description: string;
 }
 
-export type StateForm = {
-  status?: boolean;
+export type ServerActionResponse = {
+  message?: string;
+  data?: any;
+  status?: string;
   errors?: {
     [key: string]: string[] | undefined;
   };
-  message?: string | null;
 };
 
 export interface Unit extends BaseModel {
@@ -64,7 +65,7 @@ export interface ProductForCreation {
   name: string;
   category_id: number;
   unit_id: number;
-  suppliers?: number[];
+  suppliers: number[];
 }
 
 export interface ProductTableFormatted extends BaseModel {
