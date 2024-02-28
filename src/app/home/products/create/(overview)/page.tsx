@@ -12,7 +12,7 @@ export default async function Page() {
           Los campos con <span className="text-red-500">*</span> son requeridos.
         </p>
       </div>
-      <Form data={dataForCreation} />
+      <Form data={dataForCreation!} />
     </>
   )
 }
