@@ -19,7 +19,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased bg-gray-100`}>
+        {children}
         <Toaster
           position="top-center"
           reverseOrder={false}
@@ -27,7 +28,6 @@ export default function RootLayout({
             duration: 3000
           }}
         />
-        {children}
       </body>
     </html>
   );
