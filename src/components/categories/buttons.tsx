@@ -1,17 +1,17 @@
 'use client';
 
-import { deleteCategory } from "@/lib/services/categories.service";
+import { deleteCategoryAction } from "@/lib/actions/categories";
 import { TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import Alert from "../alerts";
 import Modal from "../modal";
 import { Button } from "../buttons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function DeleteCategory({ id }: { id: number }) {
   const [showModal, setShowModal] = useState(false)
-  const deleteCategoryWithId = deleteCategory.bind(null, id);
+  const deleteCategoryWithId = deleteCategoryAction.bind(null, id);
 
   async function handleDelete() {
     setShowModal(false)

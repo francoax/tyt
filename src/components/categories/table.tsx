@@ -1,4 +1,4 @@
-import { getCategories } from "@/lib/services/categories.service"
+import { getCategories } from "@/lib/data/categories"
 import { Category } from "@/lib/definitions"
 import { DeleteCategory, UpdateCategory } from "./buttons"
 

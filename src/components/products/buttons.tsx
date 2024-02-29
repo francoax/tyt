@@ -8,11 +8,11 @@ import Modal from "../modal";
 import { Button } from "../buttons";
 import { useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { deleteProduct } from "@/lib/services/products.service";
+import { deleteProductAction } from "@/lib/actions/products";
 
 export function DeleteProduct({ id }: { id: number }) {
   const [showModal, setShowModal] = useState(false)
-  const deleteProductWithId = deleteProduct.bind(null, id);
+  const deleteProductWithId = deleteProductAction.bind(null, id);
 
   async function handleDelete() {
     setShowModal(false)

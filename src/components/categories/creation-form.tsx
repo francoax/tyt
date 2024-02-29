@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "../buttons";
 import { useFormState, useFormStatus } from "react-dom";
-import { createCategory } from "@/lib/services/categories.service";
+import { createCategoryAction } from "@/lib/actions/categories";
 import { Input } from "../inputs";
 import { ServerActionResponse } from "@/lib/definitions";
 import toast from "react-hot-toast";
@@ -15,14 +15,14 @@ import { useEffect } from "react";
 
 export default function Form() {
   const initialState : ServerActionResponse = { message: '', status: '', errors: {}}
-  const [state, formAction] = useFormState(createCategory, initialState)
+  const [state, formAction] = useFormState(createCategoryAction, initialState)
 
   const router = useRouter()
 
   useEffect(() => {
     if (state.status && state.message) {
       toast(() => (
-        <Alert title="Editar categoria" reason={state.status} description={state.message} />
+        <Alert title="Crear categoria" reason={state.status} description={state.message} />
       ));
     }
 

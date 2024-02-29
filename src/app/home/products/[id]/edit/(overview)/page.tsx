@@ -1,5 +1,6 @@
 import Form from "@/components/products/edit-form"
-import { getProductById, initCreationEdition } from "@/lib/services/products.service"
+import { getProductById, initCreationEdition } from "@/lib/data/products"
+import { ProductDataForCreationEdition } from "@/lib/definitions";
 
 export default async function Page({ params }: { params: { id: string }}) {
   const id = params.id;
@@ -16,7 +17,7 @@ export default async function Page({ params }: { params: { id: string }}) {
           Los campos con <span className="text-red-500">*</span> son requeridos.
         </p>
       </div>
-      <Form product={product as any}  data={dataForEdition!} />
+      <Form product={product as any}  data={dataForEdition as ProductDataForCreationEdition} />
     </>
   )
 }

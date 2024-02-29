@@ -1,5 +1,5 @@
 import Form from "@/components/units/edit-form";
-import { getUnitById } from "@/lib/services/units.service";
+import { getUnitById } from "@/lib/data/units";
 import { notFound } from "next/navigation";
 
 export default async function UpdateUnitPage(

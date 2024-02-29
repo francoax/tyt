@@ -8,19 +8,19 @@ import { ServerActionResponse } from "@/lib/definitions";
 import toast from "react-hot-toast";
 import Alert from "../alerts";
 import { useRouter } from "next/navigation";
-import { createUnit } from "@/lib/services/units.service";
+import { createUnitAction } from "@/lib/actions/units";
 import { useEffect } from "react";
 import { SUCCESS_STATUS } from "@/lib/constants";
 
 export default function Form() {
   const initialState : ServerActionResponse = { message: '', errors: {}, status: ''}
-  const [state, formAction] = useFormState(createUnit, initialState)
+  const [state, formAction] = useFormState(createUnitAction, initialState)
   const router = useRouter()
 
   useEffect(() => {
     if (state.status && state.message) {
       toast(() => (
-        <Alert title="Editar tipo de unidad" reason={state.status} description={state.message} />
+        <Alert title="Crear tipo de unidad" reason={state.status} description={state.message} />
       ));
     }
 

@@ -1,59 +1,17 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import prisma from "../prisma";
 import { UnitsSchema } from "../validations";
-import { ServerActionResponse } from "../definitions";
-import { Prisma } from "@prisma/client";
+import { ServerActionResponse, UnitForCreationEdition } from "../definitions";
 import { ERROR_STATUS, SUCCESS_STATUS, WARNING_STATUS } from "../constants";
 import HandleError from "../errorHandler";
+import { createUnit, deleteUnit, updateUnit } from "../data/units";
 
-export async function getUnits(query?: string) {
-  const data = await prisma.unit.findMany({
-    include: {
-      _count: {
-        select: { products: true },
-      },
-    },
-    where: {
-      description: {
-        contains: query,
-        mode: "insensitive",
-      },
-    },
-    orderBy: {
-      id: "asc",
-    },
-  });
-
-  const units = data.map((c) => ({
-    id: c.id,
-    description: c.description,
-    total_products: c._count.products,
-  }));
-
-  return units;
-}
-
-export async function getUnitById(id: number) {
-  return await prisma.unit.findUnique({
-    where: {
-      id,
-    },
-  });
-}
-
-export async function getAmountOfUnits() {
-  return await prisma.unit.count();
-}
-
-export async function deleteUnit(id: number): Promise<ServerActionResponse> {
+export async function deleteUnitAction(
+  id: number,
+): Promise<ServerActionResponse> {
   try {
-    const unitDeleted = await prisma.unit.delete({
-      where: {
-        id,
-      },
-    });
+    const unitDeleted = await deleteUnit(id);
 
     if (!unitDeleted) {
       return {
@@ -72,7 +30,7 @@ export async function deleteUnit(id: number): Promise<ServerActionResponse> {
 }
 
 const CreateUnit = UnitsSchema.omit({ id: true });
-export async function createUnit(
+export async function createUnitAction(
   prevState: ServerActionResponse,
   formData: FormData,
 ): Promise<ServerActionResponse> {
@@ -88,13 +46,9 @@ export async function createUnit(
     };
   }
 
-  const { description } = validate.data;
+  const unitToCreate = validate.data as UnitForCreationEdition;
   try {
-    await prisma.unit.create({
-      data: {
-        description,
-      },
-    });
+    await createUnit(unitToCreate);
   } catch (error) {
     return HandleError(error);
   }
@@ -107,7 +61,7 @@ export async function createUnit(
 }
 
 const UpdateUnit = UnitsSchema;
-export async function updateUnit(
+export async function updateUnitAction(
   prevState: ServerActionResponse,
   formData: FormData,
 ): Promise<ServerActionResponse> {
@@ -124,17 +78,10 @@ export async function updateUnit(
     };
   }
 
-  const unitToUpdate = validate.data;
+  const unitToUpdate = validate.data as UnitForCreationEdition;
 
   try {
-    await prisma.unit.update({
-      where: {
-        id: Number.parseInt(unitToUpdate.id),
-      },
-      data: {
-        description: unitToUpdate.description,
-      },
-    });
+    await updateUnit(unitToUpdate);
   } catch (error) {
     return HandleError(error);
   }

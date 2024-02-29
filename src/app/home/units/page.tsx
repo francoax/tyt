@@ -1,12 +1,10 @@
-import { Button, CreateButton } from "@/components/buttons";
+import { CreateButton } from "@/components/buttons";
 import Search from "@/components/search";
 import { Spinner, TableLoading } from "@/components/loaders";
-import { PlusIcon } from "@heroicons/react/24/outline";
 import { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
 import UnitsTable from "@/components/units/table";
-import { getAmountOfUnits } from "@/lib/services/units.service";
+import { getAmountOfUnits } from "@/lib/data/units";
 
 export const metadata: Metadata = {
   title: 'Unidades'

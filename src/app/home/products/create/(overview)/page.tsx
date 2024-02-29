@@ -1,5 +1,6 @@
 import Form from "@/components/products/create-form";
-import { initCreationEdition } from "@/lib/services/products.service";
+import { initCreationEdition } from "@/lib/data/products";
+import { ProductDataForCreationEdition } from "@/lib/definitions";
 
 export default async function Page() {
   const dataForCreation = await initCreationEdition()
@@ -12,7 +13,7 @@ export default async function Page() {
           Los campos con <span className="text-red-500">*</span> son requeridos.
         </p>
       </div>
-      <Form data={dataForCreation!} />
+      <Form data={dataForCreation as ProductDataForCreationEdition} />
     </>
   )
 }

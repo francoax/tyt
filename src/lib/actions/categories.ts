@@ -1,53 +1,21 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import prisma from "../prisma";
 import { CategoriesSchema } from "../validations";
-import { ServerActionResponse } from "../definitions";
+import {
+  CategoryForCreationEdition,
+  ServerActionResponse,
+} from "../definitions";
 import HandleError from "../errorHandler";
 import { ERROR_STATUS, SUCCESS_STATUS } from "../constants";
-
-export async function getCategories(query?: string) {
-  const data = await prisma.category.findMany({
-    include: {
-      _count: {
-        select: { products: true },
-      },
-    },
-    where: {
-      description: {
-        contains: query,
-        mode: "insensitive",
-      },
-    },
-    orderBy: {
-      id: "asc",
-    },
-  });
-
-  const categories = data.map((c) => ({
-    id: c.id,
-    description: c.description,
-    total_products: c._count.products,
-  }));
-
-  return categories;
-}
-
-export async function getCategoryById(id: number) {
-  return await prisma.category.findUnique({
-    where: {
-      id,
-    },
-  });
-}
-
-export async function getAmountOfCategories() {
-  return await prisma.category.count();
-}
+import {
+  createCategory,
+  deleteCategory,
+  updateCategory,
+} from "../data/categories";
 
 const CreateCategory = CategoriesSchema.omit({ id: true });
-export async function createCategory(
+export async function createCategoryAction(
   prevState: ServerActionResponse,
   formData: FormData,
 ): Promise<ServerActionResponse> {
@@ -63,13 +31,9 @@ export async function createCategory(
     };
   }
 
-  const { description } = validate.data;
+  const categoryToCreate = validate.data as CategoryForCreationEdition;
   try {
-    await prisma.category.create({
-      data: {
-        description,
-      },
-    });
+    await createCategory(categoryToCreate);
   } catch (error) {
     return HandleError(error);
   }
@@ -82,7 +46,7 @@ export async function createCategory(
 }
 
 const UpdateCategory = CategoriesSchema;
-export async function updateCategory(
+export async function updateCategoryAction(
   prevState: ServerActionResponse,
   formData: FormData,
 ): Promise<ServerActionResponse> {
@@ -99,17 +63,10 @@ export async function updateCategory(
     };
   }
 
-  const categoryToUpdate = validate.data;
+  const categoryToUpdate = validate.data as CategoryForCreationEdition;
 
   try {
-    await prisma.category.update({
-      where: {
-        id: Number.parseInt(categoryToUpdate.id),
-      },
-      data: {
-        description: categoryToUpdate.description,
-      },
-    });
+    await updateCategory(categoryToUpdate);
   } catch (error) {
     return HandleError(error);
   }
@@ -121,15 +78,11 @@ export async function updateCategory(
   };
 }
 
-export async function deleteCategory(
+export async function deleteCategoryAction(
   id: number,
 ): Promise<ServerActionResponse> {
   try {
-    const categoryDeleted = await prisma.category.delete({
-      where: {
-        id,
-      },
-    });
+    const categoryDeleted = await deleteCategory(id);
 
     if (!categoryDeleted) {
       return {
@@ -137,6 +90,7 @@ export async function deleteCategory(
         status: ERROR_STATUS,
       };
     }
+
     revalidatePath("/home/categories");
     return {
       message: "Categoria eliminada.",

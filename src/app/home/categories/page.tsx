@@ -1,11 +1,9 @@
-import { Button, CreateButton } from "@/components/buttons";
+import { CreateButton } from "@/components/buttons";
 import Search from "@/components/search";
 import CategoriesTable from "@/components/categories/table";
 import { Spinner, TableLoading } from "@/components/loaders";
-import { getAmountOfCategories } from "@/lib/services/categories.service";
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { getAmountOfCategories } from "@/lib/data/categories";
 import { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {

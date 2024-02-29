@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "../buttons";
 import { useFormState, useFormStatus } from "react-dom";
-import { updateCategory } from "@/lib/services/categories.service";
+import { updateCategoryAction } from "@/lib/actions/categories";
 import { Input } from "../inputs";
 import { ServerActionResponse } from "@/lib/definitions";
 import toast from "react-hot-toast";
@@ -15,7 +15,7 @@ import { SUCCESS_STATUS } from "@/lib/constants";
 
 export default function Form({ category }: { category: Category }) {
   const initialState : ServerActionResponse = { message: '', errors: {}, status: ''}
-  const [state, formAction] = useFormState(updateCategory, initialState)
+  const [state, formAction] = useFormState(updateCategoryAction, initialState)
   const router = useRouter()
 
   useEffect(() => {

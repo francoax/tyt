@@ -1,5 +1,5 @@
 import Form from "@/components/categories/edit-form";
-import { getCategoryById } from "@/lib/services/categories.service";
+import { getCategoryById } from "@/lib/data/categories";
 import { notFound } from "next/navigation";
 
 export default async function UpdateCategoryPage(

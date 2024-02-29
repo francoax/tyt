@@ -1,5 +1,5 @@
 import { ProductTableFormatted } from "@/lib/definitions"
-import { getProducts } from "@/lib/services/products.service"
+import { getProducts } from "@/lib/data/products"
 import { DeleteProduct, DetailProduct, UpdateProduct } from "./buttons"
 
 export default async function ProductsTable({

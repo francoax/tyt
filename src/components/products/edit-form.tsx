@@ -11,7 +11,7 @@ import { SUCCESS_STATUS } from "@/lib/constants";
 import { Supplier } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { updateProduct } from "@/lib/services/products.service";
+import { updateProductAction } from "@/lib/actions/products";
 
 export default function Form({ product, data } : { product: Product, data: ProductDataForCreationEdition}) {
   const initialState : ServerActionResponse = { message: '', status: '', errors: {} }
@@ -24,7 +24,7 @@ export default function Form({ product, data } : { product: Product, data: Produ
     suppliers = (product.suppliers as Array<Supplier>).map((s) : SelectOption => ({ label: s.name, value: s.id.toString()}))
   }
 
-  const [state, formAction] = useFormState(updateProduct, initialState)
+  const [state, formAction] = useFormState(updateProductAction, initialState)
   const router = useRouter()
 
   useEffect(() => {

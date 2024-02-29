@@ -4,7 +4,7 @@ import { Spinner, TableLoading } from "@/components/loaders";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import ProductsTable from "@/components/products/table";
-import { getAmountOfProducts } from "@/lib/services/products.service";
+import { getAmountOfProducts } from "@/lib/data/products";
 
 export const metadata: Metadata = {
   title: 'Productos'

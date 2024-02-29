@@ -34,7 +34,8 @@ export interface Category extends BaseModel {
   total_products?: number;
 }
 
-export interface CategoryForCreation {
+export interface CategoryForCreationEdition {
+  id?: number;
   description: string;
 }
 
@@ -52,7 +53,8 @@ export interface Unit extends BaseModel {
   total_products?: number;
 }
 
-export interface UnitForCreation {
+export interface UnitForCreationEdition {
+  id?: number;
   description: string;
 }
 
@@ -67,11 +69,12 @@ export interface Product extends BaseModel, p {
   suppliers: Supplier[];
 }
 
-export interface ProductForCreation {
+export interface ProductForCreationEdition {
+  id?: number;
   name: string;
   category_id: number;
   unit_id: number;
-  suppliers: number[];
+  suppliers?: number[];
 }
 
 export interface ProductTableFormatted extends BaseModel {

@@ -9,13 +9,13 @@ import toast from "react-hot-toast";
 import Alert from "../alerts";
 import { useRouter } from "next/navigation";
 import { Unit } from "@prisma/client";
-import { updateUnit } from "@/lib/services/units.service";
+import { updateUnitAction } from "@/lib/actions/units";
 import { useEffect } from "react";
 import { SUCCESS_STATUS } from "@/lib/constants";
 
 export default function Form({ unit }: { unit: Unit }) {
   const initialState : ServerActionResponse = { message: '', errors: {}, status: ''}
-  const [state, formAction] = useFormState(updateUnit, initialState)
+  const [state, formAction] = useFormState(updateUnitAction, initialState)
   const router = useRouter()
 
   useEffect(() => {

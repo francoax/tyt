@@ -1,5 +1,5 @@
 import { Unit } from "@/lib/definitions"
-import { getUnits } from "@/lib/services/units.service"
+import { getUnits } from "@/lib/data/units"
 import { DeleteUnit, UpdateUnit } from "./buttons"
 
 export default async function UnitsTable({

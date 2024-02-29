@@ -5,7 +5,7 @@ import { Input, SelectInput } from "../inputs";
 import { Button } from "../buttons";
 import { useFormState, useFormStatus } from "react-dom";
 import { ProductDataForCreationEdition, ServerActionResponse } from "@/lib/definitions";
-import { createProduct } from "@/lib/services/products.service";
+import { createProductAction } from "@/lib/actions/products";
 import toast from "react-hot-toast";
 import Alert from "../alerts";
 import { SUCCESS_STATUS } from "@/lib/constants";
@@ -15,7 +15,7 @@ import { useEffect } from "react";
 export default function Form({ data }: { data: ProductDataForCreationEdition }) {
   const initialState : ServerActionResponse = { message: '', status: '', errors: {} }
 
-  const [state, formAction] = useFormState(createProduct, initialState)
+  const [state, formAction] = useFormState(createProductAction, initialState)
   const router = useRouter()
 
   useEffect(() => {

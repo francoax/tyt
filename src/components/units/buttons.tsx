@@ -7,11 +7,11 @@ import Alert from "../alerts";
 import Modal from "../modal";
 import { Button } from "../buttons";
 import { useState } from "react";
-import { deleteUnit } from "@/lib/services/units.service";
+import { deleteUnitAction } from "@/lib/actions/units";
 
 export function DeleteUnit({ id }: { id: number }) {
   const [showModal, setShowModal] = useState(false)
-  const deleteInvoiceWithId = deleteUnit.bind(null, id);
+  const deleteInvoiceWithId = deleteUnitAction.bind(null, id);
 
   async function handleDelete() {
     setShowModal(false)
