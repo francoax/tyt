@@ -5,29 +5,30 @@ import { Button } from "../buttons";
 import { useFormState, useFormStatus } from "react-dom";
 import { updateCategory } from "@/lib/services/categories.service";
 import { Input } from "../inputs";
-import { StateForm } from "@/lib/definitions";
+import { ServerActionResponse } from "@/lib/definitions";
 import toast from "react-hot-toast";
 import Alert from "../alerts";
 import { useRouter } from "next/navigation";
 import { Category } from "@prisma/client";
+import { useEffect } from "react";
+import { SUCCESS_STATUS } from "@/lib/constants";
 
 export default function Form({ category }: { category: Category }) {
-  const initialState : StateForm = { message: null, errors: {}, status: false}
+  const initialState : ServerActionResponse = { message: '', errors: {}, status: ''}
   const [state, formAction] = useFormState(updateCategory, initialState)
   const router = useRouter()
 
-  if(state.status && state.message) {
-    toast((t) => (
-      <Alert reason='success' title="Editar categoria" description={state.message!} />
-    ))
+  useEffect(() => {
+    if (state.status && state.message) {
+      toast(() => (
+        <Alert title="Editar categoria" reason={state.status} description={state.message} />
+      ));
+    }
 
-    router.push('/home/categories')
-  }
-  if(!state.status && state.message) {
-    toast((t) => (
-      <Alert reason='error' title="Editar categoria" description={state.message!} />
-    ))
-  }
+    if (state.status === SUCCESS_STATUS) {
+      router.push('/home/categories');
+    }
+  }, [state.status, state.message, router]);
 
   return (
     <form action={formAction} className="mt-5 p-12 rounded-md divide-gray-200 bg-gray-50">

@@ -4,29 +4,30 @@ import Link from "next/link";
 import { Button } from "../buttons";
 import { useFormState, useFormStatus } from "react-dom";
 import { Input } from "../inputs";
-import { StateForm } from "@/lib/definitions";
+import { ServerActionResponse } from "@/lib/definitions";
 import toast from "react-hot-toast";
 import Alert from "../alerts";
 import { useRouter } from "next/navigation";
 import { createUnit } from "@/lib/services/units.service";
+import { useEffect } from "react";
+import { SUCCESS_STATUS } from "@/lib/constants";
 
 export default function Form() {
-  const initialState : StateForm = { message: null, errors: {}, status: false}
+  const initialState : ServerActionResponse = { message: '', errors: {}, status: ''}
   const [state, formAction] = useFormState(createUnit, initialState)
   const router = useRouter()
 
-  if(state.status && state.message) {
-    toast((t) => (
-      <Alert reason='success' title="Crear tipo de unidad" description={state.message!} />
-    ))
+  useEffect(() => {
+    if (state.status && state.message) {
+      toast(() => (
+        <Alert title="Editar tipo de unidad" reason={state.status} description={state.message} />
+      ));
+    }
 
-    router.push('/home/units')
-  }
-  if(!state.status && state.message) {
-    toast((t) => (
-      <Alert reason='error' title="Crear tipo de unidad" description={state.message!} />
-    ))
-  }
+    if (state.status === SUCCESS_STATUS) {
+      router.push('/home/units');
+    }
+  }, [state.status, state.message, router]);
 
   return (
     <form action={formAction} className="mt-5 p-12 rounded-md divide-gray-200 bg-gray-50">
