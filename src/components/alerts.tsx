@@ -1,4 +1,4 @@
-export default function Alert({ reason, ...props }: { reason: string, title: string, description: string }) {
+export default function Alert({ reason, ...props }: { reason?: string, title: string, description?: string }) {
   switch(reason) {
     case 'success':
       return <Success {...props} />

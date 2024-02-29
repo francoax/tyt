@@ -5,27 +5,27 @@ import { Button } from "../buttons";
 import { useFormState, useFormStatus } from "react-dom";
 import { createCategory } from "@/lib/services/categories.service";
 import { Input } from "../inputs";
-import { StateForm } from "@/lib/definitions";
+import { ServerActionResponse } from "@/lib/definitions";
 import toast from "react-hot-toast";
 import Alert from "../alerts";
+import { SUCCESS_STATUS } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 
+
 export default function Form() {
-  const initialState : StateForm = { message: null, errors: {}, status: false}
+  const initialState : ServerActionResponse = { message: '', status: '', errors: {}}
   const [state, formAction] = useFormState(createCategory, initialState)
+
   const router = useRouter()
 
-  if(state.status && state.message) {
+  if(state.status) {
     toast((t) => (
-      <Alert reason='success' title="Crear categoria" description={state.message!} />
+      <Alert title="Crear categoria" reason={state.status!} description={state.message!} />
     ))
-
-    router.push('/home/categories')
   }
-  if(!state.status && state.message) {
-    toast((t) => (
-      <Alert reason='error' title="Crear categoria" description={state.message!} />
-    ))
+
+  if(state.status === SUCCESS_STATUS) {
+    router.push('/home/products')
   }
 
   return (

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import {
-  ProductDataForCreation,
+  ProductDataForCreationEdition,
   ProductForCreation,
   ProductTableFormatted,
   ServerActionResponse,
@@ -17,6 +17,7 @@ import {
 import { getCategories } from "./categories.service";
 import { getUnits } from "./units.service";
 import { ProductsSchema } from "../validations";
+import HandleError from "../errorHandler";
 
 export async function getProducts(query?: string) {
   const data = await prisma.product.findMany({
@@ -53,13 +54,16 @@ export async function getProducts(query?: string) {
   return formattedData;
 }
 
-export async function getProductById(id: number) {
+export async function getProductById(
+  id: number,
+  includeStockMovements: boolean = false,
+) {
   return await prisma.product.findUnique({
     where: {
       id,
     },
     include: {
-      stock_movements: true,
+      stock_movements: includeStockMovements,
       category: true,
       unit: true,
       suppliers: {
@@ -123,9 +127,9 @@ export async function deleteProduct(id: number) {
   }
 }
 
-export async function initCreation() {
+export async function initCreationEdition() {
   //const suppliers = getSuppliers()
-  let dataForCreation: ProductDataForCreation;
+  let dataForCreation: ProductDataForCreationEdition;
 
   try {
     const [categories, units] = await Promise.all([
@@ -142,6 +146,7 @@ export async function initCreation() {
         value: u.id.toString(),
         label: u.description,
       })),
+      suppliers: [],
     };
 
     return dataForCreation;
@@ -182,7 +187,7 @@ export async function createProduct(
   const productToCreate = validate.data as ProductForCreation;
 
   try {
-    const productCreated = await prisma.product.create({
+    await prisma.product.create({
       data: {
         name: productToCreate.name,
         category_id: productToCreate.category_id,
@@ -199,9 +204,17 @@ export async function createProduct(
       status: SUCCESS_STATUS,
     };
   } catch (error) {
-    return {
-      message: "error",
-      status: ERROR_STATUS,
-    };
+    return HandleError(error);
   }
+}
+
+const UpdateProduct = ProductsSchema;
+export async function updateProduct(
+  prevState: ServerActionResponse,
+  productUpdated: FormData,
+): Promise<ServerActionResponse> {
+  return {
+    message: "done",
+    status: SUCCESS_STATUS,
+  };
 }

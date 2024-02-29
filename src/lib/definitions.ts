@@ -1,3 +1,5 @@
+import { StockMovement, Supplier } from "@prisma/client";
+
 interface BaseModel {
   id: number;
 }
@@ -29,7 +31,7 @@ export interface StockDeposit {
 
 export interface Category extends BaseModel {
   description: string;
-  total_products: number;
+  total_products?: number;
 }
 
 export interface CategoryForCreation {
@@ -59,6 +61,10 @@ export interface Product extends BaseModel {
   stock: number;
   category_id: number;
   unit_id: number;
+  category: Category;
+  unit: Unit;
+  stock_movements: StockMovement[];
+  suppliers: Supplier[];
 }
 
 export interface ProductForCreation {
@@ -80,8 +86,8 @@ export interface SelectOption {
   label: string;
 }
 
-export interface ProductDataForCreation {
+export interface ProductDataForCreationEdition {
   categories: SelectOption[];
   units: SelectOption[];
-  //suppliers: SelectOption[];
+  suppliers: SelectOption[];
 }

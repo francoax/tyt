@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import prisma from "../prisma";
 import { UnitsSchema } from "../validations";
-import { StateForm } from "../definitions";
+import { ServerActionResponse } from "../definitions";
 import { Prisma } from "@prisma/client";
 
 export async function getUnits(query?: string) {
@@ -112,7 +112,10 @@ export async function createUnit(prevState: StateForm, formData: FormData) {
 }
 
 const UpdateUnit = UnitsSchema;
-export async function updateUnit(prevState: StateForm, formData: FormData) {
+export async function updateUnit(
+  prevState: ServerActionResponse,
+  formData: FormData,
+) {
   const validate = UpdateUnit.safeParse({
     id: formData.get("id"),
     description: formData.get("description"),

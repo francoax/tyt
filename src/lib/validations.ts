@@ -34,7 +34,7 @@ export const ProductsSchema = z
       .string()
       .min(1, { message: "El nombre es requerido." })
       .max(25)
-      .regex(RegExp("^[a-zA-Zs]+$"), { message: "El nombre no es valido." }),
+      .regex(RegExp("^[a-zA-Zs ]+$"), { message: "El nombre no es valido." }),
     category_id: z
       .string()
       .min(1, { message: "La categoria es requerida." })

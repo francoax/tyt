@@ -1,8 +1,8 @@
 import Form from "@/components/products/create-form";
-import { initCreation } from "@/lib/services/products.service";
+import { initCreationEdition } from "@/lib/services/products.service";
 
 export default async function Page() {
-  const dataForCreation = await initCreation()
+  const dataForCreation = await initCreationEdition()
 
   return (
     <>

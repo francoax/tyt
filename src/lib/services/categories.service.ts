@@ -3,8 +3,9 @@
 import { revalidatePath } from "next/cache";
 import prisma from "../prisma";
 import { CategoriesSchema } from "../validations";
-import { StateForm } from "../definitions";
-import { Prisma } from "@prisma/client";
+import { ServerActionResponse } from "../definitions";
+import HandleError from "../errorHandler";
+import { ERROR_STATUS, SUCCESS_STATUS } from "../constants";
 
 export async function getCategories(query?: string) {
   const data = await prisma.category.findMany({
@@ -46,7 +47,10 @@ export async function getAmountOfCategories() {
 }
 
 const CreateCategory = CategoriesSchema.omit({ id: true });
-export async function createCategory(prevState: StateForm, formData: FormData) {
+export async function createCategory(
+  prevState: ServerActionResponse,
+  formData: FormData,
+): Promise<ServerActionResponse> {
   const validate = CreateCategory.safeParse({
     description: formData.get("description"),
   });
@@ -55,37 +59,33 @@ export async function createCategory(prevState: StateForm, formData: FormData) {
     return {
       errors: validate.error.flatten().fieldErrors,
       message: "Error al crear nueva categoria, revise el formulario.",
-      status: false,
+      status: ERROR_STATUS,
     };
   }
 
   const { description } = validate.data;
   try {
-    const categoryCreated = await prisma.category.create({
+    await prisma.category.create({
       data: {
         description,
       },
     });
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      if (e.code === "P2002") {
-        return {
-          message: "Ya existe una categoria con esa descripcion.",
-          status: false,
-        };
-      }
-    }
+  } catch (error) {
+    return HandleError(error);
   }
 
   revalidatePath("/home/categories");
   return {
     message: "Categoria creada ",
-    status: true,
+    status: SUCCESS_STATUS,
   };
 }
 
 const UpdateCategory = CategoriesSchema;
-export async function updateCategory(prevState: StateForm, formData: FormData) {
+export async function updateCategory(
+  prevState: ServerActionResponse,
+  formData: FormData,
+): Promise<ServerActionResponse> {
   const validate = UpdateCategory.safeParse({
     id: formData.get("id"),
     description: formData.get("description"),
@@ -95,7 +95,7 @@ export async function updateCategory(prevState: StateForm, formData: FormData) {
     return {
       errors: validate.error.flatten().fieldErrors,
       message: "Error al intentar actualizar, revise el formulario.",
-      status: false,
+      status: ERROR_STATUS,
     };
   }
 
@@ -110,25 +110,20 @@ export async function updateCategory(prevState: StateForm, formData: FormData) {
         description: categoryToUpdate.description,
       },
     });
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      if (e.code === "P2002") {
-        return {
-          message: "Ya existe una categoria con esa descripcion.",
-          status: false,
-        };
-      }
-    }
+  } catch (error) {
+    return HandleError(error);
   }
 
   revalidatePath("/home/categories");
   return {
     message: "Categoria actualizada",
-    status: true,
+    status: SUCCESS_STATUS,
   };
 }
 
-export async function deleteCategory(id: number) {
+export async function deleteCategory(
+  id: number,
+): Promise<ServerActionResponse> {
   try {
     const categoryDeleted = await prisma.category.delete({
       where: {
@@ -139,18 +134,15 @@ export async function deleteCategory(id: number) {
     if (!categoryDeleted) {
       return {
         message: `No pudo eliminarse la categoria con el ID ${id}.`,
-        error: true,
+        status: ERROR_STATUS,
       };
     }
     revalidatePath("/home/categories");
     return {
       message: "Categoria eliminada.",
-      error: false,
+      status: SUCCESS_STATUS,
     };
   } catch (error) {
-    return {
-      message: "Error al intentar eliminar la categoria.",
-      error: true,
-    };
+    return HandleError(error);
   }
 }
