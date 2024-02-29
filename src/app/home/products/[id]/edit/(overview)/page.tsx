@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: { id: string }}) {
           Los campos con <span className="text-red-500">*</span> son requeridos.
         </p>
       </div>
-      <Form product={product!}  data={dataForEdition!} />
+      <Form product={product as any}  data={dataForEdition!} />
     </>
   )
 }

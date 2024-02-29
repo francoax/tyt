@@ -1,4 +1,4 @@
-import { StockMovement, Supplier } from "@prisma/client";
+import { StockMovement, Supplier, Product as p } from "@prisma/client";
 
 interface BaseModel {
   id: number;
@@ -49,18 +49,18 @@ export type ServerActionResponse = {
 
 export interface Unit extends BaseModel {
   description: string;
-  total_products: number;
+  total_products?: number;
 }
 
 export interface UnitForCreation {
   description: string;
 }
 
-export interface Product extends BaseModel {
-  name: string;
-  stock: number;
-  category_id: number;
-  unit_id: number;
+export interface Product extends BaseModel, p {
+  // name: string;
+  // stock: number;
+  // category_id: number;
+  // unit_id: number;
   category: Category;
   unit: Unit;
   stock_movements: StockMovement[];
