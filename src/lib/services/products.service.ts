@@ -80,7 +80,7 @@ export async function getAmountOfProducts() {
 }
 
 export async function deleteProduct(id: number) {
-  const productToDelete = await getProductById(id);
+  const productToDelete = await getProductById(id, true);
 
   if (!productToDelete) {
     return {
