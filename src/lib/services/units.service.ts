@@ -5,6 +5,8 @@ import prisma from "../prisma";
 import { UnitsSchema } from "../validations";
 import { ServerActionResponse } from "../definitions";
 import { Prisma } from "@prisma/client";
+import { ERROR_STATUS, SUCCESS_STATUS, WARNING_STATUS } from "../constants";
+import HandleError from "../errorHandler";
 
 export async function getUnits(query?: string) {
   const data = await prisma.unit.findMany({
@@ -45,7 +47,7 @@ export async function getAmountOfUnits() {
   return await prisma.unit.count();
 }
 
-export async function deleteUnit(id: number) {
+export async function deleteUnit(id: number): Promise<ServerActionResponse> {
   try {
     const unitDeleted = await prisma.unit.delete({
       where: {
@@ -56,24 +58,24 @@ export async function deleteUnit(id: number) {
     if (!unitDeleted) {
       return {
         message: `No pudo eliminarse el tipo de unidad con el ID ${id}.`,
-        error: true,
+        status: WARNING_STATUS,
       };
     }
     revalidatePath("/home/units");
     return {
       message: "Tipo de unidad eliminada.",
-      error: false,
+      status: SUCCESS_STATUS,
     };
   } catch (error) {
-    return {
-      message: "Error al intentar eliminar el tipo de unidad.",
-      error: true,
-    };
+    return HandleError(error);
   }
 }
 
 const CreateUnit = UnitsSchema.omit({ id: true });
-export async function createUnit(prevState: StateForm, formData: FormData) {
+export async function createUnit(
+  prevState: ServerActionResponse,
+  formData: FormData,
+): Promise<ServerActionResponse> {
   const validate = CreateUnit.safeParse({
     description: formData.get("description"),
   });
@@ -82,32 +84,25 @@ export async function createUnit(prevState: StateForm, formData: FormData) {
     return {
       errors: validate.error.flatten().fieldErrors,
       message: "Error al crear nuevo tipo de unidad, revise el formulario.",
-      status: false,
+      status: ERROR_STATUS,
     };
   }
 
   const { description } = validate.data;
   try {
-    const unitCreated = await prisma.unit.create({
+    await prisma.unit.create({
       data: {
         description,
       },
     });
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      if (e.code === "P2002") {
-        return {
-          message: "Ya existe un tipo de unidad con esa descripcion.",
-          status: false,
-        };
-      }
-    }
+  } catch (error) {
+    return HandleError(error);
   }
 
   revalidatePath("/home/units");
   return {
     message: "Tipo de unidad creado.",
-    status: true,
+    status: SUCCESS_STATUS,
   };
 }
 
@@ -115,7 +110,7 @@ const UpdateUnit = UnitsSchema;
 export async function updateUnit(
   prevState: ServerActionResponse,
   formData: FormData,
-) {
+): Promise<ServerActionResponse> {
   const validate = UpdateUnit.safeParse({
     id: formData.get("id"),
     description: formData.get("description"),
@@ -125,7 +120,7 @@ export async function updateUnit(
     return {
       errors: validate.error.flatten().fieldErrors,
       message: "Error al intentar actualizar, revise el formulario.",
-      status: false,
+      status: ERROR_STATUS,
     };
   }
 
@@ -140,20 +135,13 @@ export async function updateUnit(
         description: unitToUpdate.description,
       },
     });
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      if (e.code === "P2002") {
-        return {
-          message: "Ya existe un tipo de unidad con esa descripcion.",
-          status: false,
-        };
-      }
-    }
+  } catch (error) {
+    return HandleError(error);
   }
 
   revalidatePath("/home/units");
   return {
     message: "Tipo de unidad actualizada.",
-    status: true,
+    status: SUCCESS_STATUS,
   };
 }

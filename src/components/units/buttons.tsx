@@ -20,16 +20,11 @@ export function DeleteUnit({ id }: { id: number }) {
     const res = await deleteInvoiceWithId()
     toast.dismiss(deleting)
 
-    if(res.error) {
-      toast((t) => (
-        <Alert title="Eliminar tipo de unidad" description={res.message} reason='error' />
-      ))
-    } else {
-      toast((t) => (
-        <Alert title="Eliminar tipo de unidad" description={res.message} reason='success' />
-      ))
-    }
+    toast((t) => (
+      <Alert title="Eliminar categoria" description={res.message} reason={res.status} />
+    ))
   }
+
   return (
     <>
       <button onClick={() => setShowModal(true)}>

@@ -7,28 +7,22 @@ import toast from "react-hot-toast";
 import Alert from "../alerts";
 import Modal from "../modal";
 import { Button } from "../buttons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function DeleteCategory({ id }: { id: number }) {
   const [showModal, setShowModal] = useState(false)
-  const deleteInvoiceWithId = deleteCategory.bind(null, id);
+  const deleteCategoryWithId = deleteCategory.bind(null, id);
 
   async function handleDelete() {
     setShowModal(false)
 
     const deleting = toast.loading('Eliminando categoria...')
-    const res = await deleteInvoiceWithId()
+    const res = await deleteCategoryWithId()
     toast.dismiss(deleting)
 
-    if(res.error) {
-      toast((t) => (
-        <Alert title="Eliminar categoria" description={res.message} reason='error' />
-      ))
-    } else {
-      toast((t) => (
-        <Alert title="Eliminar categoria" description={res.message} reason='success' />
-      ))
-    }
+    toast((t) => (
+      <Alert title="Eliminar categoria" description={res.message} reason={res.status} />
+    ))
   }
   return (
     <>
