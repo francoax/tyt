@@ -33,7 +33,7 @@ model Product {
 }
 
 model StockMovement {
-  id               Int
+  id               Int         @default(autoincrement())
   product_id       Int
   date_action      DateTime    @default(now())
   type_action      ActionTypes
