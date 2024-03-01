@@ -106,7 +106,6 @@ export async function deleteProduct(id: number) {
 export async function initCreationEdition() {
   //const suppliers = getSuppliers()
   noStore();
-  console.log("fetched");
   let dataForCreation: ProductDataForCreationEdition;
 
   try {

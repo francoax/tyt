@@ -39,7 +39,7 @@ export const UnitsSchema = z
       .toLowerCase(),
   })
   .required();
-
+// ^[a-zA-Z0-9\s ]+$
 export const ProductsSchema = z
   .object({
     id: z
@@ -50,7 +50,9 @@ export const ProductsSchema = z
       .string()
       .min(1, { message: "El nombre es requerido." })
       .max(25)
-      .regex(RegExp("^[a-zA-Zs ]+$"), { message: "El nombre no es valido." }),
+      .regex(RegExp(`^[a-zA-Z-Z0-9s ]+$`), {
+        message: "El nombre no es valido.",
+      }),
     category_id: z
       .string()
       .min(1, { message: "La categoria es requerida." })

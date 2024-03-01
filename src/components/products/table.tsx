@@ -32,7 +32,7 @@ function Table({
 
   if(products.length === 0) {
     return (
-      <p className="text-center text-gray-700">Sin tipos de unidades por el momento.</p>
+      <p className="text-center text-gray-700">Sin productos por el momento.</p>
     )
   }
 
