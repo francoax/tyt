@@ -1,5 +1,6 @@
 "use server";
 
+import { SM_WITHDRAW } from "../constants";
 import {
   ProductDataForCreationEdition,
   ProductForCreationEdition,
@@ -55,7 +56,9 @@ export async function getProductById(
       id,
     },
     include: {
-      stock_movements: includeStockMovements,
+      stock_movements: includeStockMovements
+        ? { orderBy: { date_action: "desc" } }
+        : false,
       category: true,
       unit: true,
       suppliers: {
@@ -130,4 +133,18 @@ export async function initCreationEdition() {
   } catch (error) {
     return HandleError(error);
   }
+}
+
+export async function hasPendingWithdraws(id: number) {
+  return await prisma.stockMovement.count({
+    where: {
+      AND: [
+        {
+          product_id: id,
+          type_action: SM_WITHDRAW,
+          real_amount_used: null,
+        },
+      ],
+    },
+  });
 }

@@ -1,6 +1,7 @@
 import Form from "@/components/products/edit-form"
 import { getProductById, initCreationEdition } from "@/lib/data/products"
 import { ProductDataForCreationEdition } from "@/lib/definitions";
+import { notFound } from "next/navigation";
 
 export default async function Page({ params }: { params: { id: string }}) {
   const id = params.id;
@@ -8,6 +9,10 @@ export default async function Page({ params }: { params: { id: string }}) {
     getProductById(Number.parseInt(id)),
     initCreationEdition()
   ])
+
+  if(!product) {
+    notFound()
+  }
 
   return (
     <>

@@ -3,21 +3,26 @@ import { Product } from "@/lib/definitions";
 import { StockMovement } from "@prisma/client";
 import clsx from "clsx";
 import { format } from "date-fns";
+import { ConfirmButton } from "./buttons";
 
 export default function ProductDetail({ product }: { product: Product}) {
   return (
-    <section className="flex items-center justify-between sm:justify-evenly flex-wrap gap-5 mt-5 p-12 rounded-md divide-gray-200 bg-gray-50">
+    <section className="flex items-center justify-between sm:justify-evenly flex-wrap gap-5 mt-5 p-6 rounded-md divide-gray-200 bg-gray-50">
+      <div>
+        <span className="mt-4 text-lg font-normal text-gray-500">ID</span>
+        <p className="mt-2 text-blue-500 uppercase">{product.id}</p>
+      </div>
       <div>
         <span className="mt-4 text-lg font-normal text-gray-500">Nombre</span>
-        <p className="mt-2 text-blue-500 capitalize">{product.name}</p>
+        <p className="mt-2 text-blue-500 uppercase">{product.name}</p>
       </div>
       <div>
         <span className="mt-4 text-lg font-normal text-gray-500">Categoria</span>
-        <p className="mt-2 text-blue-500 capitalize">{product.category.description}</p>
+        <p className="mt-2 text-blue-500 uppercase">{product.category.description}</p>
       </div>
       <div>
         <span className="mt-4 text-lg font-normal text-gray-500">Unidad</span>
-        <p className="mt-2 text-blue-500 capitalize">{product.unit.description}</p>
+        <p className="mt-2 text-blue-500 uppercase">{product.unit.description}</p>
       </div>
       <div>
         <span className="mt-4 text-lg font-normal text-gray-500">Proveedores</span>
@@ -32,7 +37,6 @@ export default function ProductDetail({ product }: { product: Product}) {
   )
 }
 
-
 export function StockMovements({ product }: { product: Product }) {
   return (
     <>
@@ -41,11 +45,7 @@ export function StockMovements({ product }: { product: Product }) {
           Movimientos de stock
         </h2>
         <p className="mt-1 text-sm text-gray-500">
-          Aquellos retiros que esten pendientes, seran marcados como
-          <span className="mx-1 px-3 py-1 text-xs text-red-600 bg-red-200 rounded-full">
-              Pendiente de confirmacion
-          </span>
-          . Una vez confirmado, se podra volver a retirar.
+          Aquellos retiros que esten pendientes, seran marcados como. Una vez confirmado, se podra volver a retirar.
         </p>
       </div>
       <div className="flex flex-col mt-6">
@@ -64,11 +64,11 @@ export function StockMovements({ product }: { product: Product }) {
 
 function StockMovementsTable({ movements, unit }: { movements: StockMovement[], unit: string }) {
 
-  // if(movements.length === 0) {
-  //   return (
-  //     <p className="text-center text-gray-700">Sin movimientos de stock por el momento.</p>
-  //   )
-  // }
+  if(movements.length === 0) {
+    return (
+      <p className="text-center text-gray-700">Sin movimientos de stock por el momento.</p>
+    )
+  }
 
   return (
     <table className="min-w-full divide-y divide-gray-200">
@@ -78,19 +78,23 @@ function StockMovementsTable({ movements, unit }: { movements: StockMovement[], 
             Accion
           </th>
           <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-            Fecha realizacion
+            Fecha
           </th>
           <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-            Cantidad involucrada
+            Cantidad
           </th>
           <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-            Cantidad realmente usada
+            Usado
           </th>
           <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-            Dolar a la fecha (USD)
+            Dolar a la fecha (USD$)
           </th>
           <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-            Total ($Pesos)
+            Total (ARS$)
+          </th>
+
+          <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
+            Estado
           </th>
 
           <th scope="col" className="relative py-3.5 px-4">
@@ -111,44 +115,74 @@ function TableRow({ movement, unit }: { movement: StockMovement, unit: string })
     DEPOSIT: 'Ingreso',
     WITHDRAW: 'Retiro'
   }
+
+  const dollar_at_date = movement.dollar_at_date ? <>USD{movement.dollar_at_date?.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2})}</> : '-'
+  const total_price = movement.total_price ? <>ARS{movement.total_price?.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 2 })}</> : '-'
+
+  const isPending = movement.type_action === SM_WITHDRAW && movement.real_amount_used === null
+
+  const state = () => {
+    if(isPending) {
+      return (
+        <>
+          <span className="px-3 py-1 text-xs text-center text-red-600 bg-red-200 rounded-full">
+            Pendiente de confirmacion
+          </span>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <span className="px-3 py-1 text-xs text-center text-slate-600 bg-emerald-200 rounded-full">
+            Ok
+          </span>
+        </>
+      )
+    }
+  }
+
   return (
     <tr className={clsx(
       {
         'bg-emerald-200/50' : movement.type_action === SM_DEPOSIT
       },
-      {
-        'bg-red-200': movement.type_action === SM_WITHDRAW && movement.real_amount_used === null
-      },
+      // {
+      //   'bg-': movement.type_action === SM_WITHDRAW && movement.real_amount_used === null
+      // },
       {
         'bg-orange-200/50': movement.type_action === SM_WITHDRAW && movement.real_amount_used
       }
     )}>
-      <td className="px-6 py-4 uppercase text-sm font-medium text-gray-700 whitespace-nowrap">
+      <td className="px-4 py-4 uppercase text-sm font-medium text-gray-700 whitespace-nowrap">
         {actions[movement.type_action]}
       </td>
 
-      <td className="px-6 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        {format(movement.date_action, 'dd/MM/yyyy')}
+      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+        {format(movement.date_action, 'dd/MM/yyyy HH:MM')}
       </td>
 
-      <td className="px-6 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
         {movement.amount_involved} {unit}
       </td>
 
-      <td className="px-6 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
         {movement.real_amount_used ? <> {movement.real_amount_used} {unit}</> : '-' }
       </td>
 
-      <td className="px-6 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        USD{movement.dollar_at_date?.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2})}
+      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+        {dollar_at_date}
       </td>
 
-      <td className="px-6 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        ARS{movement.total_price?.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 2 })}
+      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+        {total_price}
       </td>
 
-      <td className="px-6 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        
+      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+        {state()}
+      </td>
+
+      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+        {isPending && <ConfirmButton />}
       </td>
     </tr>
   )
