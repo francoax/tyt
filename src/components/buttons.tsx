@@ -1,4 +1,4 @@
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 
@@ -7,7 +7,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   primary?: boolean,
 }
 
-export function Button({ children, className, primary, ...rest }: ButtonProps) {
+export function Button({ children, className, primary = false, ...rest }: ButtonProps) {
   return (
     <button
       {...rest}
@@ -15,7 +15,7 @@ export function Button({ children, className, primary, ...rest }: ButtonProps) {
         'px-4 py-2 font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40',
         className,
         {
-          'hover:bg-gray-100' : primary === false
+          'hover:bg-gray-200' : primary === false
         },
         {
           'text-white bg-blue-600 hover:bg-blue-500 focus:ring-blue-300 focus:ring-opacity-40' : primary === true
@@ -36,6 +36,19 @@ export function CreateButton({ href, children } : { href: string, children: Reac
       <Button primary={true} className="flex items-center gap-5">
         {children}
         <PlusIcon className="w-5" />
+      </Button>
+    </Link>
+  )
+}
+
+export function ReturnButton({ href, children} : { href: string, children: React.ReactNode }) {
+  return (
+    <Link href={href}>
+      <Button type='button' className='flex items-center gap-5 m-0'>
+        <ArrowLeftIcon className='w-5 h-5' />
+        <span className=''>
+          {children}
+        </span>
       </Button>
     </Link>
   )
