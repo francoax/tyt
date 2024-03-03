@@ -35,7 +35,7 @@ const links = [
     section: 'Proveedores',
     links: [
       {
-        name: "Lista de proveedores",
+        name: "Proveedores",
         href: "/home/suppliers"
       }
     ]

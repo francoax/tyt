@@ -111,3 +111,10 @@ export interface ProductDataForCreationEdition {
   units: SelectOption[];
   suppliers: SelectOption[];
 }
+
+export interface SupplierForCreationEdition {
+  name: string;
+  email: string;
+  tel: string;
+  address: string;
+}

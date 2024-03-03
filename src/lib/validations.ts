@@ -8,6 +8,14 @@ const toNumber = z
     return Number.parseInt(val);
   });
 
+const toUndefined = z
+  .function()
+  .args(z.string())
+  .returns(z.string().or(z.undefined()))
+  .implement((val) => {
+    return val === "" ? undefined : val;
+  });
+
 export const CategoriesSchema = z
   .object({
     id: z
@@ -16,7 +24,8 @@ export const CategoriesSchema = z
       .transform((value) => toNumber(value)),
     description: z
       .string({ required_error: "Por favor, ingrese una descripcion." })
-      .min(5, { message: "Debe de contener almenos 5 letras." })
+      .min(1, { message: "La descripcion es requerida." })
+      .min(4, { message: "Debe de contener almenos 4 letras." })
       .regex(RegExp("^[a-zA-Zs ]+$"), {
         message: "La descripcion no es valida.",
       })
@@ -39,7 +48,7 @@ export const UnitsSchema = z
       .toLowerCase(),
   })
   .required();
-// ^[a-zA-Z0-9\s ]+$
+
 export const ProductsSchema = z
   .object({
     id: z
@@ -64,3 +73,23 @@ export const ProductsSchema = z
     suppliers: z.number().array(),
   })
   .required();
+
+export const SuppliersSchema = z.object({
+  id: z
+    .string()
+    .min(1)
+    .transform((value) => toNumber(value)),
+  name: z.string().min(1, { message: "El nombre es requerido." }).toLowerCase(),
+  email: z
+    .string()
+    .email({ message: "El mail no es valido." })
+    .transform((val) => toUndefined(val))
+    .optional()
+    .or(z.literal("")),
+  tel: z.string().max(11, { message: "El telefono no es valido." }).optional(),
+  address: z
+    .string()
+    .transform((val) => toUndefined(val))
+    .optional()
+    .or(z.literal("")),
+});

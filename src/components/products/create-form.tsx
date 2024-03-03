@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Input, SelectInput } from "../inputs";
-import { Button } from "../buttons";
+import { Button, SubmitButton } from "../buttons";
 import { useFormState, useFormStatus } from "react-dom";
 import { ProductDataForCreationEdition, ServerActionResponse } from "@/lib/definitions";
 import { createProductAction } from "@/lib/actions/products";
@@ -81,14 +81,5 @@ export default function Form({ data }: { data: ProductDataForCreationEdition }) 
         </div>
       </div>
     </form>
-  )
-}
-
-function SubmitButton() {
-  const { pending } = useFormStatus()
-  return (
-    <Button primary={true} type="submit" disabled={pending} aria-disabled={pending}>
-      Aceptar
-    </Button>
   )
 }

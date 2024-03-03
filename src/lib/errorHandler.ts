@@ -11,7 +11,7 @@ type Errors = {
   [code: string]: ErrorObject;
 };
 
-const errors: Errors = {
+const codeErrors: Errors = {
   P2000: {
     message: "El valor dado es muy grande.",
     status: ERROR_STATUS,
@@ -32,8 +32,19 @@ const errors: Errors = {
 
 export default function HandleError(error: unknown): ServerActionResponse {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    if (errors[error.code]) {
-      return errors[error.code];
+    if (codeErrors[error.code]) {
+      const target = (error.meta?.target as Array<string>).reduce(
+        (acc: { [key: string]: string[] | undefined }, item) => {
+          acc[item] = [""];
+          return acc;
+        },
+        {},
+      );
+
+      return {
+        ...codeErrors[error.code],
+        errors: target,
+      };
     } else {
       return {
         message: "No pudo completarse la operacion.",

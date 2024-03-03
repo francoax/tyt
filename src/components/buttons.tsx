@@ -1,6 +1,10 @@
+'use client';
+
 import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { useFormStatus } from 'react-dom';
+import { Spinner } from './loaders';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -51,5 +55,17 @@ export function ReturnButton({ href, children} : { href: string, children: React
         </span>
       </Button>
     </Link>
+  )
+}
+
+export function SubmitButton() {
+  const { pending } = useFormStatus()
+  return (
+    <>
+      <Button className='inline-flex items-center' primary type='submit' disabled={pending} aria-disabled={pending}>
+        {pending && <Spinner />}
+        Aceptar
+      </Button>
+    </>
   )
 }

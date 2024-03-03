@@ -73,7 +73,7 @@ model Unit {
 model Supplier {
   id       Int       @id @default(autoincrement())
   name     String    @unique
-  email    String?   @unique
+  email    String?
   tel      String?
   address  String?
   products Product[]
