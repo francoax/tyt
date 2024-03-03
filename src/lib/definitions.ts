@@ -1,8 +1,55 @@
-import { StockMovement, Supplier, Product as p } from "@prisma/client";
+import {
+  StockMovement as sm,
+  Supplier as s,
+  Category as c,
+  Product as p,
+  Unit as u,
+} from "@prisma/client";
+
+//#####################################################
+
+//                     Sections order
+//                     1. Base model
+//                     2. Main models
+//                     3. Server action model
+//                     4. Rest of app models
+
+//#####################################################
+
+// Base model
 
 interface BaseModel {
   id: number;
 }
+
+//Main models
+
+export interface Category extends c {
+  total_products?: number;
+}
+
+export interface Product extends p {}
+
+export interface Unit extends u {
+  total_products?: number;
+}
+
+export interface Supplier extends s {}
+
+export interface StockMovement extends sm {}
+
+// Server actions
+
+export type ServerActionResponse = {
+  message?: string;
+  data?: any;
+  status?: string;
+  errors?: {
+    [key: string]: string[] | undefined;
+  };
+};
+
+// Rest of models
 
 export interface StockHistoryMovement {
   productName: string;
@@ -29,44 +76,14 @@ export interface StockDeposit {
   productId: string;
 }
 
-export interface Category extends BaseModel {
-  description: string;
-  total_products?: number;
-}
-
 export interface CategoryForCreationEdition {
   id?: number;
   description: string;
 }
 
-export type ServerActionResponse = {
-  message?: string;
-  data?: any;
-  status?: string;
-  errors?: {
-    [key: string]: string[] | undefined;
-  };
-};
-
-export interface Unit extends BaseModel {
-  description: string;
-  total_products?: number;
-}
-
 export interface UnitForCreationEdition {
   id?: number;
   description: string;
-}
-
-export interface Product extends BaseModel, p {
-  // name: string;
-  // stock: number;
-  // category_id: number;
-  // unit_id: number;
-  category: Category;
-  unit: Unit;
-  stock_movements: StockMovement[];
-  suppliers: Supplier[];
 }
 
 export interface ProductForCreationEdition {

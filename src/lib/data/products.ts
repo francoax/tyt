@@ -17,11 +17,7 @@ export async function getProducts(query?: string) {
     include: {
       category: true,
       unit: true,
-      suppliers: {
-        include: {
-          supplier: true,
-        },
-      },
+      suppliers: true,
     },
     where: {
       name: {
@@ -40,7 +36,7 @@ export async function getProducts(query?: string) {
       name: p.name,
       category: p.category.description,
       unit: p.unit.description,
-      suppliers: p.suppliers.map((s) => s.supplier.name),
+      suppliers: p.suppliers.map((s) => s.name),
     };
   });
 
@@ -61,11 +57,7 @@ export async function getProductById(
         : false,
       category: true,
       unit: true,
-      suppliers: {
-        include: {
-          supplier: true,
-        },
-      },
+      suppliers: true,
     },
   });
 }
@@ -89,14 +81,23 @@ export async function createProduct(
   });
 }
 
-// export async function updateProduct(productToUpdate: ProductForCreationEdition) {
-//   return await prisma.product.update({
-//     where: {
-//       id: productToUpdate.id
-//     },
-//     data: productToUpdate
-//   })
-// }
+export async function updateProduct(
+  productToUpdate: ProductForCreationEdition,
+) {
+  return await prisma.product.update({
+    where: {
+      id: productToUpdate.id,
+    },
+    data: {
+      category_id: productToUpdate.category_id,
+      unit_id: productToUpdate.unit_id,
+      name: productToUpdate.name,
+      suppliers: {
+        set: productToUpdate.suppliers?.map((s) => ({ id: s })),
+      },
+    },
+  });
+}
 
 export async function deleteProduct(id: number) {
   return await prisma.product.delete({

@@ -19,14 +19,14 @@ model User {
 }
 
 model Product {
-  id              Int                    @id @default(autoincrement())
-  name            String                 @unique @db.VarChar(30)
-  stock           Int                    @default(0)
-  category        Category               @relation(fields: [category_id], references: [id])
+  id              Int             @id @default(autoincrement())
+  name            String          @unique @db.VarChar(30)
+  stock           Int             @default(0)
+  category        Category        @relation(fields: [category_id], references: [id])
   category_id     Int
-  unit            Unit                   @relation(fields: [unit_id], references: [id])
+  unit            Unit            @relation(fields: [unit_id], references: [id])
   unit_id         Int
-  suppliers       ProductsPerSuppliers[]
+  suppliers       Supplier[]
   stock_movements StockMovement[]
 
   @@map("products")
@@ -41,10 +41,12 @@ model StockMovement {
   real_amount_used Int?
   dollar_at_date   Int?
   total_price      Int?
+  stock_before     Int?
+  stock_after      Int?
   product          Product     @relation(fields: [product_id], references: [id])
 
   @@id([id, product_id])
-  @@map("stockmovements")
+  @@map("stock_movements")
 }
 
 enum ActionTypes {
@@ -69,22 +71,12 @@ model Unit {
 }
 
 model Supplier {
-  id       Int                    @id @default(autoincrement())
-  name     String                 @unique
-  email    String?                @unique
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  email    String?   @unique
   tel      String?
   address  String?
-  products ProductsPerSuppliers[]
+  products Product[]
 
   @@map("suppliers")
-}
-
-model ProductsPerSuppliers {
-  product     Product  @relation(fields: [product_id], references: [id])
-  product_id  Int
-  supplier    Supplier @relation(fields: [supplier_id], references: [id])
-  supplier_id Int
-
-  @@id([product_id, supplier_id])
-  @@map("products_suppliers")
 }
