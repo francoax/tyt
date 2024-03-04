@@ -1,5 +1,6 @@
 "use client"
 
+import { CATEGORIES_ROUTE, PRODUCTS_ROUTE, SUPPLIERS_ROUTE, UNITS_ROUTE } from "@/lib/constants";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,15 +20,15 @@ const links = [
     links: [
       {
         name: "Productos",
-        href: "/home/products"
+        href: PRODUCTS_ROUTE
       },
       {
         name: "Categorias",
-        href: "/home/categories"
+        href: CATEGORIES_ROUTE
       },
       {
         name: "Tipo de unidades",
-        href: "/home/units"
+        href: UNITS_ROUTE
       }
     ]
   },
@@ -36,7 +37,7 @@ const links = [
     links: [
       {
         name: "Proveedores",
-        href: "/home/suppliers"
+        href: SUPPLIERS_ROUTE
       }
     ]
   }

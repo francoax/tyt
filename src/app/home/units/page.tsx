@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 import UnitsTable from "@/components/units/table";
 import { getAmountOfUnits } from "@/lib/data/units";
+import { UNITS_ROUTE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: 'Unidades'
@@ -34,7 +35,7 @@ export default async function UnitsPage({
           </p>
         </div>
         <div className="flex items-center mt-4 gap-x-3">
-          <CreateButton href={'/home/units/create'}>
+          <CreateButton href={`${UNITS_ROUTE}/create`}>
             Nuevo tipo de unidad
           </CreateButton>
         </div>

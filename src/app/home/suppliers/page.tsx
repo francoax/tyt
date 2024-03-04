@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 import SuppliersTable from "@/components/suppliers/table";
 import { getAmountOfSuppliers } from "@/lib/data/suppliers";
+import { SUPPLIERS_ROUTE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: 'Proveedores'
@@ -34,7 +35,7 @@ export default async function CategoriesPage({
           </p>
         </div>
         <div className="flex items-center mt-4 gap-x-3">
-          <CreateButton href={'/home/suppliers/create'}>
+          <CreateButton href={`${SUPPLIERS_ROUTE}/create`}>
             Nuevo proveedor
           </CreateButton>
         </div>

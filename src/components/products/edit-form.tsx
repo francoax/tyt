@@ -6,9 +6,10 @@ import { Supplier } from "@prisma/client";
 import { updateProductAction } from "@/lib/actions/products";
 import Form from "../form";
 import useFormHandler from "@/lib/hooks";
+import { PRODUCTS_ROUTE } from "@/lib/constants";
 
 export default function EditProductForm({ product, data } : { product: Product, data: ProductDataForCreationEdition}) {
-  const [state, formAction] = useFormHandler('Editar producto', '/home/products',  updateProductAction)
+  const [state, formAction] = useFormHandler('Editar producto', PRODUCTS_ROUTE,  updateProductAction)
 
   const category : SelectOption = { label: product.category?.description!, value: product.category_id.toString()}
   const unit : SelectOption = { label: product.unit?.description!, value: product.category_id.toString()}
@@ -19,7 +20,7 @@ export default function EditProductForm({ product, data } : { product: Product, 
   }
 
   return (
-    <Form action={formAction} returnTo="/home/products">
+    <Form action={formAction} returnTo={PRODUCTS_ROUTE}>
       <Input className="hidden" type="hidden" name="id" htmlFor="id" defaultValue={product.id} />
       <Input
         state={state}

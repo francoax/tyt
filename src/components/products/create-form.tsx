@@ -5,12 +5,13 @@ import { ProductDataForCreationEdition } from "@/lib/definitions";
 import Form from "../form";
 import useFormHandler from "@/lib/hooks";
 import { createProductAction } from "@/lib/actions/products";
+import { PRODUCTS_ROUTE } from "@/lib/constants";
 
 export default function CreateProductForm({ data }: { data: ProductDataForCreationEdition }) {
-  const [state, formAction] = useFormHandler('Crear producto', '/home/products',  createProductAction)
+  const [state, formAction] = useFormHandler('Crear producto', PRODUCTS_ROUTE,  createProductAction)
 
   return (
-    <Form action={formAction} returnTo="/home/products">
+    <Form action={formAction} returnTo={PRODUCTS_ROUTE}>
       <Input
         requiredInput
         state={state}

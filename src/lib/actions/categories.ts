@@ -7,7 +7,7 @@ import {
   ServerActionResponse,
 } from "../definitions";
 import HandleError from "../errorHandler";
-import { ERROR_STATUS, SUCCESS_STATUS } from "../constants";
+import { CATEGORIES_ROUTE, ERROR_STATUS, SUCCESS_STATUS } from "../constants";
 import {
   createCategory,
   deleteCategory,
@@ -38,7 +38,7 @@ export async function createCategoryAction(
     return HandleError(error);
   }
 
-  revalidatePath("/home/categories");
+  revalidatePath(CATEGORIES_ROUTE);
   return {
     message: "Categoria creada ",
     status: SUCCESS_STATUS,
@@ -71,7 +71,7 @@ export async function updateCategoryAction(
     return HandleError(error);
   }
 
-  revalidatePath("/home/categories");
+  revalidatePath(CATEGORIES_ROUTE);
   return {
     message: "Categoria actualizada",
     status: SUCCESS_STATUS,
@@ -91,7 +91,7 @@ export async function deleteCategoryAction(
       };
     }
 
-    revalidatePath("/home/categories");
+    revalidatePath(CATEGORIES_ROUTE);
     return {
       message: "Categoria eliminada.",
       status: SUCCESS_STATUS,

@@ -15,6 +15,9 @@ export async function getSuppliers(
     include: {
       products: includeProducts,
     },
+    orderBy: {
+      id: "asc",
+    },
   });
 }
 
@@ -41,6 +44,17 @@ export async function createSupplier(
 ) {
   return await prisma.supplier.create({
     data: supplierToCreate,
+  });
+}
+
+export async function updateSupplier(
+  supplierToUpdate: SupplierForCreationEdition,
+) {
+  return await prisma.supplier.update({
+    where: {
+      id: supplierToUpdate.id,
+    },
+    data: supplierToUpdate,
   });
 }
 

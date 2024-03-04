@@ -5,6 +5,7 @@ import { Spinner, TableLoading } from "@/components/loaders";
 import { getAmountOfCategories } from "@/lib/data/categories";
 import { Metadata } from "next";
 import { Suspense } from "react";
+import { CATEGORIES_ROUTE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: 'Categorias'
@@ -34,7 +35,7 @@ export default async function CategoriesPage({
           </p>
         </div>
         <div className="flex items-center mt-4 gap-x-3">
-          <CreateButton href={'/home/categories/create'}>
+          <CreateButton href={`${CATEGORIES_ROUTE}/create`}>
             Nueva categoria
           </CreateButton>
         </div>

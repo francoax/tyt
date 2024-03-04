@@ -1,15 +1,16 @@
 'use client';
 
+import { SUPPLIERS_ROUTE } from "@/lib/constants";
 import Form from "../form";
 import { Input } from "../inputs";
 import { createSupplierAction } from "@/lib/actions/suppliers";
 import useFormHandler from "@/lib/hooks";
 
 export default function SupplierCreateForm() {
-  const [state, formAction] = useFormHandler('Crear proveedor', '/home/suppliers',  createSupplierAction)
+  const [state, formAction] = useFormHandler('Crear proveedor', SUPPLIERS_ROUTE,  createSupplierAction)
 
   return (
-    <Form action={formAction} returnTo="/home/suppliers">
+    <Form action={formAction} returnTo={SUPPLIERS_ROUTE}>
       <Input
         placeholder="Nombre"
         state={state}

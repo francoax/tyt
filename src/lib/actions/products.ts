@@ -7,6 +7,7 @@ import {
 } from "../definitions";
 import {
   ERROR_STATUS,
+  PRODUCTS_ROUTE,
   SM_WITHDRAW,
   SUCCESS_STATUS,
   WARNING_STATUS,
@@ -46,7 +47,7 @@ export async function deleteProductAction(id: number) {
       };
     }
 
-    revalidatePath("/home/products");
+    revalidatePath(PRODUCTS_ROUTE);
     return {
       message: "Producto eliminado.",
       status: SUCCESS_STATUS,
@@ -93,7 +94,7 @@ export async function createProductAction(
   try {
     await createProduct(productToCreate);
 
-    revalidatePath("/home/products");
+    revalidatePath(PRODUCTS_ROUTE);
     return {
       message: "Producto creado",
       status: SUCCESS_STATUS,

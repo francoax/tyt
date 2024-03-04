@@ -2,6 +2,7 @@ import { getSuppliers } from "@/lib/data/suppliers"
 import { Supplier } from "@/lib/definitions"
 import { DeleteButton, UpdateButton } from "../buttons"
 import { deleteSupplierAction } from "@/lib/actions/suppliers"
+import { SUPPLIERS_ROUTE } from "@/lib/constants"
 
 export default async function SuppliersTable({
   query
@@ -105,7 +106,7 @@ async function TableRow({
 
       <td className="px-4 py-4 text-sm whitespace-nowrap">
         <div className="flex items-center gap-x-6">
-          <UpdateButton href={`/home/suppliers/${supplier.id}/edit`} />
+          <UpdateButton href={`${SUPPLIERS_ROUTE}/${supplier.id}/edit`} />
           <DeleteButton
             id={supplier.id}
             deleteAction={deleteSupplierAction}

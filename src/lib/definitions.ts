@@ -121,7 +121,7 @@ export interface ProductDataForCreationEdition {
   suppliers: SelectOption[];
 }
 
-export interface SupplierForCreationEdition {
+export interface SupplierForCreationEdition extends BaseModel {
   name: string;
   email: string;
   tel: string;

@@ -3,7 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { UnitsSchema } from "../validations";
 import { ServerActionResponse, UnitForCreationEdition } from "../definitions";
-import { ERROR_STATUS, SUCCESS_STATUS, WARNING_STATUS } from "../constants";
+import {
+  ERROR_STATUS,
+  SUCCESS_STATUS,
+  UNITS_ROUTE,
+  WARNING_STATUS,
+} from "../constants";
 import HandleError from "../errorHandler";
 import { createUnit, deleteUnit, updateUnit } from "../data/units";
 
@@ -19,7 +24,7 @@ export async function deleteUnitAction(
         status: WARNING_STATUS,
       };
     }
-    revalidatePath("/home/units");
+    revalidatePath(UNITS_ROUTE);
     return {
       message: "Tipo de unidad eliminada.",
       status: SUCCESS_STATUS,
@@ -53,7 +58,7 @@ export async function createUnitAction(
     return HandleError(error);
   }
 
-  revalidatePath("/home/units");
+  revalidatePath(UNITS_ROUTE);
   return {
     message: "Tipo de unidad creado.",
     status: SUCCESS_STATUS,
@@ -86,7 +91,7 @@ export async function updateUnitAction(
     return HandleError(error);
   }
 
-  revalidatePath("/home/units");
+  revalidatePath(UNITS_ROUTE);
   return {
     message: "Tipo de unidad actualizada.",
     status: SUCCESS_STATUS,

@@ -1,11 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { ERROR_STATUS, SUCCESS_STATUS } from "../constants";
+import { ERROR_STATUS, SUCCESS_STATUS, SUPPLIERS_ROUTE } from "../constants";
 import {
   createSupplier,
   deleteSupplier,
   getSupplierById,
+  updateSupplier,
 } from "../data/suppliers";
 import {
   ServerActionResponse,
@@ -39,9 +40,42 @@ export async function createSupplierAction(
     return HandleError(error);
   }
 
-  revalidatePath("/home/suppliers");
+  revalidatePath(SUPPLIERS_ROUTE);
   return {
     message: "Proveedor creado.",
+    status: SUCCESS_STATUS,
+  };
+}
+
+const UpdateSupplier = SuppliersSchema;
+export async function updateSupplierAction(
+  prevState: ServerActionResponse,
+  supplierUpdated: FormData,
+): Promise<ServerActionResponse> {
+  const validate = UpdateSupplier.safeParse(
+    Object.fromEntries(supplierUpdated.entries()),
+  );
+
+  if (!validate.success) {
+    return {
+      message: "Por favor, revise el formulario",
+      status: ERROR_STATUS,
+      errors: validate.error.flatten().fieldErrors,
+    };
+  }
+
+  const supplierToUpdate = validate.data as SupplierForCreationEdition;
+
+  try {
+    await updateSupplier(supplierToUpdate);
+
+    revalidatePath(SUPPLIERS_ROUTE);
+  } catch (error) {
+    return HandleError(error);
+  }
+
+  return {
+    message: "Proveedor actualizado.",
     status: SUCCESS_STATUS,
   };
 }
@@ -57,7 +91,7 @@ export async function deleteSupplierAction(
 
       await deleteSupplier(id);
 
-      revalidatePath("/home/suppliers");
+      revalidatePath(SUPPLIERS_ROUTE);
 
       return {
         message: "Proveedor eliminado",

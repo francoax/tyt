@@ -5,12 +5,13 @@ import { Unit } from "@prisma/client";
 import { updateUnitAction } from "@/lib/actions/units";
 import Form from "../form";
 import useFormHandler from "@/lib/hooks";
+import { UNITS_ROUTE } from "@/lib/constants";
 
 export default function EditUnitForm({ unit }: { unit: Unit }) {
-const [state, formAction] = useFormHandler('Crear categoria', '/home/categories',  updateUnitAction)
+const [state, formAction] = useFormHandler('Editar tipo de unidad', UNITS_ROUTE,  updateUnitAction)
 
   return (
-    <Form action={formAction} returnTo="/home/units">
+    <Form action={formAction} returnTo={UNITS_ROUTE}>
       <Input type="hidden" name="id" htmlFor="id" defaultValue={unit.id} />
       <Input
         defaultValue={unit.description}

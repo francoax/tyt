@@ -2,6 +2,7 @@ import { getCategories } from "@/lib/data/categories"
 import { Category } from "@/lib/definitions"
 import { DeleteButton, UpdateButton } from "../buttons"
 import { deleteCategoryAction } from "@/lib/actions/categories"
+import { CATEGORIES_ROUTE } from "@/lib/constants"
 
 export default async function CategoriesTable({
   query
@@ -89,7 +90,7 @@ async function TableRow({
 
       <td className="px-4 py-4 text-sm whitespace-nowrap">
         <div className="flex items-center gap-x-6">
-          <UpdateButton href={`/home/categories/${category.id}/edit`} />
+          <UpdateButton href={`${CATEGORIES_ROUTE}/${category.id}/edit`} />
           <DeleteButton
             id={category.id}
             deleteAction={deleteCategoryAction}

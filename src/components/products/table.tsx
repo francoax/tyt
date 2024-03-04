@@ -3,6 +3,7 @@ import { getProducts } from "@/lib/data/products"
 import { DeleteButton, UpdateButton } from "../buttons"
 import { deleteProductAction } from "@/lib/actions/products"
 import { DetailProduct } from "./buttons"
+import { PRODUCTS_ROUTE } from "@/lib/constants"
 
 export default async function ProductsTable({
   query
@@ -120,7 +121,7 @@ async function TableRow({
 
       <td className="px-8 py-4 text-sm whitespace-nowrap">
         <div className="flex items-center gap-x-6">
-          <UpdateButton href={`/home/products/${product.id}/edit`} />
+          <UpdateButton href={`${PRODUCTS_ROUTE}/${product.id}/edit`} />
           <DeleteButton
             id={product.id}
             title="Eliminar producto"

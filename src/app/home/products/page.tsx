@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 import ProductsTable from "@/components/products/table";
 import { getAmountOfProducts } from "@/lib/data/products";
+import { PRODUCTS_ROUTE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: 'Productos'
@@ -34,7 +35,7 @@ export default function Page({
           </p>
         </div>
         <div className="flex items-center mt-4 gap-x-3">
-          <CreateButton href={'/home/products/create'}>
+          <CreateButton href={`${PRODUCTS_ROUTE}/create`}>
             Nueva producto
           </CreateButton>
         </div>

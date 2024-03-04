@@ -2,6 +2,7 @@ import { Unit } from "@/lib/definitions"
 import { getUnits } from "@/lib/data/units"
 import { DeleteButton, UpdateButton } from "../buttons"
 import { deleteUnitAction } from "@/lib/actions/units"
+import { UNITS_ROUTE } from "@/lib/constants"
 
 export default async function UnitsTable({
   query
@@ -89,7 +90,7 @@ async function TableRow({
 
       <td className="px-4 py-4 text-sm whitespace-nowrap">
         <div className="flex items-center gap-x-6">
-          <UpdateButton href={`/home/units/${unit.id}/edit`} />
+          <UpdateButton href={`${UNITS_ROUTE}/${unit.id}/edit`} />
           <DeleteButton
             id={unit.id}
             title="Eliminar tipo de unidad"
