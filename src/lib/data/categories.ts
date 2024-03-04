@@ -1,9 +1,12 @@
 "use server";
 
-import { CategoryForCreationEdition } from "../definitions";
+import { Category, CategoryForCreationEdition } from "../definitions";
 import prisma from "../prisma";
 
-export async function getCategories(query?: string) {
+export async function getCategories(
+  query?: string,
+  includeProducts: boolean = false,
+) {
   const data = await prisma.category.findMany({
     include: {
       _count: {
@@ -21,10 +24,11 @@ export async function getCategories(query?: string) {
     },
   });
 
-  const categories = data.map((c) => ({
+  const categories: Category[] = data.map((c) => ({
     id: c.id,
     description: c.description,
     total_products: c._count.products,
+    products: [],
   }));
 
   return categories;
