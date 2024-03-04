@@ -1,7 +1,4 @@
-"use client";
-
 import { CSSTransition } from 'react-transition-group';
-import { useSearchParams } from "next/navigation";
 
 export default function Modal(
   {

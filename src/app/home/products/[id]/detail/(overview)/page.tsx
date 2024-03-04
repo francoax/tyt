@@ -1,5 +1,4 @@
-import { Button, ReturnButton } from "@/components/buttons"
-import { UpdateProduct } from "@/components/products/buttons"
+import { Button, ReturnButton, UpdateButton } from "@/components/buttons"
 import ProductDetail, { StockMovements } from "@/components/products/detail"
 import { getProductById, hasPendingWithdraws } from "@/lib/data/products"
 import { notFound } from "next/navigation"
@@ -33,7 +32,7 @@ export default async function Page({ params }: { params: { id: string }}) {
             <h2 className="text-lg font-medium  text-gray-800">
               Detalle del producto: <span className="text-blue-400">{product?.name.toUpperCase()}</span>
               <div className="inline-block ml-5">
-                <UpdateProduct id={product?.id!} />
+                <UpdateButton href={`/home/products/${product.id}/edit`} />
               </div>
             </h2>
             <p className="mt-1 text-sm text-gray-500">

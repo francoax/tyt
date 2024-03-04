@@ -7,7 +7,24 @@ export async function getSuppliers(
 ) {
   return await prisma.supplier.findMany({
     where: {
-      name: query,
+      name: {
+        contains: query,
+        mode: "insensitive",
+      },
+    },
+    include: {
+      products: includeProducts,
+    },
+  });
+}
+
+export async function getSupplierById(
+  id: number,
+  includeProducts: boolean = false,
+) {
+  return await prisma.supplier.findFirstOrThrow({
+    where: {
+      id,
     },
     include: {
       products: includeProducts,
@@ -24,5 +41,13 @@ export async function createSupplier(
 ) {
   return await prisma.supplier.create({
     data: supplierToCreate,
+  });
+}
+
+export async function deleteSupplier(id: number) {
+  return await prisma.supplier.delete({
+    where: {
+      id,
+    },
   });
 }

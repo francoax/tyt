@@ -1,10 +1,14 @@
 'use client';
 
-import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useFormStatus } from 'react-dom';
 import { Spinner } from './loaders';
+import { useState } from 'react';
+import Modal from './modal';
+import Alert from './alerts';
+import toast from 'react-hot-toast';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -68,4 +72,54 @@ export function SubmitButton() {
       </Button>
     </>
   )
+}
+
+export function UpdateButton({ href }: { href: string }) {
+  return (
+    <Link
+      href={href}
+    >
+      <PencilIcon className="w-5 text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none" />
+    </Link>
+  );
+}
+
+export function DeleteButton({ title, description, id, deleteAction }: { title:string, description: string, id: number, deleteAction: Function }) {
+  const [showModal, setShowModal] = useState(false)
+  const deleteProductWithId = deleteAction.bind(null, id);
+
+  async function handleDelete() {
+    setShowModal(false)
+
+    const deleting = toast.loading('Procesando eliminacion...')
+    const res = await deleteProductWithId()
+    toast.dismiss(deleting)
+
+    toast((t) => (
+      <Alert title={title} description={res.message} reason={res.status} />
+    ))
+  }
+  return (
+    <>
+      <button onClick={() => setShowModal(true)}>
+        <TrashIcon className="w-5 text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none" />
+      </button>
+
+      <Modal show={showModal} title={title}>
+        <div>
+          {description}
+        </div>
+        <form action={handleDelete}>
+          <div className="flex justify-center items-center gap-5 p-4">
+            <Button type="button" onClick={() => setShowModal(false)}>
+              Cancelar
+            </Button>
+            <Button primary type="submit">
+              Aceptar
+            </Button>
+          </div>
+        </form>
+      </Modal>
+    </>
+  );
 }

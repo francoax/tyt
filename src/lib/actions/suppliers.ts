@@ -2,14 +2,17 @@
 
 import { revalidatePath } from "next/cache";
 import { ERROR_STATUS, SUCCESS_STATUS } from "../constants";
-import { createSupplier } from "../data/suppliers";
+import {
+  createSupplier,
+  deleteSupplier,
+  getSupplierById,
+} from "../data/suppliers";
 import {
   ServerActionResponse,
   SupplierForCreationEdition,
 } from "../definitions";
 import HandleError from "../errorHandler";
 import { SuppliersSchema } from "../validations";
-import { resolve } from "path";
 
 const CreateSupplier = SuppliersSchema.omit({ id: true });
 export async function createSupplierAction(
@@ -32,14 +35,34 @@ export async function createSupplierAction(
 
   try {
     await createSupplier(supplierToCreate);
-
-    revalidatePath("/home/suppliers");
   } catch (error) {
     return HandleError(error);
   }
 
+  revalidatePath("/home/suppliers");
   return {
     message: "Proveedor creado.",
     status: SUCCESS_STATUS,
   };
+}
+
+export async function deleteSupplierAction(
+  id: number,
+): Promise<ServerActionResponse> {
+  return getSupplierById(id)
+    .then(async (supp) => {
+      if (!supp) {
+        return {};
+      }
+
+      await deleteSupplier(id);
+
+      revalidatePath("/home/suppliers");
+
+      return {
+        message: "Proveedor eliminado",
+        status: SUCCESS_STATUS,
+      };
+    })
+    .catch((error) => HandleError(error));
 }

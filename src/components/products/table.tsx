@@ -1,6 +1,8 @@
 import { ProductTableFormatted } from "@/lib/definitions"
 import { getProducts } from "@/lib/data/products"
-import { DeleteProduct, DetailProduct, UpdateProduct } from "./buttons"
+import { DeleteButton, UpdateButton } from "../buttons"
+import { deleteProductAction } from "@/lib/actions/products"
+import { DetailProduct } from "./buttons"
 
 export default async function ProductsTable({
   query
@@ -118,8 +120,13 @@ async function TableRow({
 
       <td className="px-8 py-4 text-sm whitespace-nowrap">
         <div className="flex items-center gap-x-6">
-          <UpdateProduct id={product.id} />
-          <DeleteProduct id={product.id} />
+          <UpdateButton href={`/home/products/${product.id}/edit`} />
+          <DeleteButton
+            id={product.id}
+            title="Eliminar producto"
+            description={`Estas seguro de querer eliminar el producto ${product.name.toLocaleUpperCase()}?`}
+            deleteAction={deleteProductAction}
+          />
           <DetailProduct id={product.id} />
         </div>
       </td>

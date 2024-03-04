@@ -1,6 +1,7 @@
 import { getCategories } from "@/lib/data/categories"
 import { Category } from "@/lib/definitions"
-import { DeleteCategory, UpdateCategory } from "./buttons"
+import { DeleteButton, UpdateButton } from "../buttons"
+import { deleteCategoryAction } from "@/lib/actions/categories"
 
 export default async function CategoriesTable({
   query
@@ -88,8 +89,13 @@ async function TableRow({
 
       <td className="px-4 py-4 text-sm whitespace-nowrap">
         <div className="flex items-center gap-x-6">
-          <UpdateCategory id={category.id} />
-          <DeleteCategory id={category.id} />
+          <UpdateButton href={`/home/categories/${category.id}/edit`} />
+          <DeleteButton
+            id={category.id}
+            deleteAction={deleteCategoryAction}
+            title="Eliminar categoria"
+            description={`Estas seguro que queres eliminar la categoria ${category.description.toLocaleUpperCase()}?`}
+          />
         </div>
       </td>
     </tr>

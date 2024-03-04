@@ -35,13 +35,13 @@ export default async function CategoriesPage({
         </div>
         <div className="flex items-center mt-4 gap-x-3">
           <CreateButton href={'/home/suppliers/create'}>
-            Nueva proveedor
+            Nuevo proveedor
           </CreateButton>
         </div>
       </div>
       <Search placeholder="Buscar por nombre" />
       <Suspense key={query} fallback={<TableLoading />}>
-        <SuppliersTable />
+        <SuppliersTable query={query} />
       </Suspense>
     </section>
   )
