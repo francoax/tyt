@@ -13,7 +13,10 @@ import { getSuppliers } from "./suppliers";
 import { getUnits } from "./units";
 import { unstable_noStore as noStore } from "next/cache";
 
-export async function getProducts(query?: string) {
+export async function getProducts(query?: {
+  name?: string;
+  description?: string;
+}) {
   const data = await prisma.product.findMany({
     include: {
       category: true,
@@ -21,10 +24,21 @@ export async function getProducts(query?: string) {
       suppliers: true,
     },
     where: {
-      name: {
-        contains: query,
-        mode: "insensitive",
-      },
+      AND: [
+        {
+          name: {
+            contains: query?.name,
+            mode: "insensitive",
+          },
+        },
+        {
+          category: {
+            description: {
+              contains: query?.description,
+            },
+          },
+        },
+      ],
     },
     orderBy: {
       id: "asc",

@@ -62,7 +62,7 @@ type Props = {
   name?: string
   state?: ServerActionResponse
   errorFor?: string,
-  options: SelectOption[],
+  options?: SelectOption[],
   placeholder: string,
   requiredInput?: boolean,
   defaultValue?: SelectOption | SelectOption[],

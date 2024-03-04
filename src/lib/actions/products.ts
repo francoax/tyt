@@ -116,7 +116,7 @@ export async function updateProductAction(
   try {
     await updateProduct(productToUpdate);
 
-    revalidatePath("/home/products");
+    revalidatePath(PRODUCTS_ROUTE);
   } catch (error) {
     return HandleError(error);
   }

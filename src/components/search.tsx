@@ -1,9 +1,8 @@
 "use client";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { set } from "date-fns";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 export default function Search({

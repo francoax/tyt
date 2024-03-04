@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import ProductsTable from "@/components/products/table";
 import { getAmountOfProducts } from "@/lib/data/products";
 import { PRODUCTS_ROUTE } from "@/lib/constants";
+import { SearchDropdown } from "@/components/products/search-dropdown";
 
 export const metadata: Metadata = {
   title: 'Productos'
@@ -15,10 +16,12 @@ export default function Page({
   searchParams
 }: {
   searchParams?: {
-    query?: string
+    query?: string,
+    category?: string
   }
 }) {
   const query = searchParams?.query || ''
+  const categoryQuery = searchParams?.category || ''
 
   return (
     <section className="container">
@@ -40,9 +43,12 @@ export default function Page({
           </CreateButton>
         </div>
       </div>
-      <Search placeholder="Buscar por producto" />
-      <Suspense key={query} fallback={<TableLoading />}>
-        <ProductsTable query={query} />
+      <div className="flex flex-wrap gap-5 items-center">
+        <Search placeholder="Buscar por nombre" />
+        <SearchDropdown placeholder="Buscar por categoria" />
+      </div>
+      <Suspense key={query + categoryQuery} fallback={<TableLoading />}>
+        <ProductsTable query={query} categoryQuery={categoryQuery} />
       </Suspense>
     </section>
   )

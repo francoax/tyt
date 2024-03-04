@@ -6,12 +6,13 @@ import { DetailProduct } from "./buttons"
 import { PRODUCTS_ROUTE } from "@/lib/constants"
 
 export default async function ProductsTable({
-  query
+  query,
+  categoryQuery
 }: {
-  query?: string
+  query?: string,
+  categoryQuery?: string
 }) {
-
-  const products = await getProducts(query)
+  const products = await getProducts({ name: query, description: categoryQuery})
   return (
     <>
       <div className="flex flex-col mt-6">
