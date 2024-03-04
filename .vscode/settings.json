@@ -1,7 +1,13 @@
 {
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, tailwind.config.ts, tsconfig.json, postcss.config.js, .prettierrc, .prettierignore, .eslintrc.json, next.config.js, next-env.d.ts",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, tailwind.config.ts, tsconfig.json, postcss.config.js, .prettierrc, .prettierignore, .eslintrc.json, next.config.js, next-env.d.ts, .nvmrc, .gitignore",
     "compose.yaml": ".dockerignore"
-  }
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "eslint.format.enable": true,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2
 }
