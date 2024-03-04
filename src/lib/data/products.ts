@@ -9,6 +9,7 @@ import {
 import HandleError from "../errorHandler";
 import prisma from "../prisma";
 import { getCategories } from "./categories";
+import { getSuppliers } from "./suppliers";
 import { getUnits } from "./units";
 import { unstable_noStore as noStore } from "next/cache";
 
@@ -74,9 +75,14 @@ export async function createProduct(
       name: productToCreate.name,
       category_id: productToCreate.category_id,
       unit_id: productToCreate.unit_id,
-      // suppliers: {
-      //   create: productToCreate.suppliers.map(s => ({ supplier_id: s }))
-      // }
+      suppliers: {
+        connectOrCreate: productToCreate.suppliers?.map((s) => ({
+          where: {
+            id: s.id!,
+          },
+          create: { name: s.name! },
+        })),
+      },
     },
   });
 }
@@ -93,7 +99,7 @@ export async function updateProduct(
       unit_id: productToUpdate.unit_id,
       name: productToUpdate.name,
       suppliers: {
-        set: productToUpdate.suppliers?.map((s) => ({ id: s })),
+        set: productToUpdate.suppliers?.map((s) => ({ id: s.id })),
       },
     },
   });
@@ -108,14 +114,14 @@ export async function deleteProduct(id: number) {
 }
 
 export async function initCreationEdition() {
-  //const suppliers = getSuppliers()
   noStore();
   let dataForCreation: ProductDataForCreationEdition;
 
   try {
-    const [categories, units] = await Promise.all([
+    const [categories, units, suppliers] = await Promise.all([
       getCategories(),
       getUnits(),
+      getSuppliers(),
     ]);
 
     dataForCreation = {
@@ -127,7 +133,10 @@ export async function initCreationEdition() {
         value: u.id.toString(),
         label: u.description,
       })),
-      suppliers: [],
+      suppliers: suppliers.map((s) => ({
+        value: s.id.toString(),
+        label: s.name,
+      })),
     };
 
     return dataForCreation;

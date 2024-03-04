@@ -12,11 +12,11 @@ export default function EditProductForm({ product, data } : { product: Product, 
   const [state, formAction] = useFormHandler('Editar producto', PRODUCTS_ROUTE,  updateProductAction)
 
   const category : SelectOption = { label: product.category?.description!, value: product.category_id.toString()}
-  const unit : SelectOption = { label: product.unit?.description!, value: product.category_id.toString()}
+  const unit : SelectOption = { label: product.unit?.description!, value: product.unit?.id.toString()!}
 
-  let suppliers;
-  if (!product.suppliers) {
-    suppliers = (product.suppliers! as Array<Supplier>).map((s) : SelectOption => ({ label: s.name, value: s.id.toString()}))
+  let suppliers : SelectOption[] = [];
+  if(product.suppliers) {
+    suppliers = product.suppliers.map(s => ({ label: s.name, value: s.id.toString() }))
   }
 
   return (
@@ -58,18 +58,7 @@ export default function EditProductForm({ product, data } : { product: Product, 
         state={state}
         isMulti
         defaultValue={suppliers}
-        options={[
-          { value: '2', label: 'test'},
-          { value: '3', label: 'test2'},
-          { value: '4', label: 'test3'},
-          { value: '5', label: 'test4'},
-          { value: '6', label: 'test4'},
-          { value: '7', label: 'test4'},
-          { value: '8', label: 'test4'},
-          { value: '9', label: 'test4'},
-          { value: '10', label: 'test4'},
-          { value: '11', label: 'test4'},
-        ]}
+        options={data.suppliers}
         placeholder="Seleccionar proveedores"
         label="Proveedores"
         name="suppliers"

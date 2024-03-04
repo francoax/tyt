@@ -21,7 +21,12 @@ const codeErrors: Errors = {
     status: ERROR_STATUS,
   },
   P2002: {
-    message: "Ya existe un registro con dichos dato/s.",
+    message: "Ya existe un registro con dicho/s dato/s.",
+    status: ERROR_STATUS,
+  },
+  P2003: {
+    message:
+      "Existen registros relacionados. Eliminelos primero y vuelva a intentar.",
     status: ERROR_STATUS,
   },
   P2006: {
@@ -40,13 +45,15 @@ export default function HandleError(error: unknown): ServerActionResponse {
       let targetsErrors;
 
       if (error.meta) {
-        targetsErrors = (error.meta?.target as Array<string>).reduce(
-          (acc: { [key: string]: string[] | undefined }, item) => {
-            acc[item] = [""];
-            return acc;
-          },
-          {},
-        );
+        if (error.meta.target) {
+          targetsErrors = (error.meta.target as Array<string>).reduce(
+            (acc: { [key: string]: string[] | undefined }, item) => {
+              acc[item] = [""];
+              return acc;
+            },
+            {},
+          );
+        }
       }
 
       return {

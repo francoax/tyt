@@ -14,7 +14,13 @@ import {
 } from "../constants";
 import { ProductsSchema } from "../validations";
 import HandleError from "../errorHandler";
-import { createProduct, deleteProduct, getProductById } from "../data/products";
+import {
+  createProduct,
+  deleteProduct,
+  getProductById,
+  updateProduct,
+} from "../data/products";
+import { validateProductData } from "../utils";
 
 export async function deleteProductAction(id: number) {
   const productToDelete = await getProductById(id, true);
@@ -65,31 +71,17 @@ export async function createProductAction(
   prevState: ServerActionResponse,
   newProduct: FormData,
 ): Promise<ServerActionResponse> {
-  let suppliersFormatted: number[] = [];
-  const suppliersFormData = newProduct.getAll("suppliers");
+  const validated = validateProductData(CreateProduct, newProduct);
 
-  if (suppliersFormData.at(0) !== "") {
-    suppliersFormatted = suppliersFormData.map((s) =>
-      Number.parseInt(s.toString()),
-    );
-  }
-
-  const validate = CreateProduct.safeParse({
-    name: newProduct.get("name"),
-    category_id: newProduct.get("category_id"),
-    unit_id: newProduct.get("unit_id"),
-    suppliers: suppliersFormatted,
-  });
-
-  if (!validate.success) {
+  if (!validated.success) {
     return {
       message: "Por favor, revise el formulario",
-      errors: validate.error.flatten().fieldErrors,
+      errors: validated.error.flatten().fieldErrors,
       status: ERROR_STATUS,
     };
   }
 
-  const productToCreate = validate.data as ProductForCreationEdition;
+  const productToCreate = validated.data as ProductForCreationEdition;
 
   try {
     await createProduct(productToCreate);
@@ -109,8 +101,28 @@ export async function updateProductAction(
   prevState: ServerActionResponse,
   productUpdated: FormData,
 ): Promise<ServerActionResponse> {
+  const validated = validateProductData(UpdateProduct, productUpdated, true);
+
+  if (!validated.success) {
+    return {
+      message: "Por favor, revise el formulario",
+      status: ERROR_STATUS,
+      errors: validated.error.flatten().fieldErrors,
+    };
+  }
+
+  const productToUpdate = validated.data as ProductForCreationEdition;
+
+  try {
+    await updateProduct(productToUpdate);
+
+    revalidatePath("/home/products");
+  } catch (error) {
+    return HandleError(error);
+  }
+
   return {
-    message: "done",
+    message: "Producto actualizado.",
     status: SUCCESS_STATUS,
   };
 }

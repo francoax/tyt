@@ -26,11 +26,11 @@ export default function ProductDetail({ product }: { product: Product}) {
       </div>
       <div>
         <span className="mt-4 text-lg font-normal text-gray-500">Proveedores</span>
-        {product.suppliers &&
+        {product.suppliers?.length === 0 &&
           <p className="mt-2 text-sm text-gray-500">Sin Proveedores</p>
         }
         {product.suppliers?.map((s, k) => (
-          <p key={k} className="mt-2 text-blue-500 capitalize">{s.name} {s.tel}</p>
+          <p key={k} className="mt-2 text-blue-500 capitalize">{s.name}</p>
         ))}
       </div>
     </section>

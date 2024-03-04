@@ -1,6 +1,7 @@
 import { SelectOption, ServerActionResponse } from "@/lib/definitions"
 import clsx from "clsx"
 import Select, { StylesConfig } from 'react-select'
+import CreatableSelect from 'react-select/creatable'
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
@@ -24,7 +25,7 @@ export function Input({ label, htmlFor, name, state, errorFor, requiredInput, ty
   return (
     <div className={className}>
       {!type &&
-        <label htmlFor={htmlFor} className="block text-sm text-gray-500">
+        <label htmlFor={htmlFor} className="block text-sm text-gray-600">
           {labelText}
         </label>
       }
@@ -54,7 +55,7 @@ export function Input({ label, htmlFor, name, state, errorFor, requiredInput, ty
   )
 }
 
-interface SelectProps {
+type Props = {
   isMulti?: boolean
   label?: string
   htmlFor?: string,
@@ -64,8 +65,15 @@ interface SelectProps {
   options: SelectOption[],
   placeholder: string,
   requiredInput?: boolean,
-  defaultValue?: SelectOption | SelectOption[]
+  defaultValue?: SelectOption | SelectOption[],
+  helpMessage?: string
 }
+
+type AdditionalProps = {
+  [key: string]: any
+}
+
+type SelectProps = Props & AdditionalProps
 
 
 const customStyles: StylesConfig = {
@@ -95,7 +103,7 @@ export function SelectInput({ name, options, placeholder, htmlFor, label, errorF
 
   return (
     <div>
-      <label htmlFor={htmlFor} className="block text-sm mb-2.5 text-gray-500">
+      <label htmlFor={htmlFor} className="block text-sm mb-2.5 text-gray-600">
         {labelText}
       </label>
       <Select
@@ -109,6 +117,44 @@ export function SelectInput({ name, options, placeholder, htmlFor, label, errorF
         aria-invalid={errorMessage ? true : false}
         {...props}
       />
+      <div id={errorFor} aria-live="polite" aria-atomic="true">
+        {hasError &&
+          <p className="mt-3 text-sm text-red-400">
+            {errorMessage}
+          </p>
+        }
+      </div>
+    </div>
+  )
+}
+
+export function CreatableSelectInput({ name, options, placeholder, htmlFor, label, errorFor, state, requiredInput, defaultValue, helpMessage, ...props }: SelectProps) {
+  const labelText = requiredInput ? <>{label} <span className="text-red-500">*</span></> : label
+  const hasError = state?.errors && state?.errors[name!]
+  let errorMessage = ''
+
+  if(hasError) {
+    errorMessage = state.errors![name!]![0]
+  }
+  return (
+    <div>
+      <label htmlFor={htmlFor} className="block text-sm mb-2.5 text-gray-600">
+        {labelText}
+      </label>
+      <CreatableSelect
+        defaultValue={defaultValue}
+        instanceId={htmlFor}
+        inputId={htmlFor}
+        name={name}
+        placeholder={placeholder}
+        options={options}
+        styles={customStyles}
+        aria-invalid={errorMessage ? true : false}
+        {...props}
+      />
+      <p className="mt-1 text-sm text-gray-500">
+        {helpMessage}
+      </p>
       <div id={errorFor} aria-live="polite" aria-atomic="true">
         {hasError &&
           <p className="mt-3 text-sm text-red-400">

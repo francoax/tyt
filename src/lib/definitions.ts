@@ -100,7 +100,7 @@ export interface ProductForCreationEdition {
   name: string;
   category_id: number;
   unit_id: number;
-  suppliers?: number[];
+  suppliers?: { id?: number; name?: string }[];
 }
 
 export interface ProductTableFormatted extends BaseModel {

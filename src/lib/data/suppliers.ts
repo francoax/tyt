@@ -1,3 +1,5 @@
+"use server";
+
 import { SupplierForCreationEdition } from "../definitions";
 import prisma from "../prisma";
 

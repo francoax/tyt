@@ -70,7 +70,9 @@ export const ProductsSchema = z
       .string()
       .min(1, { message: "El tipo de unidad es requerido." })
       .transform((value) => toNumber(value)),
-    suppliers: z.number().array(),
+    suppliers: z.array(
+      z.object({ id: z.number().nullish(), name: z.string().nullish() }),
+    ),
   })
   .required();
 
@@ -79,7 +81,13 @@ export const SuppliersSchema = z.object({
     .string()
     .min(1)
     .transform((value) => toNumber(value)),
-  name: z.string().min(1, { message: "El nombre es requerido." }).toLowerCase(),
+  name: z
+    .string()
+    .min(1, { message: "El nombre es requerido." })
+    .regex(RegExp("^[a-zA-Zs ]+$"), {
+      message: "La descripcion no es valida.",
+    })
+    .toLowerCase(),
   email: z
     .string()
     .email({ message: "El mail no es valido." })
