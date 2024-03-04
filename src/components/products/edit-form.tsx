@@ -1,19 +1,14 @@
 "use client";
 
 import { Input, SelectInput } from "../inputs";
-import { useFormState } from "react-dom";
-import { Product, ProductDataForCreationEdition, SelectOption, ServerActionResponse } from "@/lib/definitions";
-import toast from "react-hot-toast";
-import Alert from "../alerts";
-import { SUCCESS_STATUS } from "@/lib/constants";
+import { Product, ProductDataForCreationEdition, SelectOption } from "@/lib/definitions";
 import { Supplier } from "@prisma/client";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { updateProductAction } from "@/lib/actions/products";
 import Form from "../form";
+import useFormHandler from "@/lib/hooks";
 
 export default function EditProductForm({ product, data } : { product: Product, data: ProductDataForCreationEdition}) {
-  const initialState : ServerActionResponse = { message: '', status: '', errors: {} }
+  const [state, formAction] = useFormHandler('Editar producto', '/home/products',  updateProductAction)
 
   const category : SelectOption = { label: product.category?.description!, value: product.category_id.toString()}
   const unit : SelectOption = { label: product.unit?.description!, value: product.category_id.toString()}
@@ -22,21 +17,6 @@ export default function EditProductForm({ product, data } : { product: Product, 
   if (!product.suppliers) {
     suppliers = (product.suppliers! as Array<Supplier>).map((s) : SelectOption => ({ label: s.name, value: s.id.toString()}))
   }
-
-  const [state, formAction] = useFormState(updateProductAction, initialState)
-  const router = useRouter()
-
-  useEffect(() => {
-    if (state.status && state.message) {
-      toast(() => (
-        <Alert title="Editar producto" reason={state.status} description={state.message} />
-      ));
-    }
-
-    if (state.status === SUCCESS_STATUS) {
-      router.push('/home/products');
-    }
-  }, [state, router]);
 
   return (
     <Form action={formAction} returnTo="/home/products">
