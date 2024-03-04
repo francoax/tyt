@@ -1,8 +1,6 @@
 'use client';
 
-import Link from "next/link";
-import { Button } from "../buttons";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState } from "react-dom";
 import { updateCategoryAction } from "@/lib/actions/categories";
 import { Input } from "../inputs";
 import { ServerActionResponse } from "@/lib/definitions";
@@ -12,8 +10,9 @@ import { useRouter } from "next/navigation";
 import { Category } from "@prisma/client";
 import { useEffect } from "react";
 import { SUCCESS_STATUS } from "@/lib/constants";
+import Form from "../form";
 
-export default function Form({ category }: { category: Category }) {
+export default function EditCategoryForm({ category }: { category: Category }) {
   const initialState : ServerActionResponse = { message: '', errors: {}, status: ''}
   const [state, formAction] = useFormState(updateCategoryAction, initialState)
   const router = useRouter()
@@ -28,33 +27,20 @@ export default function Form({ category }: { category: Category }) {
     if (state.status === SUCCESS_STATUS) {
       router.push('/home/categories');
     }
-  }, [state.status, state.message, router]);
+  }, [state, router]);
 
   return (
-    <form action={formAction} className="mt-5 p-12 rounded-md divide-gray-200 bg-gray-50">
-      <div className="flex justify-center sm:justify-start flex-wrap">
-        <Input type="hidden" name="id" htmlFor="id" defaultValue={category.id} />
-        <Input defaultValue={category.description} requiredInput={true} placeholder="Descripcion para categoria" label="Descripcion" htmlFor="description" name="description" state={state} errorFor="description-error"  />
-      </div>
-      <div className="mt-8 sm:flex sm:items-center sm:justify-end">
-        <div className="flex gap-5 justify-center sm:items-center ">
-          <Link href={'/home/categories'}>
-            <Button type="button">
-              Cancelar
-            </Button>
-          </Link>
-          <SubmitButton />
-        </div>
-      </div>
-    </form>
-  )
-}
-
-function SubmitButton() {
-  const { pending } = useFormStatus()
-  return (
-    <Button primary={true} type="submit" disabled={pending} aria-disabled={pending}>
-      Aceptar
-    </Button>
+    <Form action={formAction} returnTo="/home/categories">
+      <Input type="hidden" name="id" htmlFor="id" defaultValue={category.id} />
+      <Input
+        defaultValue={category.description}
+        requiredInput={true}
+        placeholder="Descripcion para categoria"
+        label="Descripcion"
+        htmlFor="description"
+        name="description"
+        state={state}
+        errorFor="description-error"  />
+    </Form>
   )
 }

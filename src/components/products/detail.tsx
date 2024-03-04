@@ -18,18 +18,18 @@ export default function ProductDetail({ product }: { product: Product}) {
       </div>
       <div>
         <span className="mt-4 text-lg font-normal text-gray-500">Categoria</span>
-        <p className="mt-2 text-blue-500 uppercase">{product.category.description}</p>
+        <p className="mt-2 text-blue-500 uppercase">{product.category?.description}</p>
       </div>
       <div>
         <span className="mt-4 text-lg font-normal text-gray-500">Unidad</span>
-        <p className="mt-2 text-blue-500 uppercase">{product.unit.description}</p>
+        <p className="mt-2 text-blue-500 uppercase">{product.unit?.description}</p>
       </div>
       <div>
         <span className="mt-4 text-lg font-normal text-gray-500">Proveedores</span>
         {product.suppliers &&
           <p className="mt-2 text-sm text-gray-500">Sin Proveedores</p>
         }
-        {product.suppliers.map((s, k) => (
+        {product.suppliers?.map((s, k) => (
           <p key={k} className="mt-2 text-blue-500 capitalize">{s.name} {s.tel}</p>
         ))}
       </div>
@@ -52,7 +52,7 @@ export function StockMovements({ product }: { product: Product }) {
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
             <div className="overflow-hidden border border-gray-200 md:rounded-lg">
-              <StockMovementsTable movements={product.stock_movements} unit={product.unit.description}/>
+              <StockMovementsTable movements={product.stock_movements!} unit={product.unit?.description!}/>
             </div>
           </div>
         </div>
@@ -116,8 +116,20 @@ function TableRow({ movement, unit }: { movement: StockMovement, unit: string })
     WITHDRAW: 'Retiro'
   }
 
-  const dollar_at_date = movement.dollar_at_date ? <>USD{movement.dollar_at_date?.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2})}</> : '-'
-  const total_price = movement.total_price ? <>ARS{movement.total_price?.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 2 })}</> : '-'
+  const dollar_at_date = movement.dollar_at_date
+    ?
+      <>
+        USD{movement.dollar_at_date?.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2})}
+      </>
+    :
+      '-'
+  const total_price = movement.total_price
+    ?
+      <>
+        ARS{movement.total_price?.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 2 })}
+      </>
+    :
+      '-'
 
   const isPending = movement.type_action === SM_WITHDRAW && movement.real_amount_used === null
 
@@ -146,9 +158,6 @@ function TableRow({ movement, unit }: { movement: StockMovement, unit: string })
       {
         'bg-emerald-200/50' : movement.type_action === SM_DEPOSIT
       },
-      // {
-      //   'bg-': movement.type_action === SM_WITHDRAW && movement.real_amount_used === null
-      // },
       {
         'bg-orange-200/50': movement.type_action === SM_WITHDRAW && movement.real_amount_used
       }

@@ -30,19 +30,19 @@ export interface Category extends c {
 }
 
 export interface Product extends p {
-  category: Category;
-  unit: Unit;
-  suppliers: Supplier[];
-  stock_movements: StockMovement[];
+  category?: Category;
+  unit?: Unit;
+  suppliers?: Supplier[];
+  stock_movements?: StockMovement[];
 }
 
 export interface Unit extends u {
   total_products?: number;
-  products: Product[];
+  products?: Product[];
 }
 
 export interface Supplier extends s {
-  products: Product[];
+  products?: Product[];
 }
 
 export interface StockMovement extends sm {}

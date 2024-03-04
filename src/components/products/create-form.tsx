@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { Input, SelectInput } from "../inputs";
-import { Button, SubmitButton } from "../buttons";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState } from "react-dom";
 import { ProductDataForCreationEdition, ServerActionResponse } from "@/lib/definitions";
 import { createProductAction } from "@/lib/actions/products";
 import toast from "react-hot-toast";
@@ -11,8 +9,9 @@ import Alert from "../alerts";
 import { SUCCESS_STATUS } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Form from "../form";
 
-export default function Form({ data }: { data: ProductDataForCreationEdition }) {
+export default function CreateProductForm({ data }: { data: ProductDataForCreationEdition }) {
   const initialState : ServerActionResponse = { message: '', status: '', errors: {} }
 
   const [state, formAction] = useFormState(createProductAction, initialState)
@@ -28,11 +27,10 @@ export default function Form({ data }: { data: ProductDataForCreationEdition }) 
     if (state.status === SUCCESS_STATUS) {
       router.push('/home/products');
     }
-  }, [state.status, state.message, router]);
+  }, [state, router]);
 
   return (
-    <form action={formAction} className="mt-5 p-12 rounded-md divide-gray-200 bg-gray-50">
-      <div className="flex justify-center gap-y-5 sm:gap-5 sm:justify-start flex-wrap">
+    <Form action={formAction} returnTo="/home/products">
         <Input requiredInput={true} state={state} placeholder="Nombre producto" label="Nombre" htmlFor="name" name="name" errorFor="name-error"  />
         <SelectInput
           state={state}
@@ -69,17 +67,6 @@ export default function Form({ data }: { data: ProductDataForCreationEdition }) 
           htmlFor="suppliers"
           errorFor="suppliers-error"
         />
-      </div>
-      <div className="mt-8 sm:flex sm:items-center sm:justify-end">
-        <div className="flex gap-5 justify-center sm:items-center ">
-          <Link href={'/home/products'}>
-            <Button type="button">
-              Cancelar
-            </Button>
-          </Link>
-          <SubmitButton />
-        </div>
-      </div>
-    </form>
+    </Form>
   )
 }
