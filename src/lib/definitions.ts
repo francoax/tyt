@@ -8,11 +8,11 @@ import {
 
 //#####################################################
 
-//                     Sections order
-//                     1. Base model
-//                     2. Main models
-//                     3. Server action model
-//                     4. Rest of app models
+//                 Sections order
+//                 1. Base model
+//                 2. Main models
+//                 3. Server action model
+//                 4. Rest of app models
 
 //#####################################################
 
@@ -26,15 +26,24 @@ interface BaseModel {
 
 export interface Category extends c {
   total_products?: number;
+  products: Product[];
 }
 
-export interface Product extends p {}
+export interface Product extends p {
+  category: Category;
+  unit: Unit;
+  suppliers: Supplier[];
+  stock_movements: StockMovement[];
+}
 
 export interface Unit extends u {
   total_products?: number;
+  products: Product[];
 }
 
-export interface Supplier extends s {}
+export interface Supplier extends s {
+  products: Product[];
+}
 
 export interface StockMovement extends sm {}
 
