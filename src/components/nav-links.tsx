@@ -11,7 +11,7 @@ const links = [
     links: [
       {
         name: "Stock",
-        href: "/home/stock"
+        href: "/home"
       }
     ]
   },

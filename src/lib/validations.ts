@@ -101,3 +101,10 @@ export const SuppliersSchema = z.object({
     .optional()
     .or(z.literal("")),
 });
+
+export const StockActionSchema = z.object({
+  product_id: z
+    .string()
+    .min(1, { message: "El producto es requerido." })
+    .transform((value) => toNumber(value)),
+});

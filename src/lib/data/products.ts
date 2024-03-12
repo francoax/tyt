@@ -159,6 +159,15 @@ export async function initCreationEdition() {
   }
 }
 
+export async function getProductsNames() {
+  return prisma.product.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+}
+
 export async function hasPendingWithdraws(id: number) {
   return await prisma.stockMovement.count({
     where: {

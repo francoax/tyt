@@ -127,3 +127,16 @@ export interface SupplierForCreationEdition extends BaseModel {
   tel: string;
   address: string;
 }
+
+export interface StockDataFormatted {
+  product_id: number;
+  product_name: string;
+  actual_stock: string;
+  last_movement: Date | null;
+  hasPendingWithdraws?: boolean;
+}
+
+export interface ProductForAction {
+  id: number;
+  name: string;
+}
