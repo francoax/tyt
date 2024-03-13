@@ -27,7 +27,13 @@ export function DepositPreview(
                     Fecha
                   </th>
                   <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
+                    Antes
+                  </th>
+                  <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
                     Cantidad
+                  </th>
+                  <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
+                    Despues
                   </th>
                   <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
                     Dolar a la fecha (USD$)
@@ -48,7 +54,15 @@ export function DepositPreview(
                   </td>
 
                   <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                    {/* {total_price} */}
+                  </td>
+
+                  <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                     {/* {unit} */}
+                  </td>
+
+                  <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                    {/* {total_price} */}
                   </td>
 
                   <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">

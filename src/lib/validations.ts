@@ -108,3 +108,32 @@ export const StockActionSchema = z.object({
     .min(1, { message: "El producto es requerido." })
     .transform((value) => toNumber(value)),
 });
+
+export const StockDepositSchema = z
+  .object({
+    product_id: z
+      .string()
+      .min(1)
+      .transform((value) => toNumber(value)),
+    amount_involved: z
+      .string()
+      .min(1, { message: "La cantidad es requerida." })
+      .transform((value) => toNumber(value)),
+    dollar_at_date: z
+      .string()
+      .min(1, { message: "El dolar es requerido." })
+      .transform((value) => toNumber(value)),
+    total_price: z
+      .string()
+      .min(1, { message: "El total es requerido." })
+      .transform((value) => toNumber(value)),
+    stock_before: z
+      .string()
+      .min(1)
+      .transform((value) => toNumber(value)),
+    stock_after: z
+      .string()
+      .min(1)
+      .transform((value) => toNumber(value)),
+  })
+  .required();

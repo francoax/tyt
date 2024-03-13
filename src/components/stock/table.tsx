@@ -52,9 +52,6 @@ function TableRow({
 }: {
   stockProduct: StockDataFormatted
 }) {
-
-  const dateLast = format(stockProduct.last_movement ?? '', 'dd/mm/yyyy HH:MM a')
-
   return (
     <tr>
       <td className="px-8 capitalize py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
@@ -66,7 +63,7 @@ function TableRow({
       </td>
 
       <td className="px-4 py-4 text-sm text-gray-700 whitespace-nowrap">
-        {dateLast}
+        {stockProduct.last_movement ? format(stockProduct.last_movement, 'dd/mm/yyyy HH:MM a') : 'Sin registros...'}
       </td>
 
       <td className="px-4 py-4 text-sm whitespace-nowrap">

@@ -1,38 +1,35 @@
-'use client'
-
-import Form from "@/components/form"
-import { Input } from "@/components/inputs"
 import { DepositPreview } from "@/components/stock/action-preview"
+import DepositForm from "@/components/stock/forms/deposit-form"
+import { getProductById } from "@/lib/data/products"
 
-export default function Page({ params }: { params: { id: string }}) {
+export default async function Page({ params }: { params: { id: string }}) {
   const { id } = params
+  const product = await getProductById(Number.parseInt(id))
   return (
     <>
-      <p>{id}</p>
       <div>
-        <h2 className="text-lg font-medium  text-gray-800">Ingresar stock para el producto</h2>
+        <h2 className="text-lg font-medium  text-gray-800">
+          Ingresar stock para <span className="text-blue-400">{product?.name.toUpperCase()}</span>
+          <span className="ml-2 px-3 py-1 text-xs text-blue-500 bg-blue-200 rounded-full">
+            (Stock actual {product?.stock} {product?.unit.description})
+          </span>
+        </h2>
         <p className="mt-1 text-sm text-gray-500">
           Los campos con <span className="text-red-500">*</span> son requeridos.
         </p>
       </div>
-      <Form action='' returnTo="/home">
-        <Input
-          requiredInput
-          label="Cantidad"
-          placeholder="100 paquetes..."
-        />
-        <Input
-          requiredInput
-          label="Dolar a la fecha (USD$)"
-          placeholder="USD$1,000"
-        />
-        <Input
-          requiredInput
-          label="Total por ingreso (ARS$)"
-          placeholder="ARS$100.000"
-        />
-      </Form>
-      <h2 className="text-lg font-medium  text-gray-800">Previsualizacion</h2>
+
+      <DepositForm />
+
+      <div className="my-5 border border-gray-300"></div>
+
+      <div className="mt-5">
+        <h2 className="text-lg font-medium  text-gray-800">Previsualizacion</h2>
+        <p className="mt-1 text-sm text-gray-500">
+          Asi se mostrara luego en los movimientos de stock del producto.
+        </p>
+      </div>
+
       <DepositPreview />
     </>
   )

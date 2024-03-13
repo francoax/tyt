@@ -159,11 +159,17 @@ export async function initCreationEdition() {
   }
 }
 
-export async function getProductsNames() {
+export async function getProductsForStockAction() {
   return prisma.product.findMany({
     select: {
       id: true,
       name: true,
+      stock: true,
+      unit: {
+        select: {
+          description: true,
+        },
+      },
     },
   });
 }

@@ -1,4 +1,4 @@
-import { Button, CreateButton } from "@/components/buttons";
+import { ProductsCounter, WithdrawsPendingCounter } from "@/components/counters";
 import { Spinner, TableLoading } from "@/components/loaders";
 import Search from "@/components/search";
 import { ActionButton } from "@/components/stock/buttons";
@@ -13,12 +13,12 @@ export default function StockPage() {
         <div>
           <div className="flex items-center gap-x-3">
             <h2 className="text-lg font-medium text-gray-800">Lista de stock</h2>
-            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full">
-              2 productos
-            </span>
-            <span className="px-3 py-1 text-xs text-red-600 bg-red-200 rounded-full">
-              2 retiros pendientes
-            </span>
+            <Suspense fallback={<Spinner />}>
+              <ProductsCounter />
+            </Suspense>
+            <Suspense fallback={<Spinner />}>
+              <WithdrawsPendingCounter />
+            </Suspense>
           </div>
           <p className="mt-1 text-sm text-gray-500">
             Detalle de cada producto con su stock actual.

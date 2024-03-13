@@ -132,11 +132,22 @@ export interface StockDataFormatted {
   product_id: number;
   product_name: string;
   actual_stock: string;
-  last_movement: Date | null;
+  last_movement?: Date;
   hasPendingWithdraws?: boolean;
 }
 
 export interface ProductForAction {
   id: number;
   name: string;
+  stock: number;
+  unit: Pick<Unit, "description">;
+}
+
+export interface StockDepositForCreation {
+  product_id: number;
+  amount_involved: number;
+  dollar_at_date: number;
+  total_price: number;
+  stock_before: number;
+  stock_after: number;
 }
