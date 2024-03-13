@@ -2,7 +2,7 @@
 
 import Form from "@/components/form";
 import { Input } from "@/components/inputs";
-import { depositAction } from "@/lib/actions/stock";
+import { withdrawAction } from "@/lib/actions/stock";
 import { Product } from "@/lib/definitions";
 import useFormHandler from "@/lib/hooks";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -13,9 +13,9 @@ export default function DepositForm(
   { product } : { product: Product }
 ) {
   const [state, formAction] = useFormHandler(
-    'Ingresat stock',
-    '/home',
-    depositAction
+    'Retirar stock',
+    `/home/products/${product.id}/detail#movimientos`,
+    withdrawAction
   )
 
   const searchParams = useSearchParams();
@@ -28,8 +28,8 @@ export default function DepositForm(
 
     params.set('stock_before', product.stock.toString())
     const amount = Number.parseInt(params.get('amount_involved') ?? '0')
-    params.set('stock_after', (amount + product.stock).toString())
-    setStockAfter(amount + product.stock)
+    params.set('stock_after', (product.stock - amount).toString())
+    setStockAfter(product.stock - amount)
 
     replace(`${pathname}?${params.toString()}`)
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,26 +62,6 @@ export default function DepositForm(
         label="Cantidad"
         placeholder={`100 ${product.unit?.description}`}
         onChange={(e) => handlePreviewDeposit({input: 'amount_involved', value: e.target.value})}
-      />
-      <Input
-        name="dollar_at_date"
-        htmlFor="dollar_at_date"
-        errorFor="dollar_at_date-error"
-        state={state}
-        requiredInput
-        label="Dolar a la fecha (USD$)"
-        placeholder="USD$1,000"
-        onChange={(e) => handlePreviewDeposit({input: 'dollar_at_date', value: e.target.value})}
-      />
-      <Input
-        name="total_price"
-        htmlFor="total_price"
-        errorFor="total_price-error"
-        state={state}
-        requiredInput
-        label="Total por ingreso (ARS$)"
-        placeholder="ARS$100.000"
-        onChange={(e) => handlePreviewDeposit({input: 'total_price', value: e.target.value})}
       />
     </Form>
   )

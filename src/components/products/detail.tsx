@@ -4,6 +4,7 @@ import { StockMovement } from "@prisma/client";
 import clsx from "clsx";
 import { format } from "date-fns";
 import { ConfirmButton } from "./buttons";
+import { ConfirmWithdrawButton } from "../stock/buttons";
 
 export default function ProductDetail({ product }: { product: Product}) {
   return (
@@ -40,8 +41,8 @@ export default function ProductDetail({ product }: { product: Product}) {
 export function StockMovements({ product }: { product: Product }) {
   return (
     <>
-      <div>
-        <h2 className="mt-5 text-lg font-medium  text-gray-800">
+      <div id="movimientos">
+        <h2 className="mt-5 text-lg font-medium text-gray-800">
           Movimientos de stock
         </h2>
         <p className="mt-1 text-sm text-gray-500">
@@ -191,7 +192,7 @@ function TableRow({ movement, unit }: { movement: StockMovement, unit: string })
       </td>
 
       <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        {isPending && <ConfirmButton />}
+        {isPending && <ConfirmWithdrawButton productId={movement.product_id} movementId={movement.id} />}
       </td>
     </tr>
   )

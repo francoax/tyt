@@ -5,7 +5,7 @@ const toNumber = z
   .args(z.string())
   .returns(z.number())
   .implement((val) => {
-    return Number.parseInt(val);
+    return Number(val);
   });
 
 const toUndefined = z
@@ -109,14 +109,23 @@ export const StockActionSchema = z.object({
     .transform((value) => toNumber(value)),
 });
 
-export const StockDepositSchema = z
+export const StockMovementSchema = z
   .object({
     product_id: z
       .string()
       .min(1)
       .regex(RegExp(`^[0-9]+$`), { message: "Solo numeros." })
       .transform((value) => toNumber(value)),
+    movement_id: z
+      .string()
+      .transform((value) => toNumber(value))
+      .nullish(),
     amount_involved: z
+      .string()
+      .min(1, { message: "La cantidad es requerida." })
+      .regex(RegExp(`^[0-9]+$`), { message: "Solo numeros." })
+      .transform((value) => toNumber(value)),
+    real_amount_used: z
       .string()
       .min(1, { message: "La cantidad es requerida." })
       .regex(RegExp(`^[0-9]+$`), { message: "Solo numeros." })
@@ -139,7 +148,7 @@ export const StockDepositSchema = z
     stock_after: z
       .string()
       .min(1)
-      .regex(RegExp(`^[0-9]+$`))
+      // .regex(RegExp(`^-?\d+$`))
       .transform((value) => toNumber(value)),
   })
   .required();

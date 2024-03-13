@@ -1,16 +1,31 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { ERROR_STATUS, SUCCESS_STATUS, WARNING_STATUS } from "../constants";
-import { ServerActionResponse, StockDepositForCreation } from "../definitions";
-import { StockActionSchema, StockDepositSchema } from "../validations";
+import {
+  ERROR_STATUS,
+  PRODUCTS_ROUTE,
+  SUCCESS_STATUS,
+  WARNING_STATUS,
+} from "../constants";
+import {
+  ServerActionResponse,
+  StockDepositForCreation,
+  StockWithdrawConfirm,
+  StockWithdrawForCreation,
+} from "../definitions";
+import { StockActionSchema, StockMovementSchema } from "../validations";
 import {
   getProductById,
   hasPendingWithdraws,
   updateProductStock,
 } from "../data/products";
-import { createNewDepositForProduct } from "../data/stock";
+import {
+  confirmWithdrawForProduct,
+  createNewDepositForProduct,
+  createNewWithdrawForProduct,
+} from "../data/stock";
 import HandleError from "../errorHandler";
+import { revalidatePath } from "next/cache";
 
 export async function initStockDepositAction(
   prevState: ServerActionResponse,
@@ -78,10 +93,10 @@ export async function depositAction(
   prevState: ServerActionResponse,
   data: FormData,
 ): Promise<ServerActionResponse> {
-  const validated = StockDepositSchema.safeParse(
-    Object.fromEntries(data.entries()),
-  );
-  console.log(Object.fromEntries(data.entries()));
+  const validated = StockMovementSchema.omit({
+    real_amount_used: true,
+    movement_id: true,
+  }).safeParse(Object.fromEntries(data.entries()));
 
   if (!validated.success) {
     return {
@@ -103,6 +118,106 @@ export async function depositAction(
 
   return {
     message: "Nuevo stock ingresado.",
+    status: SUCCESS_STATUS,
+  };
+}
+
+const WithdrawSchema = StockMovementSchema.omit({
+  dollar_at_date: true,
+  total_price: true,
+  real_amount_used: true,
+  movement_id: true,
+});
+export async function withdrawAction(
+  prevState: ServerActionResponse,
+  data: FormData,
+): Promise<ServerActionResponse> {
+  const validated = WithdrawSchema.safeParse(
+    Object.fromEntries(data.entries()),
+  );
+
+  if (!validated.success) {
+    return {
+      message: "Por favor, revise el formulario",
+      status: ERROR_STATUS,
+      errors: validated.error.flatten().fieldErrors,
+    };
+  }
+
+  const withdraw: StockWithdrawForCreation = validated.data;
+
+  const productInvolved = await getProductById(withdraw.product_id);
+
+  if (withdraw.amount_involved > productInvolved?.stock!) {
+    return {
+      message: "La cantidad no puede ser mayor al stock actual.",
+      status: ERROR_STATUS,
+      errors: { amount_involved: [] },
+    };
+  }
+
+  try {
+    const newWithdraw = await createNewWithdrawForProduct(withdraw);
+
+    await updateProductStock(newWithdraw.product_id, newWithdraw.stock_after!);
+
+    revalidatePath(`${PRODUCTS_ROUTE}/${newWithdraw.product_id}/detail`);
+  } catch (error) {
+    return HandleError(error);
+  }
+
+  return {
+    message: "Retiro de stock realizado.",
+    status: SUCCESS_STATUS,
+  };
+}
+
+const WithdrawConfirmSchema = StockMovementSchema.omit({
+  dollar_at_date: true,
+  total_price: true,
+});
+export async function confirmWithdrawAction(
+  prevState: ServerActionResponse,
+  data: FormData,
+): Promise<ServerActionResponse> {
+  const validated = WithdrawConfirmSchema.safeParse(
+    Object.fromEntries(data.entries()),
+  );
+
+  if (!validated.success) {
+    return {
+      message: "Por favor, revise el formulario",
+      status: ERROR_STATUS,
+      errors: validated.error.flatten().fieldErrors,
+    };
+  }
+
+  const confirmedWithdraw: StockWithdrawConfirm = validated.data;
+
+  if (confirmedWithdraw.real_amount_used > confirmedWithdraw.amount_involved) {
+    return {
+      message: "La cantidad utilizada no puede ser mayor a la retirada.",
+      status: ERROR_STATUS,
+      errors: { real_amount_used: [] },
+    };
+  }
+
+  try {
+    const confirmedMovement =
+      await confirmWithdrawForProduct(confirmedWithdraw);
+
+    await updateProductStock(
+      confirmedMovement.product_id,
+      confirmedMovement.stock_after!,
+    );
+
+    revalidatePath(`${PRODUCTS_ROUTE}/${confirmedMovement.product_id}/detail`);
+  } catch (error) {
+    return HandleError(error);
+  }
+
+  return {
+    message: "Retiro confirmado.",
     status: SUCCESS_STATUS,
   };
 }

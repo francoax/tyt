@@ -1,7 +1,12 @@
 "use server";
 
 import { unstable_noStore as noStore } from "next/cache";
-import { StockDataFormatted, StockDepositForCreation } from "../definitions";
+import {
+  StockDataFormatted,
+  StockDepositForCreation,
+  StockWithdrawConfirm,
+  StockWithdrawForCreation,
+} from "../definitions";
 import prisma from "../prisma";
 import { hasPendingWithdraws } from "./products";
 import { SM_DEPOSIT, SM_WITHDRAW } from "../constants";
@@ -91,6 +96,52 @@ export async function createNewDepositForProduct(
       stock_before: newDeposit.stock_before,
       amount_involved: newDeposit.amount_involved,
       type_action: SM_DEPOSIT,
+    },
+  });
+}
+
+export async function createNewWithdrawForProduct(
+  newWithdraw: StockWithdrawForCreation,
+) {
+  return await prisma.stockMovement.create({
+    data: {
+      product_id: newWithdraw.product_id,
+      amount_involved: newWithdraw.amount_involved,
+      stock_before: newWithdraw.stock_before,
+      stock_after: newWithdraw.stock_after,
+      type_action: SM_WITHDRAW,
+    },
+  });
+}
+
+export async function getStockMovementById(movementId: number) {
+  return await prisma.stockMovement.findFirst({
+    where: {
+      id: movementId,
+    },
+    include: {
+      product: {
+        include: {
+          unit: true,
+        },
+      },
+    },
+  });
+}
+
+export async function confirmWithdrawForProduct(
+  movement: StockWithdrawConfirm,
+) {
+  return await prisma.stockMovement.update({
+    where: {
+      id_product_id: {
+        id: movement.movement_id!,
+        product_id: movement.product_id,
+      },
+    },
+    data: {
+      real_amount_used: movement.real_amount_used,
+      stock_after: movement.stock_after,
     },
   });
 }
