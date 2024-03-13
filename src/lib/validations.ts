@@ -5,7 +5,7 @@ const toNumber = z
   .args(z.string())
   .returns(z.number())
   .implement((val) => {
-    return Number.parseInt(val);
+    return Number(val);
   });
 
 const toUndefined = z
@@ -101,3 +101,54 @@ export const SuppliersSchema = z.object({
     .optional()
     .or(z.literal("")),
 });
+
+export const StockActionSchema = z.object({
+  product_id: z
+    .string()
+    .min(1, { message: "El producto es requerido." })
+    .transform((value) => toNumber(value)),
+});
+
+export const StockMovementSchema = z
+  .object({
+    product_id: z
+      .string()
+      .min(1)
+      .regex(RegExp(`^[0-9]+$`), { message: "Solo numeros." })
+      .transform((value) => toNumber(value)),
+    movement_id: z
+      .string()
+      .transform((value) => toNumber(value))
+      .nullish(),
+    amount_involved: z
+      .string()
+      .min(1, { message: "La cantidad es requerida." })
+      .regex(RegExp(`^[0-9]+$`), { message: "Solo numeros." })
+      .transform((value) => toNumber(value)),
+    real_amount_used: z
+      .string()
+      .min(1, { message: "La cantidad es requerida." })
+      .regex(RegExp(`^[0-9]+$`), { message: "Solo numeros." })
+      .transform((value) => toNumber(value)),
+    dollar_at_date: z
+      .string()
+      .min(1, { message: "El dolar es requerido." })
+      .regex(RegExp(`^[0-9]+$`), { message: "Solo numeros." })
+      .transform((value) => toNumber(value)),
+    total_price: z
+      .string()
+      .min(1, { message: "El total es requerido." })
+      .regex(RegExp(`^[0-9]+$`), { message: "Solo numeros." })
+      .transform((value) => toNumber(value)),
+    stock_before: z
+      .string()
+      .min(1)
+      .regex(RegExp(`^[0-9]+$`))
+      .transform((value) => toNumber(value)),
+    stock_after: z
+      .string()
+      .min(1)
+      // .regex(RegExp(`^-?\d+$`))
+      .transform((value) => toNumber(value)),
+  })
+  .required();

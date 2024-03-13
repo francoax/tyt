@@ -45,7 +45,9 @@ export interface Supplier extends s {
   products?: Product[];
 }
 
-export interface StockMovement extends sm {}
+export interface StockMovement extends sm {
+  product?: Product;
+}
 
 // Server actions
 
@@ -126,4 +128,38 @@ export interface SupplierForCreationEdition extends BaseModel {
   email: string;
   tel: string;
   address: string;
+}
+
+export interface StockDataFormatted {
+  product_id: number;
+  product_name: string;
+  actual_stock: string;
+  last_movement?: Date;
+  hasPendingWithdraws?: boolean;
+  type_action: string;
+}
+
+export interface ProductForAction {
+  id: number;
+  name: string;
+  stock: number;
+  unit: Pick<Unit, "description">;
+}
+
+export interface StockDepositForCreation {
+  product_id: number;
+  amount_involved: number;
+  dollar_at_date: number;
+  total_price: number;
+  stock_before: number;
+  stock_after: number;
+}
+
+export interface StockWithdrawForCreation
+  extends Omit<StockDepositForCreation, "dollar_at_date" | "total_price"> {}
+
+export interface StockWithdrawConfirm
+  extends Omit<StockDepositForCreation, "dollar_at_date" | "total_price"> {
+  real_amount_used: number;
+  movement_id?: number | null;
 }

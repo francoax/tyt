@@ -45,7 +45,6 @@ export default function CreateProductForm({ data }: { data: ProductDataForCreati
       const validated = nameField.safeParse({ name: inputValue })
 
       if(!validated.success) {
-        console.log(validated.error)
         optionMessage.current = 'El nombre es invalido para crear.'
         return false
       }

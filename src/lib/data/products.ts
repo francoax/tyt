@@ -159,6 +159,21 @@ export async function initCreationEdition() {
   }
 }
 
+export async function getProductsForStockAction() {
+  return prisma.product.findMany({
+    select: {
+      id: true,
+      name: true,
+      stock: true,
+      unit: {
+        select: {
+          description: true,
+        },
+      },
+    },
+  });
+}
+
 export async function hasPendingWithdraws(id: number) {
   return await prisma.stockMovement.count({
     where: {
@@ -169,6 +184,17 @@ export async function hasPendingWithdraws(id: number) {
           real_amount_used: null,
         },
       ],
+    },
+  });
+}
+
+export async function updateProductStock(id: number, amount: number) {
+  return await prisma.product.update({
+    where: {
+      id,
+    },
+    data: {
+      stock: amount,
     },
   });
 }

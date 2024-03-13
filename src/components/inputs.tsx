@@ -107,6 +107,7 @@ export function SelectInput({ name, options, placeholder, htmlFor, label, errorF
         {labelText}
       </label>
       <Select
+        maxMenuHeight={300}
         defaultValue={defaultValue}
         instanceId={htmlFor}
         inputId={htmlFor}
@@ -142,6 +143,7 @@ export function CreatableSelectInput({ name, options, placeholder, htmlFor, labe
         {labelText}
       </label>
       <CreatableSelect
+        maxMenuHeight={180}
         defaultValue={defaultValue}
         instanceId={htmlFor}
         inputId={htmlFor}

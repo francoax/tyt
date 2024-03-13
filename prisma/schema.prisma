@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  //directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -40,7 +41,7 @@ model StockMovement {
   amount_involved  Int?
   real_amount_used Int?
   dollar_at_date   Int?
-  total_price      Int?
+  total_price      BigInt?
   stock_before     Int?
   stock_after      Int?
   product          Product     @relation(fields: [product_id], references: [id])
