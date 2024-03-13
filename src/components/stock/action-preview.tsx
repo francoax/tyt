@@ -1,17 +1,12 @@
-import { format } from "date-fns"
+'use client';
 
-export function DepositPreview(
-//   {
-//   amount,
-//   dollar_at_date,
-//   total_price
-// }: {
-//   amount: string,
-//   dollar_at_date: string,
-//   total_price: string
-// }
-)
+import { format } from "date-fns"
+import { useSearchParams } from "next/navigation";
+
+export function DepositPreview({ unit }: { unit: string })
 {
+  const searchParams = useSearchParams()
+
   return (
     <div className="flex flex-col mt-6">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -27,13 +22,13 @@ export function DepositPreview(
                     Fecha
                   </th>
                   <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-                    Antes
+                    Antes ({unit})
                   </th>
                   <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-                    Cantidad
+                    Cantidad ({unit})
                   </th>
                   <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-                    Despues
+                    Despues ({unit})
                   </th>
                   <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
                     Dolar a la fecha (USD$)
@@ -50,27 +45,27 @@ export function DepositPreview(
                   </td>
 
                   <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                    {format(new Date(), 'dd/MM/yyyy HH:MM a')}
+                    {format(Date.now(), 'dd/MM/yyyy HH:MM a')}
                   </td>
 
                   <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                    {/* {total_price} */}
+                    {searchParams.get('stock_before')}
                   </td>
 
                   <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                    {/* {unit} */}
+                    {searchParams.get('amount_involved') ?? 0}
                   </td>
 
                   <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                    {/* {total_price} */}
+                    {searchParams.get('stock_after')}
                   </td>
 
                   <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                    {/* {dollar_at_date} */}
+                    USD{Number.parseInt(searchParams.get('dollar_at_date') ?? '0')?.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2})}
                   </td>
 
                   <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                    {/* {total_price} */}
+                    ARS{Number.parseInt(searchParams.get('total_price') ?? '0')?.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 2 })}
                   </td>
                 </tr>
               </tbody>

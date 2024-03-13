@@ -10,15 +10,23 @@ export async function getDataForStockTable() {
   noStore();
   try {
     const latestMovements = await prisma.stockMovement.groupBy({
-      by: ["product_id"],
+      by: ["product_id", "type_action"],
       _max: {
         date_action: true,
       },
     });
 
     const indexedMovementPerProduct = latestMovements.reduce(
-      (acc: { [key: number]: Date | undefined }, current) => {
-        acc[current.product_id] = current._max.date_action ?? undefined;
+      (
+        acc: {
+          [key: number]: { type_action: string; date_action: Date | undefined };
+        },
+        current,
+      ) => {
+        acc[current.product_id] = {
+          date_action: current._max.date_action ?? undefined,
+          type_action: current.type_action,
+        };
         return acc;
       },
       {},
@@ -42,7 +50,8 @@ export async function getDataForStockTable() {
         product_id: p.id,
         product_name: p.name,
         actual_stock: `${p.stock} ${p.unit.description}`,
-        last_movement: indexedMovementPerProduct[p.id],
+        last_movement: indexedMovementPerProduct[p.id]?.date_action,
+        type_action: indexedMovementPerProduct[p.id]?.type_action,
       };
     });
 
@@ -80,6 +89,7 @@ export async function createNewDepositForProduct(
       dollar_at_date: newDeposit.dollar_at_date,
       stock_after: newDeposit.stock_after,
       stock_before: newDeposit.stock_before,
+      amount_involved: newDeposit.amount_involved,
       type_action: SM_DEPOSIT,
     },
   });

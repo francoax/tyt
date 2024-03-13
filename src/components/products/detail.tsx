@@ -167,7 +167,7 @@ function TableRow({ movement, unit }: { movement: StockMovement, unit: string })
       </td>
 
       <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        {format(movement.date_action, 'dd/MM/yyyy HH:MM')}
+        {format(movement.date_action, 'dd/MM/yyyy HH:MM a')}
       </td>
 
       <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">

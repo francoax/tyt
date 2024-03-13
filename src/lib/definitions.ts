@@ -134,6 +134,7 @@ export interface StockDataFormatted {
   actual_stock: string;
   last_movement?: Date;
   hasPendingWithdraws?: boolean;
+  type_action: string;
 }
 
 export interface ProductForAction {

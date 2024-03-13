@@ -187,3 +187,14 @@ export async function hasPendingWithdraws(id: number) {
     },
   });
 }
+
+export async function updateProductStock(id: number, amount: number) {
+  return await prisma.product.update({
+    where: {
+      id,
+    },
+    data: {
+      stock: amount,
+    },
+  });
+}

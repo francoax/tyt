@@ -1,8 +1,14 @@
+"use server";
+
 import { redirect } from "next/navigation";
 import { ERROR_STATUS, SUCCESS_STATUS, WARNING_STATUS } from "../constants";
 import { ServerActionResponse, StockDepositForCreation } from "../definitions";
 import { StockActionSchema, StockDepositSchema } from "../validations";
-import { getProductById, hasPendingWithdraws } from "../data/products";
+import {
+  getProductById,
+  hasPendingWithdraws,
+  updateProductStock,
+} from "../data/products";
 import { createNewDepositForProduct } from "../data/stock";
 import HandleError from "../errorHandler";
 
@@ -68,13 +74,14 @@ export async function initStockWithdrawAction(
   redirect(`/home/stock/${product_id}/retirar`);
 }
 
-export async function depositSAction(
+export async function depositAction(
   prevState: ServerActionResponse,
   data: FormData,
 ): Promise<ServerActionResponse> {
   const validated = StockDepositSchema.safeParse(
     Object.fromEntries(data.entries()),
   );
+  console.log(Object.fromEntries(data.entries()));
 
   if (!validated.success) {
     return {
@@ -87,7 +94,9 @@ export async function depositSAction(
   const deposit: StockDepositForCreation = validated.data;
 
   try {
-    await createNewDepositForProduct(deposit);
+    const newDeposit = await createNewDepositForProduct(deposit);
+
+    await updateProductStock(newDeposit.product_id, newDeposit.stock_after!);
   } catch (error) {
     return HandleError(error);
   }
