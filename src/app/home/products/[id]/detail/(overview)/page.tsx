@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: { id: string }}) {
   return (
     <>
       <div>
-        <ReturnButton href={PRODUCTS_ROUTE}>
+        <ReturnButton>
           Volver
         </ReturnButton>
         <p className="m-5 mb-2 px-3 py-1 text-sm text-center text-blue-600 bg-blue-100 rounded-full">

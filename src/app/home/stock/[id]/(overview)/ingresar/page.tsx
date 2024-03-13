@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: Params }) {
 
   return (
     <>
-      <ReturnButton href="/home">
+      <ReturnButton>
         Volver
       </ReturnButton>
       <div>

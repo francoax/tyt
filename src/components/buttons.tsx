@@ -9,6 +9,7 @@ import { useState } from 'react';
 import Modal from './modal';
 import Alert from './alerts';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -49,16 +50,24 @@ export function CreateButton({ href, children } : { href: string, children: Reac
   )
 }
 
-export function ReturnButton({ href, children} : { href: string, children: React.ReactNode }) {
+export function ReturnButton({ href, children} : { href?: string, children: React.ReactNode }) {
+  const router = useRouter()
+
+  const handleReturn = () => {
+    if(href) {
+      router.push(href)
+    } else {
+      router.back()
+    }
+  }
+
   return (
-    <Link href={href}>
-      <Button type='button' className='flex items-center gap-5 m-0'>
-        <ArrowLeftIcon className='w-5 h-5' />
-        <span className=''>
-          {children}
-        </span>
-      </Button>
-    </Link>
+    <Button onClick={handleReturn} type='button' className='flex items-center gap-5 m-0'>
+      <ArrowLeftIcon className='w-5 h-5' />
+      <span className=''>
+        {children}
+      </span>
+    </Button>
   )
 }
 
