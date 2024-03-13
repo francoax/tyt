@@ -1,7 +1,7 @@
 import { getDataForStockTable } from "@/lib/data/stock"
 import { DetailProduct } from "../products/buttons"
 import { StockDataFormatted } from "@/lib/definitions"
-import { format } from "date-fns"
+import { format, parseISO } from "date-fns"
 
 export default async function StockTable() {
   const dataTable = await getDataForStockTable()
@@ -55,6 +55,7 @@ function TableRow({
     DEPOSIT: 'Ingreso',
     WITHDRAW: 'Retiro'
   }
+
   return (
     <tr>
       <td className="px-8 capitalize py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
@@ -66,7 +67,7 @@ function TableRow({
       </td>
 
       <td className="px-4 py-4 text-sm text-gray-700 whitespace-nowrap">
-        {stockProduct.last_movement ? <>{format(stockProduct.last_movement, 'dd/mm/yyyy HH:MM a')} ({typesAction[stockProduct.type_action]})</> : 'Sin registros...'}
+        {stockProduct.last_movement ? <>{format(stockProduct.last_movement.toISOString(), 'dd/MM/yyyy HH:mm a')} ({typesAction[stockProduct.type_action]})</> : 'Sin registros...'}
       </td>
 
       <td className="px-4 py-4 text-sm whitespace-nowrap">
