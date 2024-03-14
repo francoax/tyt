@@ -24,7 +24,7 @@ export function Input({ label, htmlFor, name, state, errorFor, requiredInput, ty
   }
   return (
     <div className={className}>
-      {!type &&
+      {type !== 'hidden' &&
         <label htmlFor={htmlFor} className="block text-sm text-gray-600">
           {labelText}
         </label>
@@ -42,7 +42,7 @@ export function Input({ label, htmlFor, name, state, errorFor, requiredInput, ty
         type={type}
         {...props}
       />
-      {!type &&
+      {type !== 'hidden' &&
         <div id={errorFor} aria-live="polite" aria-atomic="true">
         {hasError &&
           <p className="mt-3 text-sm text-red-400">

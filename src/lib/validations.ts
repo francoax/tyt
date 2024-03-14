@@ -152,3 +152,8 @@ export const StockMovementSchema = z
       .transform((value) => toNumber(value)),
   })
   .required();
+
+export const SignInSchema = z.object({
+  username: z.string().min(1, { message: "Username es requerido." }),
+  password: z.string().min(1, { message: "Contraseña es requerida." }),
+});
