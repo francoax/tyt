@@ -1,4 +1,4 @@
-import Login from "@/components/login";
+import LoginForm from "@/components/login";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="md:h-screen flex justify-center items-center">
-      <Login />
+    <main className="min-h-screen flex justify-center items-center">
+      <LoginForm />
     </main>
   );
 }
