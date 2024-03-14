@@ -163,3 +163,8 @@ export interface StockWithdrawConfirm
   real_amount_used: number;
   movement_id?: number | null;
 }
+
+export interface Auth {
+  username: string;
+  password: string;
+}

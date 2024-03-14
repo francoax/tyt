@@ -4,9 +4,13 @@ import { Bars3Icon } from "@heroicons/react/24/outline";
 import NavLinks from "./nav-links"
 import { useState } from "react";
 import clsx from "clsx";
+import { signOut } from "@/lib/auth/auth";
+import { signOutAction } from "@/lib/actions/auth";
+import { useSession } from "next-auth/react";
 
 const SideBar = () => {
   const [showSideBar, setShowSideBar] = useState(false)
+  const user = useSession()
   return (
     <>
       <button onClick={() => setShowSideBar(prevState => !prevState)}>
@@ -28,8 +32,8 @@ const SideBar = () => {
           <nav className="-mx-3 space-y-6 ">
             <NavLinks />
             <div className="space-y-3">
-              <label className="px-3 text-xs text-gray-500 uppercase">Cuenta</label>
-              <form action={async () => {}}>
+              <label className="px-3 text-xs text-gray-500 uppercase">Cuenta ({user.status})</label>
+              <form action={signOutAction}>
                 <button className='flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700'>
                   <span className="mx-2 text-sm font-medium">Cerrar sesion</span>
                 </button>

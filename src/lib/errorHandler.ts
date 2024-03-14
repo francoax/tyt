@@ -40,7 +40,6 @@ const codeErrors: Errors = {
 };
 
 export default function HandleError(error: unknown): ServerActionResponse {
-  console.log(error);
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     if (codeErrors[error.code]) {
       let targetsErrors;
