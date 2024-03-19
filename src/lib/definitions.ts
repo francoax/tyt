@@ -163,3 +163,9 @@ export interface Auth {
   username: string;
   password: string;
 }
+
+export interface WorkplaceForCreationEdition {
+  id?: number;
+  name: string;
+  address: string | null;
+}

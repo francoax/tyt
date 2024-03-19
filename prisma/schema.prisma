@@ -64,7 +64,7 @@ enum ActionTypes {
 model Workplace {
   id            Int             @id @default(autoincrement())
   name          String          @unique @db.VarChar(30)
-  address       String
+  address       String?
   StockMovement StockMovement[]
 
   @@map("workplaces")
