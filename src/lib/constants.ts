@@ -13,3 +13,4 @@ export const CATEGORIES_ROUTE = "/home/categories";
 export const PRODUCTS_ROUTE = "/home/products";
 export const SUPPLIERS_ROUTE = "/home/suppliers";
 export const UNITS_ROUTE = "/home/units";
+export const WORKPLACES_ROUTE = "/home/workplaces";

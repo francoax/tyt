@@ -1,8 +1,9 @@
 "use client";
 
 import Form from "@/components/form";
-import { Input } from "@/components/inputs";
+import { Input, TextareaInput } from "@/components/inputs";
 import { confirmWithdrawAction } from "@/lib/actions/stock";
+import { WARNING_STATUS } from "@/lib/constants";
 import { StockMovement } from "@/lib/definitions";
 import useFormHandler from "@/lib/hooks";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -19,7 +20,7 @@ export default function WithdrawConfirmForm({ movement }: { movement: StockMovem
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
   const [stockAfter, setStockAfter] = useState<number>(movement.product?.stock!)
 
   useEffect(() => {
@@ -51,8 +52,23 @@ export default function WithdrawConfirmForm({ movement }: { movement: StockMovem
     replace(`${pathname}?${params.toString()}`)
   }, 500)
 
+  if(state.status === WARNING_STATUS) {
+    push('/home')
+  }
+
   return (
-    <Form action={formAction} returnTo={`/home/products/${movement.product?.id}/detail`}>
+    <Form action={formAction} returnTo={`/home/products/${movement.product?.id}/detail`}
+      // textarea={
+      //   <TextareaInput
+      //     name="description"
+      //     htmlFor="description"
+      //     errorFor="description"
+      //     state={state}
+      //     label="Descripcion"
+      //     placeholder="Agregue una descripcion por la confirmacion si lo ve necesario."
+      //   />
+      // }
+    >
       <Input className="hidden" defaultValue={movement.product?.id} type="hidden" name="product_id" htmlFor="product_id" />
       <Input className="hidden" defaultValue={movement.id} type="hidden" name="movement_id" htmlFor="product_id" />
       <Input className="hidden" defaultValue={movement.product?.stock} type="hidden" name="stock_before" htmlFor="stock_before" />

@@ -113,6 +113,8 @@ export async function createNewWithdrawForProduct(
       amount_involved: newWithdraw.amount_involved,
       stock_before: newWithdraw.stock_before,
       stock_after: newWithdraw.stock_after,
+      description: newWithdraw.description,
+      workplace_id: newWithdraw.workplace,
       type_action: SM_WITHDRAW,
     },
   });
@@ -146,6 +148,7 @@ export async function confirmWithdrawForProduct(
     data: {
       real_amount_used: movement.real_amount_used,
       stock_after: movement.stock_after,
+      // description: movement.description,
     },
   });
 }

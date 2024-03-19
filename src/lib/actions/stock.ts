@@ -1,6 +1,6 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 import {
   ERROR_STATUS,
   PRODUCTS_ROUTE,
@@ -23,6 +23,7 @@ import {
   confirmWithdrawForProduct,
   createNewDepositForProduct,
   createNewWithdrawForProduct,
+  getStockMovementById,
 } from "../data/stock";
 import HandleError from "../errorHandler";
 import { revalidatePath } from "next/cache";
@@ -156,6 +157,10 @@ export async function withdrawAction(
 
   const withdraw: StockWithdrawForCreation = validated.data;
 
+  if (withdraw.workplace === 0) {
+    withdraw.workplace = null;
+  }
+
   const productInvolved = await getProductById(withdraw.product_id);
 
   if (withdraw.amount_involved > productInvolved?.stock!) {
@@ -185,6 +190,10 @@ export async function withdrawAction(
 const WithdrawConfirmSchema = StockMovementSchema.omit({
   dollar_at_date: true,
   total_price: true,
+  budget_number: true,
+  workplace: true,
+  supplier_vendor: true,
+  description: true,
 });
 export async function confirmWithdrawAction(
   prevState: ServerActionResponse,
@@ -203,6 +212,17 @@ export async function confirmWithdrawAction(
   }
 
   const confirmedWithdraw: StockWithdrawConfirm = validated.data;
+
+  const movementToConfirm = await getStockMovementById(
+    confirmedWithdraw.movement_id!,
+  );
+
+  if (movementToConfirm?.real_amount_used! > 0) {
+    return {
+      message: "El retiro ya fue confirmado",
+      status: WARNING_STATUS,
+    };
+  }
 
   if (confirmedWithdraw.real_amount_used > confirmedWithdraw.amount_involved) {
     return {

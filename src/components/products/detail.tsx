@@ -169,7 +169,7 @@ function TableRow({ movement, unit }: { movement: StockMovement, unit: string })
           'bg-emerald-200/50' : movement.type_action === SM_DEPOSIT
         },
         {
-          'bg-orange-200/50': movement.type_action === SM_WITHDRAW && movement.real_amount_used
+          'bg-orange-200/50': movement.type_action === SM_WITHDRAW && (movement.real_amount_used !== null)
         }
       )}>
         <td className="px-4 py-4 uppercase text-sm font-medium text-gray-700 whitespace-nowrap">
@@ -185,7 +185,7 @@ function TableRow({ movement, unit }: { movement: StockMovement, unit: string })
         </td>
 
         <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-          {movement.real_amount_used ? <> {movement.real_amount_used} {unit}</> : '-' }
+          {movement.real_amount_used !== null ? <> {movement.real_amount_used} {unit}</> : '-' }
         </td>
 
         <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">

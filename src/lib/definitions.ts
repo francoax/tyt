@@ -148,7 +148,12 @@ export interface StockWithdrawForCreation
 export interface StockWithdrawConfirm
   extends Omit<
     StockDepositForCreation,
-    "dollar_at_date" | "total_price" | "budget_number" | "supplier_vendor"
+    | "dollar_at_date"
+    | "total_price"
+    | "budget_number"
+    | "supplier_vendor"
+    | "workplace"
+    | "description"
   > {
   real_amount_used: number;
   movement_id?: number | null;

@@ -1,6 +1,6 @@
 "use client"
 
-import { CATEGORIES_ROUTE, PRODUCTS_ROUTE, SUPPLIERS_ROUTE, UNITS_ROUTE } from "@/lib/constants";
+import { CATEGORIES_ROUTE, PRODUCTS_ROUTE, SUPPLIERS_ROUTE, UNITS_ROUTE, WORKPLACES_ROUTE } from "@/lib/constants";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -38,6 +38,15 @@ const links = [
       {
         name: "Proveedores",
         href: SUPPLIERS_ROUTE
+      }
+    ]
+  },
+  {
+    section: 'Clientes',
+    links: [
+      {
+        name: 'Lugares de trabajo',
+        href: WORKPLACES_ROUTE
       }
     ]
   }
