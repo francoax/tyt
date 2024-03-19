@@ -108,6 +108,9 @@ export async function depositAction(
 
   const deposit: StockDepositForCreation = validated.data;
 
+  if (deposit.workplace === 0) {
+    deposit.workplace = null;
+  }
   try {
     const newDeposit = await createNewDepositForProduct(deposit);
 

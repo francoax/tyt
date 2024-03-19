@@ -167,3 +167,44 @@ export function CreatableSelectInput({ name, options, placeholder, htmlFor, labe
     </div>
   )
 }
+
+export function TextareaInput({ label, htmlFor, name, state, errorFor, requiredInput, className, placeholder, ...props}: any) {
+  const labelText = requiredInput ? <>{label} <span className="text-red-500">*</span></> : label
+  const hasError = state?.errors && state?.errors[name!]
+  let errorMessage = ''
+
+  if(hasError) {
+    errorMessage = state.errors![name!]![0]
+  }
+  return (
+    <div className={className}>
+      <label htmlFor={htmlFor} className="block text-sm text-gray-600">
+        {labelText}
+      </label>
+
+      <textarea
+        id={htmlFor}
+        name={name}
+        placeholder={placeholder}
+        aria-describedby={errorFor}
+        className={clsx(
+          "resize-none block mt-2 w-full placeholder-gray-400 rounded-lg border border-gray-200 bg-white px-4 h-48 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40",
+          {
+            "border-red-400 focus:border-red-400 focus:ring-red-300" : hasError
+          }
+        )}
+        {...props}
+      >
+      </textarea>
+
+
+      <div id={errorFor} aria-live="polite" aria-atomic="true">
+        {hasError &&
+          <p className="mt-3 text-sm text-red-400">
+            {errorMessage}
+          </p>
+        }
+      </div>
+    </div>
+  )
+}

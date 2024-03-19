@@ -91,7 +91,7 @@ function StockMovementsTable({ movements, unit }: { movements: StockMovement[], 
             Dolar a la fecha (USD$)
           </th>
           <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-            Total (ARS$)
+            Total (USD$)
           </th>
 
           <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
@@ -127,7 +127,7 @@ function TableRow({ movement, unit }: { movement: StockMovement, unit: string })
   const total_price = movement.total_price
     ?
       <>
-        ARS{movement.total_price?.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 2 })}
+        USD{movement.dollar_at_date?.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2})}
       </>
     :
       '-'

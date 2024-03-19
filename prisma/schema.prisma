@@ -41,10 +41,16 @@ model StockMovement {
   amount_involved  Int?
   real_amount_used Int?
   dollar_at_date   Int?
-  total_price      BigInt?
+  total_price      Int?
   stock_before     Int?
   stock_after      Int?
   product          Product     @relation(fields: [product_id], references: [id])
+  workplace        Workplace?  @relation(fields: [workplace_id], references: [id])
+  supplier         Supplier?   @relation(fields: [supplier_id], references: [id])
+  workplace_id     Int?
+  budget_number    Int?
+  supplier_id      Int?
+  description      String?
 
   @@id([id, product_id])
   @@map("stock_movements")
@@ -53,6 +59,15 @@ model StockMovement {
 enum ActionTypes {
   WITHDRAW
   DEPOSIT
+}
+
+model Workplace {
+  id            Int             @id @default(autoincrement())
+  name          String          @unique @db.VarChar(30)
+  address       String
+  StockMovement StockMovement[]
+
+  @@map("workplaces")
 }
 
 model Category {
@@ -72,12 +87,13 @@ model Unit {
 }
 
 model Supplier {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  email    String?
-  tel      String?
-  address  String?
-  products Product[]
+  id            Int             @id @default(autoincrement())
+  name          String          @unique
+  email         String?
+  tel           String?
+  address       String?
+  products      Product[]
+  StockMovement StockMovement[]
 
   @@map("suppliers")
 }

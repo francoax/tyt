@@ -62,31 +62,6 @@ export type ServerActionResponse = {
 
 // Rest of models
 
-export interface StockHistoryMovement {
-  productName: string;
-  categoryName: string;
-  unitName: string;
-  stock: number;
-  lastMovement: Date;
-}
-
-export interface StockHistoryDetail {
-  amountInvolved: number;
-  dollarAtDate?: number;
-  dateAction: Date;
-  typeAction: string;
-}
-
-export interface StockWithdraw {
-  amountInvolved: number;
-}
-
-export interface StockDeposit {
-  amountInvolved: number;
-  dollarAtDate: number;
-  productId: string;
-}
-
 export interface CategoryForCreationEdition {
   id?: number;
   description: string;
@@ -153,13 +128,23 @@ export interface StockDepositForCreation {
   total_price: number;
   stock_before: number;
   stock_after: number;
+  budget_number: number;
+  supplier_vendor: number;
+  description: string;
+  workplace: number | null;
 }
 
 export interface StockWithdrawForCreation
-  extends Omit<StockDepositForCreation, "dollar_at_date" | "total_price"> {}
+  extends Omit<
+    StockDepositForCreation,
+    "dollar_at_date" | "total_price" | "budget_number" | "supplier_vendor"
+  > {}
 
 export interface StockWithdrawConfirm
-  extends Omit<StockDepositForCreation, "dollar_at_date" | "total_price"> {
+  extends Omit<
+    StockDepositForCreation,
+    "dollar_at_date" | "total_price" | "budget_number" | "supplier_vendor"
+  > {
   real_amount_used: number;
   movement_id?: number | null;
 }

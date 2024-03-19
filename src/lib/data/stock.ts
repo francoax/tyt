@@ -95,6 +95,10 @@ export async function createNewDepositForProduct(
       stock_after: newDeposit.stock_after,
       stock_before: newDeposit.stock_before,
       amount_involved: newDeposit.amount_involved,
+      budget_number: newDeposit.budget_number,
+      description: newDeposit.description,
+      supplier_id: newDeposit.supplier_vendor,
+      workplace_id: newDeposit.workplace,
       type_action: SM_DEPOSIT,
     },
   });

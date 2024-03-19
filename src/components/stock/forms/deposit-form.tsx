@@ -1,12 +1,12 @@
 'use client';
 
 import Form from "@/components/form";
-import { Input } from "@/components/inputs";
+import { Input, SelectInput, TextareaInput } from "@/components/inputs";
 import { depositAction } from "@/lib/actions/stock";
-import { Product } from "@/lib/definitions";
+import { Product, SelectOption } from "@/lib/definitions";
 import useFormHandler from "@/lib/hooks";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 export default function DepositForm(
@@ -47,9 +47,19 @@ export default function DepositForm(
     replace(`${pathname}?${params.toString()}`)
   }, 500)
 
+  const suppliersOptions : SelectOption[] = product.suppliers!.map(s => ({ value: s.id.toString(), label: s.name }))
 
   return (
-    <Form action={formAction} returnTo="/home">
+    <Form action={formAction} returnTo="/home"
+      textarea={<TextareaInput
+        name="description"
+        htmlFor="description"
+        errorFor="description"
+        state={state}
+        label="Descripcion"
+        placeholder="Agregue una descripcion para explicar el ingreso de stock si lo ve necesario."
+      />}
+    >
       <Input className="hidden" defaultValue={product.id} type="hidden" name="product_id" htmlFor="product_id" />
       <Input className="hidden" defaultValue={product.stock} type="hidden" name="stock_before" htmlFor="stock_before" />
       <Input className="hidden" defaultValue={stockAfter} type="hidden" name="stock_after" htmlFor="stock_after" />
@@ -79,9 +89,34 @@ export default function DepositForm(
         errorFor="total_price-error"
         state={state}
         requiredInput
-        label="Total por ingreso (ARS$)"
-        placeholder="ARS$100.000"
+        label="Total por ingreso (USD$)"
+        placeholder="USD$10,000"
         onChange={(e) => handlePreviewDeposit({input: 'total_price', value: e.target.value})}
+      />
+      <SelectInput
+        name="supplier_vendor"
+        htmlFor="supplier_vendor"
+        errorFor="supplier_vendor-error"
+        state={state}
+        label="Proveedor comprado"
+        placeholder="Seleccione el proveedor"
+        options={suppliersOptions}
+      />
+      <SelectInput
+        name="workplace"
+        htmlFor="workplace"
+        errorFor="workplace-error"
+        state={state}
+        label="Lugar destinado"
+        placeholder="Seleccione un lugar"
+      />
+      <Input
+        name="budget_number"
+        htmlFor="budget_number"
+        errorFor="budget_number-error"
+        state={state}
+        label="Numero de presupuesto"
+        placeholder="#123"
       />
     </Form>
   )
