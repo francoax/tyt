@@ -152,7 +152,10 @@ export const StockMovementSchema = z
       .transform((value) => toNumber(value)),
     budget_number: z.string().transform((value) => toNumber(value)),
     description: z.string(),
-    supplier_vendor: z.string().transform((value) => toNumber(value)),
+    supplier_vendor: z
+      .string()
+      .transform((value) => toNumber(value))
+      .optional(),
     workplace: z
       .string()
       .transform((value) => toNumber(value))

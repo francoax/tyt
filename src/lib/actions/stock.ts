@@ -111,6 +111,11 @@ export async function depositAction(
   if (deposit.workplace === 0) {
     deposit.workplace = null;
   }
+
+  if (deposit.supplier_vendor === 0) {
+    deposit.supplier_vendor = null;
+  }
+
   try {
     const newDeposit = await createNewDepositForProduct(deposit);
 
@@ -130,6 +135,8 @@ const WithdrawSchema = StockMovementSchema.omit({
   total_price: true,
   real_amount_used: true,
   movement_id: true,
+  budget_number: true,
+  supplier_vendor: true,
 });
 export async function withdrawAction(
   prevState: ServerActionResponse,

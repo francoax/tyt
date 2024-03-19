@@ -68,7 +68,13 @@ export async function getProductById(
     },
     include: {
       stock_movements: includeStockMovements
-        ? { orderBy: { date_action: "desc" } }
+        ? {
+            orderBy: { date_action: "desc" },
+            include: {
+              supplier: true,
+              workplace: true,
+            },
+          }
         : false,
       category: true,
       unit: true,

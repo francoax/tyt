@@ -4,6 +4,7 @@ import {
   Category as c,
   Product as p,
   Unit as u,
+  Workplace as wp,
 } from "@prisma/client";
 
 //#####################################################
@@ -47,7 +48,11 @@ export interface Supplier extends s {
 
 export interface StockMovement extends sm {
   product?: Product;
+  supplier?: Supplier;
+  workplace?: Workplace;
 }
+
+export interface Workplace extends wp {}
 
 // Server actions
 
@@ -129,7 +134,7 @@ export interface StockDepositForCreation {
   stock_before: number;
   stock_after: number;
   budget_number: number;
-  supplier_vendor: number;
+  supplier_vendor: number | null;
   description: string;
   workplace: number | null;
 }

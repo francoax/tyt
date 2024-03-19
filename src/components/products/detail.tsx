@@ -1,10 +1,14 @@
+"use client";
+
 import { SM_DEPOSIT, SM_WITHDRAW } from "@/lib/constants";
-import { Product } from "@/lib/definitions";
-import { StockMovement } from "@prisma/client";
+import { Product, StockMovement } from "@/lib/definitions";
 import clsx from "clsx";
 import { format } from "date-fns";
-import { ConfirmButton } from "./buttons";
 import { ConfirmWithdrawButton } from "../stock/buttons";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { Button } from "../buttons";
+import Modal from "../modal";
+import { useState } from "react";
 
 export default function ProductDetail({ product }: { product: Product}) {
   return (
@@ -100,6 +104,8 @@ function StockMovementsTable({ movements, unit }: { movements: StockMovement[], 
 
           <th scope="col" className="relative py-3.5 px-4">
           </th>
+          <th scope="col" className="relative py-3.5 px-4">
+          </th>
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
@@ -154,46 +160,106 @@ function TableRow({ movement, unit }: { movement: StockMovement, unit: string })
     }
   }
 
+  const [show, showModal] = useState(false)
+
   return (
-    <tr className={clsx(
-      {
-        'bg-emerald-200/50' : movement.type_action === SM_DEPOSIT
-      },
-      {
-        'bg-orange-200/50': movement.type_action === SM_WITHDRAW && movement.real_amount_used
-      }
-    )}>
-      <td className="px-4 py-4 uppercase text-sm font-medium text-gray-700 whitespace-nowrap">
-        {actions[movement.type_action]}
-      </td>
+    <>
+      <tr className={clsx(
+        {
+          'bg-emerald-200/50' : movement.type_action === SM_DEPOSIT
+        },
+        {
+          'bg-orange-200/50': movement.type_action === SM_WITHDRAW && movement.real_amount_used
+        }
+      )}>
+        <td className="px-4 py-4 uppercase text-sm font-medium text-gray-700 whitespace-nowrap">
+          {actions[movement.type_action]}
+        </td>
 
-      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        {format(movement.date_action, 'dd/MM/yyyy HH:mm a')}
-      </td>
+        <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+          {format(movement.date_action, 'dd/MM/yyyy HH:mm a')}
+        </td>
 
-      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        {movement.amount_involved} {unit}
-      </td>
+        <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+          {movement.amount_involved} {unit}
+        </td>
 
-      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        {movement.real_amount_used ? <> {movement.real_amount_used} {unit}</> : '-' }
-      </td>
+        <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+          {movement.real_amount_used ? <> {movement.real_amount_used} {unit}</> : '-' }
+        </td>
 
-      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        {dollar_at_date}
-      </td>
+        <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+          {dollar_at_date}
+        </td>
 
-      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        {total_price}
-      </td>
+        <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+          {total_price}
+        </td>
 
-      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        {state()}
-      </td>
+        <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+          {state()}
+        </td>
 
-      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        {isPending && <ConfirmWithdrawButton productId={movement.product_id} movementId={movement.id} />}
-      </td>
-    </tr>
+        <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+          {isPending && <ConfirmWithdrawButton productId={movement.product_id} movementId={movement.id} />}
+        </td>
+
+        <td className="text-sm font-medium text-gray-700 whitespace-nowrap">
+          <Button onClick={() => showModal(true)} primary type="button" className="transition-colors duration-200 hover:text-gray-200 focus:outline-none">
+            <div className="flex">
+              Mas info <InformationCircleIcon className="w-5 text-gray-50" />
+            </div>
+          </Button>
+        </td>
+      </tr>
+
+      <Modal
+        title={`${actions[movement.type_action]} del dia ${format(movement.date_action, 'dd/MM/yyyy HH:mm a')}`}
+        show={show}
+      >
+        <div className="space-y-3">
+          <div className="max-w-lg text-wrap">
+            <span className="text-gray-700">Descripcion</span>
+            <p>
+              {movement.description ?? "No especificado"}
+            </p>
+          </div>
+          <div>
+            <span className="text-gray-700">#Nro de presupuesto</span>
+            <p>
+              {movement.budget_number ?? "No especificado"}
+            </p>
+          </div>
+          <div>
+            <span className="text-gray-700">Proveedor comprado</span>
+            <p>
+              {movement.supplier?.name ?? "No especificado"}
+            </p>
+          </div>
+          <div>
+            <span className="text-gray-700">Lugar</span>
+            <p>
+              {movement.workplace?.name ?? "No especificado"}
+            </p>
+          </div>
+          <div>
+            <span className="text-gray-700">Stock involucadro</span>
+            <div className="flex items-center gap-5 flex-wrap">
+              <p>
+                Antes: {movement.stock_before} {unit}
+              </p>
+              <p>
+                Despues: {movement.stock_after} {unit}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-center items-center gap-5 p-4">
+          <Button type="button" onClick={() => showModal(false)}>
+            Cerrar
+          </Button>
+        </div>
+      </Modal>
+    </>
   )
 }
