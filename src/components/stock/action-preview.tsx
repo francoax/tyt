@@ -35,7 +35,7 @@ export function DepositPreview({ unit }: { unit: string })
                     Dolar a la fecha (USD$)
                   </th>
                   <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-                    Total (ARS$)
+                    Total (USD$)
                   </th>
                 </tr>
               </thead>
@@ -66,7 +66,7 @@ export function DepositPreview({ unit }: { unit: string })
                   </td>
 
                   <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                    ARS{Number.parseInt(searchParams.get('total_price') ?? '0')?.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 2 })}
+                    USD{Number.parseInt(searchParams.get('total_price') ?? '0')?.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2})}
                   </td>
                 </tr>
               </tbody>

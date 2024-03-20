@@ -95,6 +95,10 @@ export async function createNewDepositForProduct(
       stock_after: newDeposit.stock_after,
       stock_before: newDeposit.stock_before,
       amount_involved: newDeposit.amount_involved,
+      budget_id: newDeposit.budget_id,
+      description: newDeposit.description,
+      supplier_id: newDeposit.supplier_vendor,
+      workplace_id: newDeposit.workplace,
       type_action: SM_DEPOSIT,
     },
   });
@@ -109,6 +113,8 @@ export async function createNewWithdrawForProduct(
       amount_involved: newWithdraw.amount_involved,
       stock_before: newWithdraw.stock_before,
       stock_after: newWithdraw.stock_after,
+      description: newWithdraw.description,
+      workplace_id: newWithdraw.workplace,
       type_action: SM_WITHDRAW,
     },
   });
@@ -142,6 +148,8 @@ export async function confirmWithdrawForProduct(
     data: {
       real_amount_used: movement.real_amount_used,
       stock_after: movement.stock_after,
+      date_confirmed: movement.date_confirmed,
+      // description: movement.description,
     },
   });
 }

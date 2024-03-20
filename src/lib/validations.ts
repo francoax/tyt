@@ -150,10 +150,29 @@ export const StockMovementSchema = z
       .min(1)
       // .regex(RegExp(`^-?\d+$`))
       .transform((value) => toNumber(value)),
+    budget_id: z.string(),
+    description: z.string(),
+    supplier_vendor: z
+      .string()
+      .transform((value) => toNumber(value))
+      .optional(),
+    workplace: z
+      .string()
+      .transform((value) => toNumber(value))
+      .optional(),
   })
   .required();
 
 export const SignInSchema = z.object({
   username: z.string().min(1, { message: "Username es requerido." }),
   password: z.string().min(1, { message: "Contraseña es requerida." }),
+});
+
+export const WorkplaceSchema = z.object({
+  id: z
+    .string()
+    .min(1)
+    .transform((value) => toNumber(value)),
+  name: z.string().min(1, { message: "El nombre es requerido." }),
+  address: z.string().nullable(),
 });

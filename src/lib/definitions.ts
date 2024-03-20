@@ -4,6 +4,7 @@ import {
   Category as c,
   Product as p,
   Unit as u,
+  Workplace as wp,
 } from "@prisma/client";
 
 //#####################################################
@@ -47,7 +48,11 @@ export interface Supplier extends s {
 
 export interface StockMovement extends sm {
   product?: Product;
+  supplier?: Supplier;
+  workplace?: Workplace;
 }
+
+export interface Workplace extends wp {}
 
 // Server actions
 
@@ -61,31 +66,6 @@ export type ServerActionResponse = {
 };
 
 // Rest of models
-
-export interface StockHistoryMovement {
-  productName: string;
-  categoryName: string;
-  unitName: string;
-  stock: number;
-  lastMovement: Date;
-}
-
-export interface StockHistoryDetail {
-  amountInvolved: number;
-  dollarAtDate?: number;
-  dateAction: Date;
-  typeAction: string;
-}
-
-export interface StockWithdraw {
-  amountInvolved: number;
-}
-
-export interface StockDeposit {
-  amountInvolved: number;
-  dollarAtDate: number;
-  productId: string;
-}
 
 export interface CategoryForCreationEdition {
   id?: number;
@@ -153,18 +133,40 @@ export interface StockDepositForCreation {
   total_price: number;
   stock_before: number;
   stock_after: number;
+  budget_id: string;
+  supplier_vendor: number | null;
+  description: string;
+  workplace: number | null;
 }
 
 export interface StockWithdrawForCreation
-  extends Omit<StockDepositForCreation, "dollar_at_date" | "total_price"> {}
+  extends Omit<
+    StockDepositForCreation,
+    "dollar_at_date" | "total_price" | "budget_id" | "supplier_vendor"
+  > {}
 
 export interface StockWithdrawConfirm
-  extends Omit<StockDepositForCreation, "dollar_at_date" | "total_price"> {
+  extends Omit<
+    StockDepositForCreation,
+    | "dollar_at_date"
+    | "total_price"
+    | "budget_id"
+    | "supplier_vendor"
+    | "workplace"
+    | "description"
+  > {
   real_amount_used: number;
   movement_id?: number | null;
+  date_confirmed?: Date;
 }
 
 export interface Auth {
   username: string;
   password: string;
+}
+
+export interface WorkplaceForCreationEdition {
+  id?: number;
+  name: string;
+  address: string | null;
 }

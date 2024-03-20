@@ -1,23 +1,24 @@
 'use client';
 
 import Form from "@/components/form";
-import { Input } from "@/components/inputs";
+import { Input, SelectInput, TextareaInput } from "@/components/inputs";
 import { depositAction } from "@/lib/actions/stock";
-import { Product } from "@/lib/definitions";
+import { SUPPLIERS_ROUTE, WORKPLACES_ROUTE } from "@/lib/constants";
+import { Product, SelectOption, Workplace } from "@/lib/definitions";
 import useFormHandler from "@/lib/hooks";
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 export default function DepositForm(
-  { product } : { product: Product }
+  { product, workplaces } : { product: Product, workplaces: Workplace[] }
 ) {
   const [state, formAction] = useFormHandler(
     'Ingresat stock',
     '/home',
     depositAction
   )
-
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -47,9 +48,20 @@ export default function DepositForm(
     replace(`${pathname}?${params.toString()}`)
   }, 500)
 
+  const suppliersOptions : SelectOption[] = product.suppliers!.map(s => ({ value: s.id.toString(), label: s.name }))
+  const workplaceOptions : SelectOption[] = workplaces.map(w => ({ value: w.id.toString(), label: w.name}))
 
   return (
-    <Form action={formAction} returnTo="/home">
+    <Form action={formAction} returnTo="/home"
+      textarea={<TextareaInput
+        name="description"
+        htmlFor="description"
+        errorFor="description"
+        state={state}
+        label="Descripcion"
+        placeholder="Agregue una descripcion por el ingreso de stock si lo ve necesario."
+      />}
+    >
       <Input className="hidden" defaultValue={product.id} type="hidden" name="product_id" htmlFor="product_id" />
       <Input className="hidden" defaultValue={product.stock} type="hidden" name="stock_before" htmlFor="stock_before" />
       <Input className="hidden" defaultValue={stockAfter} type="hidden" name="stock_after" htmlFor="stock_after" />
@@ -79,9 +91,47 @@ export default function DepositForm(
         errorFor="total_price-error"
         state={state}
         requiredInput
-        label="Total por ingreso (ARS$)"
-        placeholder="ARS$100.000"
+        label="Total por ingreso (USD$)"
+        placeholder="USD$10,000"
         onChange={(e) => handlePreviewDeposit({input: 'total_price', value: e.target.value})}
+      />
+      <Input
+        name="budget_id"
+        htmlFor="budget_id"
+        errorFor="budget_id-error"
+        state={state}
+        label="Identificador de presupuesto"
+        placeholder="#123"
+      />
+      <SelectInput
+        name="supplier_vendor"
+        htmlFor="supplier_vendor"
+        errorFor="supplier_vendor-error"
+        state={state}
+        label="Proveedor comprado"
+        placeholder="Seleccione el proveedor"
+        options={suppliersOptions}
+        helpMessage={
+        <>
+          Si no esta su proveedor, creelo haciendo click en <Link className="text-blue-500" href={`${SUPPLIERS_ROUTE}/create`}>Crear.</Link>
+        </>
+        }
+        isClearable
+      />
+      <SelectInput
+        name="workplace"
+        htmlFor="workplace"
+        errorFor="workplace-error"
+        state={state}
+        label="Empresa destinada"
+        placeholder="Seleccione una empresa"
+        options={workplaceOptions}
+        helpMessage={
+        <>
+          Si no esta listada la empresa, creela haciendo click en <Link className="text-blue-500" href={`${WORKPLACES_ROUTE}/create`}>Crear.</Link>
+        </>
+        }
+        isClearable
       />
     </Form>
   )

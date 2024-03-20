@@ -3,12 +3,14 @@ import { ConfirmButton } from "@/components/products/buttons"
 import { WithdrawPreview } from "@/components/stock/action-preview"
 import WithdrawForm from "@/components/stock/forms/withdraw-form"
 import { getProductById } from "@/lib/data/products"
+import { getWorkplaces } from "@/lib/data/workplace"
 import { Product } from "@/lib/definitions"
 import { notFound } from "next/navigation"
 
 export default async function Page({ params } : { params: { id: string }}) {
   const { id } = params
   const product = await getProductById(Number.parseInt(id)) as Product
+  const workplaces = await getWorkplaces()
 
   if(!product) notFound()
 
@@ -28,7 +30,7 @@ export default async function Page({ params } : { params: { id: string }}) {
           Los campos con <span className="text-red-500">*</span> son requeridos.
         </p>
       </div>
-      <WithdrawForm product={product} />
+      <WithdrawForm product={product} workplaces={workplaces} />
 
       <div className="my-5 border border-gray-300"></div>
 

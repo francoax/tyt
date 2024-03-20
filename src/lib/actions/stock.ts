@@ -23,6 +23,7 @@ import {
   confirmWithdrawForProduct,
   createNewDepositForProduct,
   createNewWithdrawForProduct,
+  getStockMovementById,
 } from "../data/stock";
 import HandleError from "../errorHandler";
 import { revalidatePath } from "next/cache";
@@ -108,6 +109,14 @@ export async function depositAction(
 
   const deposit: StockDepositForCreation = validated.data;
 
+  if (deposit.workplace === 0) {
+    deposit.workplace = null;
+  }
+
+  if (deposit.supplier_vendor === 0) {
+    deposit.supplier_vendor = null;
+  }
+
   try {
     const newDeposit = await createNewDepositForProduct(deposit);
 
@@ -127,6 +136,8 @@ const WithdrawSchema = StockMovementSchema.omit({
   total_price: true,
   real_amount_used: true,
   movement_id: true,
+  budget_id: true,
+  supplier_vendor: true,
 });
 export async function withdrawAction(
   prevState: ServerActionResponse,
@@ -145,6 +156,10 @@ export async function withdrawAction(
   }
 
   const withdraw: StockWithdrawForCreation = validated.data;
+
+  if (withdraw.workplace === 0) {
+    withdraw.workplace = null;
+  }
 
   const productInvolved = await getProductById(withdraw.product_id);
 
@@ -175,6 +190,10 @@ export async function withdrawAction(
 const WithdrawConfirmSchema = StockMovementSchema.omit({
   dollar_at_date: true,
   total_price: true,
+  budget_id: true,
+  workplace: true,
+  supplier_vendor: true,
+  description: true,
 });
 export async function confirmWithdrawAction(
   prevState: ServerActionResponse,
@@ -193,6 +212,19 @@ export async function confirmWithdrawAction(
   }
 
   const confirmedWithdraw: StockWithdrawConfirm = validated.data;
+
+  confirmedWithdraw.date_confirmed = new Date();
+
+  const movementToConfirm = await getStockMovementById(
+    confirmedWithdraw.movement_id!,
+  );
+
+  if (movementToConfirm?.real_amount_used! > 0) {
+    return {
+      message: "El retiro ya fue confirmado",
+      status: WARNING_STATUS,
+    };
+  }
 
   if (confirmedWithdraw.real_amount_used > confirmedWithdraw.amount_involved) {
     return {

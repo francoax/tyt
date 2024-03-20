@@ -2,6 +2,7 @@ import { ReturnButton } from "@/components/buttons"
 import { DepositPreview } from "@/components/stock/action-preview"
 import DepositForm from "@/components/stock/forms/deposit-form"
 import { getProductById } from "@/lib/data/products"
+import { getWorkplaces } from "@/lib/data/workplace"
 import { Product } from "@/lib/definitions"
 import { notFound } from "next/navigation"
 
@@ -18,6 +19,7 @@ export default async function Page({ params }: { params: Params }) {
   const { id } = params
   const product = await getProductById(Number.parseInt(id)) as Product
 
+  const workplaces = await getWorkplaces()
   if(!product) {
     notFound()
   }
@@ -39,7 +41,7 @@ export default async function Page({ params }: { params: Params }) {
         </p>
       </div>
 
-      <DepositForm product={product} />
+      <DepositForm product={product} workplaces={workplaces} />
 
       <div className="my-5 border border-gray-300"></div>
 
