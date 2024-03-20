@@ -219,31 +219,31 @@ function TableRow({ movement, unit }: { movement: StockMovement, unit: string })
       >
         <div className="space-y-3">
           <div className="max-w-lg text-wrap">
-            <span className="text-gray-700">Descripcion</span>
+            <span className="text-gray-700 font-medium">Descripcion</span>
             <p>
               {movement.description ?? "No especificado"}
             </p>
           </div>
           <div>
-            <span className="text-gray-700">#Nro de presupuesto</span>
+            <span className="text-gray-700 font-medium">Identificador de presupuesto</span>
             <p>
-              {movement.budget_number ?? "No especificado"}
+              {movement.budget_id ?? "No especificado"}
             </p>
           </div>
           <div>
-            <span className="text-gray-700">Proveedor comprado</span>
+            <span className="text-gray-700 font-medium">Proveedor comprado</span>
             <p>
               {movement.supplier?.name ?? "No especificado"}
             </p>
           </div>
           <div>
-            <span className="text-gray-700">Lugar</span>
+            <span className="text-gray-700 font-medium">Empresa destinada</span>
             <p>
               {movement.workplace?.name ?? "No especificado"}
             </p>
           </div>
           <div>
-            <span className="text-gray-700">Stock involucadro</span>
+            <span className="text-gray-700 font-medium">Movimiento de stock</span>
             <div className="flex items-center gap-5 flex-wrap">
               <p>
                 Antes: {movement.stock_before} {unit}

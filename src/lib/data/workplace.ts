@@ -27,7 +27,7 @@ export async function getWorkplaceById(id: number) {
   });
 }
 
-export async function getAmountOfUnits() {
+export async function getAmountOfWorkplace() {
   return await prisma.workplace.count();
 }
 

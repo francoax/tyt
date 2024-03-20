@@ -3,14 +3,14 @@
 import Form from "@/components/form";
 import { Input, SelectInput, TextareaInput } from "@/components/inputs";
 import { withdrawAction } from "@/lib/actions/stock";
-import { Product } from "@/lib/definitions";
+import { Product, SelectOption, Workplace } from "@/lib/definitions";
 import useFormHandler from "@/lib/hooks";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 export default function DepositForm(
-  { product } : { product: Product }
+  { product, workplaces } : { product: Product, workplaces: Workplace[] }
 ) {
   const [state, formAction] = useFormHandler(
     'Retirar stock',
@@ -47,6 +47,7 @@ export default function DepositForm(
     replace(`${pathname}?${params.toString()}`)
   }, 500)
 
+  const workplaceOptions : SelectOption[] = workplaces.map(w => ({ label: w.name, value: w.id.toString() }))
 
   return (
     <Form action={formAction} returnTo="/home"
@@ -75,13 +76,14 @@ export default function DepositForm(
         onChange={(e) => handlePreviewDeposit({input: 'amount_involved', value: e.target.value})}
       />
       <SelectInput
-        isMulti
         name="workplace"
         htmlFor="workplace"
         errorFor="workplace-error"
         state={state}
         placeholder="Seleccione el lugar"
-        label="Lugar involucrado"
+        label="Empresa"
+        options={workplaceOptions}
+        isClearable
       />
     </Form>
   )

@@ -1,6 +1,6 @@
 "use server";
 
-import { RedirectType, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import {
   ERROR_STATUS,
   PRODUCTS_ROUTE,
@@ -136,7 +136,7 @@ const WithdrawSchema = StockMovementSchema.omit({
   total_price: true,
   real_amount_used: true,
   movement_id: true,
-  budget_number: true,
+  budget_id: true,
   supplier_vendor: true,
 });
 export async function withdrawAction(
@@ -190,7 +190,7 @@ export async function withdrawAction(
 const WithdrawConfirmSchema = StockMovementSchema.omit({
   dollar_at_date: true,
   total_price: true,
-  budget_number: true,
+  budget_id: true,
   workplace: true,
   supplier_vendor: true,
   description: true,

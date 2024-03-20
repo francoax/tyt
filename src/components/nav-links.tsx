@@ -45,7 +45,7 @@ const links = [
     section: 'Clientes',
     links: [
       {
-        name: 'Lugares de trabajo',
+        name: 'Empresas',
         href: WORKPLACES_ROUTE
       }
     ]

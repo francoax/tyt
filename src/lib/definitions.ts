@@ -133,7 +133,7 @@ export interface StockDepositForCreation {
   total_price: number;
   stock_before: number;
   stock_after: number;
-  budget_number: number;
+  budget_id: string;
   supplier_vendor: number | null;
   description: string;
   workplace: number | null;
@@ -142,7 +142,7 @@ export interface StockDepositForCreation {
 export interface StockWithdrawForCreation
   extends Omit<
     StockDepositForCreation,
-    "dollar_at_date" | "total_price" | "budget_number" | "supplier_vendor"
+    "dollar_at_date" | "total_price" | "budget_id" | "supplier_vendor"
   > {}
 
 export interface StockWithdrawConfirm
@@ -150,7 +150,7 @@ export interface StockWithdrawConfirm
     StockDepositForCreation,
     | "dollar_at_date"
     | "total_price"
-    | "budget_number"
+    | "budget_id"
     | "supplier_vendor"
     | "workplace"
     | "description"

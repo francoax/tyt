@@ -48,7 +48,7 @@ model StockMovement {
   workplace        Workplace?  @relation(fields: [workplace_id], references: [id])
   supplier         Supplier?   @relation(fields: [supplier_id], references: [id])
   workplace_id     Int?
-  budget_number    Int?
+  budget_id        String?
   supplier_id      Int?
   description      String?
 

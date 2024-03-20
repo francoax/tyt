@@ -150,7 +150,7 @@ export const StockMovementSchema = z
       .min(1)
       // .regex(RegExp(`^-?\d+$`))
       .transform((value) => toNumber(value)),
-    budget_number: z.string().transform((value) => toNumber(value)),
+    budget_id: z.string(),
     description: z.string(),
     supplier_vendor: z
       .string()

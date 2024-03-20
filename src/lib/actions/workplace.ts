@@ -1,5 +1,12 @@
-import { ERROR_STATUS, SUCCESS_STATUS } from "../constants";
-import { createWorkplace } from "../data/workplace";
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { ERROR_STATUS, SUCCESS_STATUS, WORKPLACES_ROUTE } from "../constants";
+import {
+  createWorkplace,
+  deleteWorkplace,
+  updateWorkplace,
+} from "../data/workplace";
 import {
   ServerActionResponse,
   WorkplaceForCreationEdition,
@@ -34,6 +41,7 @@ export async function createWorkplaceAction(
     return HandleError(error);
   }
 
+  revalidatePath(WORKPLACES_ROUTE);
   return {
     message: "Lugar de trabajo creado.",
     status: SUCCESS_STATUS,
@@ -61,11 +69,12 @@ export async function updateWorkplaceAction(
   const workplace: WorkplaceForCreationEdition = validated.data;
 
   try {
-    await createWorkplace(workplace);
+    await updateWorkplace(workplace);
   } catch (error) {
     return HandleError(error);
   }
 
+  revalidatePath(WORKPLACES_ROUTE);
   return {
     message: "Lugar de trabajo actualizado.",
     status: SUCCESS_STATUS,
@@ -73,8 +82,17 @@ export async function updateWorkplaceAction(
 }
 
 export async function deleteWorkplaceAction(
-  prevState: ServerActionResponse,
-  data: FormData,
+  id: number,
 ): Promise<ServerActionResponse> {
-  return {};
+  try {
+    await deleteWorkplace(id);
+  } catch (error) {
+    return HandleError(error);
+  }
+
+  revalidatePath(WORKPLACES_ROUTE);
+  return {
+    message: "Empresa eliminada",
+    status: SUCCESS_STATUS,
+  };
 }
