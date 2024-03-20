@@ -48,8 +48,8 @@ export interface Supplier extends s {
 
 export interface StockMovement extends sm {
   product?: Product;
-  supplier?: Supplier;
-  workplace?: Workplace;
+  supplier?: Supplier | null;
+  workplace?: Workplace | null;
 }
 
 export interface Workplace extends wp {}

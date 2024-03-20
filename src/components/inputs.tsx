@@ -21,9 +21,10 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   requiredInput?: boolean
   type?: string,
   className?: string,
+  helpMessage?: string,
 }
 
-export function Input({ label, htmlFor, name, state, errorFor, requiredInput, type, className, ...props}: InputProps) {
+export function Input({ label, htmlFor, name, state, errorFor, requiredInput, type, className, helpMessage, ...props}: InputProps) {
   const labelText = requiredInput ? <>{label} <span className="text-red-500">*</span></> : label
   const hasError = state?.errors && state?.errors[name!]
   let errorMessage = ''
@@ -49,6 +50,9 @@ export function Input({ label, htmlFor, name, state, errorFor, requiredInput, ty
         type={type}
         {...props}
       />
+      {
+        helpMessage && ( <p className="mt-1 text-sm text-gray-500">{helpMessage}</p> )
+      }
       {type !== 'hidden' &&
         <div id={errorFor} aria-live="polite" aria-atomic="true">
         {hasError &&

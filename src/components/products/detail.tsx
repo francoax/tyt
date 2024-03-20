@@ -8,7 +8,9 @@ import { ConfirmWithdrawButton } from "../stock/buttons";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "../buttons";
 import Modal from "../modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getMovementsForProduct } from "@/lib/data/stock";
+import DateFilter from "./search-date";
 
 export default function ProductDetail({ product }: { product: Product}) {
   return (
@@ -42,7 +44,14 @@ export default function ProductDetail({ product }: { product: Product}) {
   )
 }
 
-export function StockMovements({ product }: { product: Product }) {
+export function StockMovements({ product_id, unit, currentPage }: { product_id: number, unit: string,  currentPage: number }) {
+
+  const [movements, setMovements] = useState<StockMovement[]>([])
+
+  useEffect(() => {
+    getMovementsForProduct(product_id, currentPage).then((data) => setMovements(data))
+  }, [currentPage, product_id])
+
   return (
     <>
       <div id="movimientos">
@@ -53,11 +62,14 @@ export function StockMovements({ product }: { product: Product }) {
           Aquellos retiros que esten pendientes, seran marcados como. Una vez confirmado, se podra volver a retirar.
         </p>
       </div>
+      {
+        movements.length && <DateFilter />
+      }
       <div className="flex flex-col mt-6">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
             <div className="overflow-hidden border border-gray-200 md:rounded-lg">
-              <StockMovementsTable movements={product.stock_movements!} unit={product.unit?.description!}/>
+              <StockMovementsTable movements={movements} unit={unit}/>
             </div>
           </div>
         </div>

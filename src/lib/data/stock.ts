@@ -9,7 +9,7 @@ import {
 } from "../definitions";
 import prisma from "../prisma";
 import { hasPendingWithdraws } from "./products";
-import { SM_DEPOSIT, SM_WITHDRAW } from "../constants";
+import { ITEMS_PER_PAGE, SM_DEPOSIT, SM_WITHDRAW } from "../constants";
 
 export async function getDataForStockTable() {
   noStore();
@@ -84,6 +84,17 @@ export async function getAmountOfPendingWithdraws() {
   });
 }
 
+export async function getAmountOfMovementsByProduct(product_id: number) {
+  noStore();
+  const amount = await prisma.stockMovement.count({
+    where: {
+      product_id,
+    },
+  });
+
+  return Math.ceil(amount / ITEMS_PER_PAGE);
+}
+
 export async function createNewDepositForProduct(
   newDeposit: StockDepositForCreation,
 ) {
@@ -151,5 +162,24 @@ export async function confirmWithdrawForProduct(
       date_confirmed: movement.date_confirmed,
       // description: movement.description,
     },
+  });
+}
+
+export async function getMovementsForProduct(
+  product_id: number,
+  currentPage: number,
+) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  return await prisma.stockMovement.findMany({
+    where: {
+      product_id,
+    },
+    include: {
+      supplier: true,
+      workplace: true,
+    },
+    orderBy: { date_action: "desc" },
+    take: ITEMS_PER_PAGE,
+    skip: offset,
   });
 }
