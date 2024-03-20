@@ -213,6 +213,8 @@ export async function confirmWithdrawAction(
 
   const confirmedWithdraw: StockWithdrawConfirm = validated.data;
 
+  confirmedWithdraw.date_confirmed = new Date();
+
   const movementToConfirm = await getStockMovementById(
     confirmedWithdraw.movement_id!,
   );

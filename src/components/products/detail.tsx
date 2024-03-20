@@ -86,6 +86,9 @@ function StockMovementsTable({ movements, unit }: { movements: StockMovement[], 
             Fecha
           </th>
           <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
+            Fecha confirmado
+          </th>
+          <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
             Cantidad
           </th>
           <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
@@ -178,6 +181,10 @@ function TableRow({ movement, unit }: { movement: StockMovement, unit: string })
 
         <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
           {format(movement.date_action, 'dd/MM/yyyy HH:mm a')}
+        </td>
+
+        <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+          {movement.date_confirmed !== null ? <> {format(movement.date_confirmed, 'dd/MM/yyyy HH:mm a')} </> : '-' }
         </td>
 
         <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">

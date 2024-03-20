@@ -157,6 +157,7 @@ export interface StockWithdrawConfirm
   > {
   real_amount_used: number;
   movement_id?: number | null;
+  date_confirmed?: Date;
 }
 
 export interface Auth {

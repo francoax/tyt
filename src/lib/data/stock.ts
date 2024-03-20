@@ -148,6 +148,7 @@ export async function confirmWithdrawForProduct(
     data: {
       real_amount_used: movement.real_amount_used,
       stock_after: movement.stock_after,
+      date_confirmed: movement.date_confirmed,
       // description: movement.description,
     },
   });
