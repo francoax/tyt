@@ -56,7 +56,7 @@ export default async function Page({ params, searchParams }: { params: { id: str
       </div>
       <ProductDetail product={product as any} />
       <StockMovements product_id={product.id} unit={product.unit.description} currentPage={currentPage} />
-      <Pagination totalPages={totalPages} />
+      <Pagination totalPages={totalPages} additionalUrl="#movimientos" />
     </>
   )
 }

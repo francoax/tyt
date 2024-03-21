@@ -5,7 +5,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
-export default function Pagination({ totalPages }: { totalPages: number }) {
+export default function Pagination({ totalPages, additionalUrl = '' }: { totalPages: number, additionalUrl?: string }) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const currentPage = Number(searchParams.get('page')) || 1
@@ -25,6 +25,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
         direction="left"
         href={createPageUrl(currentPage - 1)}
         isDisabled={currentPage <= 1}
+        additionalUrl={additionalUrl}
       />
 
       <div className="items-center hidden md:flex gap-x-3">
@@ -52,6 +53,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
         direction="right"
         href={createPageUrl(currentPage + 1)}
         isDisabled={currentPage >= totalPages}
+        additionalUrl={additionalUrl}
       />
     </div>
   )
@@ -62,11 +64,13 @@ function PaginationNumber({
   href,
   isActive,
   position,
+  additionalUrl
 } : {
   page: number | string,
   href: string,
   isActive?: boolean,
-  position?: 'first' | 'last' | 'middle' | 'single'
+  position?: 'first' | 'last' | 'middle' | 'single',
+  additionalUrl?: string
 }) {
   const className = clsx(
     "px-2 py-1 rounded-md text-sm text-gray-700 hover:bg-blue-500",
@@ -78,7 +82,7 @@ function PaginationNumber({
   return isActive || position === 'middle' ? (
     <div className={className}>{page}</div>
   ) : (
-    <Link href={`${href}#movimientos`} className={className}>
+    <Link href={`${href}${additionalUrl}`} className={className}>
       {page}
     </Link>
   )
@@ -88,10 +92,12 @@ function PaginationArrow({
   href,
   direction,
   isDisabled,
+  additionalUrl
 }: {
   href: string,
   direction: 'left' | 'right',
-  isDisabled?: boolean
+  isDisabled?: boolean,
+  additionalUrl?: string
 }) {
   const className = clsx(
     "flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-300",
@@ -109,7 +115,7 @@ function PaginationArrow({
   return isDisabled ? (
     <div className={className}>{icon}</div>
   ) : (
-    <Link className={className} href={`${href}#movimientos`}>{icon}</Link>
+    <Link className={className} href={`${href}${additionalUrl}`}>{icon}</Link>
   )
 }
 
