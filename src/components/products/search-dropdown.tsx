@@ -38,6 +38,7 @@ export function SearchDropdown({
   return (
     <div className="sm:mt-3">
       <SelectInput
+        showLabel={false}
         placeholder={placeholder}
         isClearable={inputValue}
         instanceId={'categories-dropdown'}

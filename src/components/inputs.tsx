@@ -22,10 +22,10 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   type?: string,
   className?: string,
   helpMessage?: string,
+  showLabel?: boolean
 }
 
-export function Input({ label, htmlFor, name, state, errorFor, requiredInput, type, className, helpMessage, ...props}: InputProps) {
-  const labelText = requiredInput ? <>{label} <span className="text-red-500">*</span></> : label
+export function Input({ label, htmlFor, name, state, errorFor, requiredInput, type, className, helpMessage, showLabel = true, ...props}: InputProps) {
   const hasError = state?.errors && state?.errors[name!]
   let errorMessage = ''
 
@@ -34,7 +34,7 @@ export function Input({ label, htmlFor, name, state, errorFor, requiredInput, ty
   }
   return (
     <div className={className}>
-      {type !== 'hidden' &&
+      {type !== 'hidden' && showLabel &&
         <Label htmlFor={htmlFor} required={requiredInput} text={label} />
       }
       <input
@@ -77,7 +77,8 @@ type Props = {
   placeholder: string,
   requiredInput?: boolean,
   defaultValue?: SelectOption | SelectOption[],
-  helpMessage?: string | React.ReactNode
+  helpMessage?: string | React.ReactNode,
+  showLabel?: boolean
 }
 
 type AdditionalProps = {
@@ -103,7 +104,7 @@ const customStyles: StylesConfig = {
   })
 };
 
-export function SelectInput({ name, options, placeholder, htmlFor, label, errorFor, state, requiredInput, defaultValue, helpMessage, ...props }: SelectProps) {
+export function SelectInput({ name, options, placeholder, htmlFor, label, errorFor, state, requiredInput, defaultValue, helpMessage, showLabel = true, ...props }: SelectProps) {
   const hasError = state?.errors && state?.errors[name!]
   let errorMessage = ''
 
@@ -113,7 +114,9 @@ export function SelectInput({ name, options, placeholder, htmlFor, label, errorF
 
   return (
     <div>
-      <Label htmlFor={htmlFor} required={requiredInput} text={label} />
+      {
+        showLabel && <Label htmlFor={htmlFor} required={requiredInput} text={label} />
+      }
       <Select
         maxMenuHeight={300}
         defaultValue={defaultValue}
@@ -140,7 +143,7 @@ export function SelectInput({ name, options, placeholder, htmlFor, label, errorF
   )
 }
 
-export function CreatableSelectInput({ name, options, placeholder, htmlFor, label, errorFor, state, requiredInput, defaultValue, helpMessage, ...props }: SelectProps) {
+export function CreatableSelectInput({ name, options, placeholder, htmlFor, label, errorFor, state, requiredInput, defaultValue, helpMessage, showLabel = true, ...props }: SelectProps) {
   const hasError = state?.errors && state?.errors[name!]
   let errorMessage = ''
 
@@ -149,7 +152,9 @@ export function CreatableSelectInput({ name, options, placeholder, htmlFor, labe
   }
   return (
     <div>
-      <Label htmlFor={htmlFor} required={requiredInput} text={label} />
+      {
+        showLabel && <Label htmlFor={htmlFor} required={requiredInput} text={label} />
+      }
       <CreatableSelect
         maxMenuHeight={180}
         defaultValue={defaultValue}
