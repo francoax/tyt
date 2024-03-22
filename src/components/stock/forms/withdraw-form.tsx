@@ -31,7 +31,7 @@ export default function DepositForm(
     params.set('stock_after', (product.stock - amount).toString())
     setStockAfter(product.stock - amount)
 
-    replace(`${pathname}?${params.toString()}`)
+    replace(`${pathname}?${params.toString()}`, { scroll: false })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
@@ -44,7 +44,7 @@ export default function DepositForm(
       params.delete(input)
     }
 
-    replace(`${pathname}?${params.toString()}`)
+    replace(`${pathname}?${params.toString()}`, { scroll: false })
   }, 500)
 
   const workplaceOptions : SelectOption[] = workplaces.map(w => ({ label: w.name, value: w.id.toString() }))

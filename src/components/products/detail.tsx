@@ -1,6 +1,6 @@
 "use client";
 
-import { SM_DEPOSIT, SM_WITHDRAW } from "@/lib/constants";
+import { ITEMS_PER_PAGE, SM_DEPOSIT, SM_WITHDRAW } from "@/lib/constants";
 import { Product, StockMovement } from "@/lib/definitions";
 import clsx from "clsx";
 import { format } from "date-fns";
@@ -9,8 +9,10 @@ import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "../buttons";
 import Modal from "../modal";
 import { useEffect, useState } from "react";
-import { getMovementsForProduct } from "@/lib/data/stock";
+import { getAmountOfMovementsByProduct, getMovementsForProduct } from "@/lib/data/stock";
 import DateFilter from "./search-date";
+import Pagination from "../pagination";
+import { useSearchParams } from "next/navigation";
 
 export default function ProductDetail({ product }: { product: Product}) {
   return (
@@ -44,13 +46,18 @@ export default function ProductDetail({ product }: { product: Product}) {
   )
 }
 
-export function StockMovements({ product_id, unit, currentPage }: { product_id: number, unit: string,  currentPage: number }) {
+export function StockMovements({ product_id, unit, currentPage, dates }: { product_id: number, unit: string, currentPage: number, dates: { from: string, to: string} }) {
 
   const [movements, setMovements] = useState<StockMovement[]>([])
+  const [totalPages, setTotalPages] = useState(0)
 
   useEffect(() => {
-    getMovementsForProduct(product_id, currentPage).then((data) => setMovements(data))
-  }, [currentPage, product_id])
+    if(dates.from && dates.to) {
+      getMovementsForProduct(product_id, currentPage, dates).then((data) => setMovements(data))
+
+      getAmountOfMovementsByProduct(product_id, dates).then((value) => setTotalPages(value))
+    }
+  }, [currentPage, product_id, dates])
 
   return (
     <>
@@ -59,12 +66,10 @@ export function StockMovements({ product_id, unit, currentPage }: { product_id: 
           Movimientos de stock
         </h2>
         <p className="mt-1 text-sm text-gray-500">
-          Aquellos retiros que esten pendientes, seran marcados como. Una vez confirmado, se podra volver a retirar.
+          Aquellos retiros que esten pendientes, seran marcados como pendientes de confirmacion. Una vez confirmado, se podra volver a retirar. El listado se filtrara por mes corriente.
         </p>
       </div>
-      {
-        movements.length && <DateFilter />
-      }
+      <DateFilter />
       <div className="flex flex-col mt-6">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -74,6 +79,7 @@ export function StockMovements({ product_id, unit, currentPage }: { product_id: 
           </div>
         </div>
       </div>
+      <Pagination totalPages={totalPages} />
     </>
   )
 }

@@ -6,7 +6,7 @@ import { getProductById, hasPendingWithdraws } from "@/lib/data/products"
 import { getAmountOfMovementsByProduct } from "@/lib/data/stock"
 import { notFound } from "next/navigation"
 
-export default async function Page({ params, searchParams }: { params: { id: string }, searchParams: { page?: string }}) {
+export default async function Page({ params, searchParams }: { params: { id: string }, searchParams: { page?: string, from: string, to: string  }}) {
   const { id } = params
   const product = await getProductById(Number.parseInt(id), true)
 
@@ -16,7 +16,9 @@ export default async function Page({ params, searchParams }: { params: { id: str
   const hasPending = await hasPendingWithdraws(product.id)
 
   const currentPage = Number(searchParams?.page) || 1
-  const totalPages = await getAmountOfMovementsByProduct(product.id)
+
+  const from = searchParams.from
+  const to = searchParams.to
 
   return (
     <>
@@ -55,8 +57,7 @@ export default async function Page({ params, searchParams }: { params: { id: str
         </div>
       </div>
       <ProductDetail product={product as any} />
-      <StockMovements product_id={product.id} unit={product.unit.description} currentPage={currentPage} />
-      <Pagination totalPages={totalPages} additionalUrl="#movimientos" />
+      <StockMovements product_id={product.id} unit={product.unit.description} currentPage={currentPage} dates={{from, to}}/>
     </>
   )
 }

@@ -1,36 +1,79 @@
 'use client';
 
-import { format, getMonth, lastDayOfMonth, startOfMonth } from "date-fns";
+import { addDays, format, lastDayOfMonth, startOfMonth } from "date-fns";
 import { Input } from "../inputs";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Button } from "../buttons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Alert from "../alerts";
 import { ERROR_STATUS } from "@/lib/constants";
-import { es } from "date-fns/locale";
+import { usePathname, useRouter } from "next/navigation";
 
 type Dates = {
-  date_from?: Date | null,
-  date_to?: Date | null
+  date_from: Date,
+  date_to: Date
+}
+
+const getDatesOfCurrentMonth = (): Dates => {
+  const firstDay = startOfMonth(new Date())
+  const lastDay = lastDayOfMonth(new Date())
+
+  return {
+    date_from: new Date(firstDay.toLocaleDateString()),
+    date_to: new Date(lastDay.toLocaleDateString())
+  }
 }
 
 export default function DateFilter() {
-  const firstDayOfMonth = startOfMonth(new Date())
-  const lastDay = lastDayOfMonth(new Date())
-  const formattedDate = format(firstDayOfMonth, 'yyyy-MM-dd')
-  const formattedLastDay = format(lastDay, 'yyyy-MM-dd')
+  const [dates, setDates] = useState<Dates>(getDatesOfCurrentMonth())
 
-  const [dates, setDates] = useState<Dates>({ date_from: new Date(formattedDate)})
+  const [clearFilter, setClearFilter] = useState(false)
+
+  const pathname = usePathname()
+  const { replace } = useRouter()
+
+  useEffect(() => {
+    const params = new URLSearchParams()
+
+    params.set('from', format(dates.date_from, 'yyyy-MM-dd'))
+    params.set('to', format(dates.date_to, 'yyyy-MM-dd'))
+
+    replace(`${pathname}?${params.toString()}`, { scroll: false })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleDatesFilter = () => {
+    const params = new URLSearchParams()
     const { date_from, date_to } = dates
 
-    if(date_to! < date_from!) {
+
+    if(date_to < date_from) {
       toast(() => (
-        <Alert title={'Filtrar movie'} reason={ERROR_STATUS} description={'La fecha desde debe ser mayor.'} />
-      ))
+        <Alert title={'Filtrar fechas'} reason={ERROR_STATUS} description={'La fecha desde debe ser mayor.'} />
+        ))
+      return
     }
+
+    setClearFilter(true)
+
+    params.set('from', format(dates.date_from, 'yyyy-MM-dd'))
+    params.set('to', format(dates.date_to, 'yyyy-MM-dd'))
+
+    replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }
+
+  const handleResetFilter = () => {
+    const params = new URLSearchParams()
+    setClearFilter(false)
+
+    const dates = getDatesOfCurrentMonth()
+    setDates(dates)
+
+    params.set('from', format(dates.date_from, 'yyyy-MM-dd'))
+    params.set('to', format(dates.date_to, 'yyyy-MM-dd'))
+
+    replace(`${pathname}?${params.toString()}`, { scroll: false })
   }
 
   return (
@@ -40,9 +83,9 @@ export default function DateFilter() {
       type="date"
       placeholder="Seleccionar fecha"
       label="Fecha desde"
-      defaultValue={formattedDate}
+      value={format(dates.date_from, 'yyyy-MM-dd')}
       helpMessage="El formato visto es mes/dia/año"
-      onChange={(e) => setDates((prev) => ({...prev, date_from: e.target.valueAsDate}))}
+      onChange={(e) => setDates((prev) => ({...prev, date_from: addDays(new Date(e.target.valueAsDate?.toLocaleDateString()!), 1)}))}
     />
     <Input
       name="date_to"
@@ -50,12 +93,19 @@ export default function DateFilter() {
       placeholder="Seleccionar fecha"
       label="Fecha hasta"
       helpMessage="El formato visto es mes/dia/año"
-      defaultValue={formattedLastDay}
-      onChange={(e) => setDates((prev) => ({...prev, date_to: e.target.valueAsDate}))}
+      value={format(dates.date_to, 'yyyy-MM-dd')}
+      onChange={(e) => setDates((prev) => ({...prev, date_to: addDays(new Date(e.target.valueAsDate?.toLocaleDateString()!), 1)}))}
     />
     <Button onClick={handleDatesFilter} type="submit" className="bg-gray-300">
       <MagnifyingGlassIcon className="w-4 inline-flex" /> Filtrar
     </Button>
+    {
+      clearFilter && (
+        <Button onClick={handleResetFilter} type="submit" className="bg-gray-300">
+          <XMarkIcon className="w-4 inline-flex" /> Resetear
+        </Button>
+      )
+    }
     </div>
   )
 }

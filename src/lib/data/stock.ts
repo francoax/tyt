@@ -10,6 +10,7 @@ import {
 import prisma from "../prisma";
 import { hasPendingWithdraws } from "./products";
 import { ITEMS_PER_PAGE, SM_DEPOSIT, SM_WITHDRAW } from "../constants";
+import { addHours } from "date-fns";
 
 export async function getDataForStockTable() {
   noStore();
@@ -84,11 +85,27 @@ export async function getAmountOfPendingWithdraws() {
   });
 }
 
-export async function getAmountOfMovementsByProduct(product_id: number) {
+export async function getAmountOfMovementsByProduct(
+  product_id: number,
+  dates: { from: string; to: string },
+) {
   noStore();
+  const fromDate = new Date(dates.from);
+  const toDate = new Date(dates.to);
+
   const amount = await prisma.stockMovement.count({
     where: {
-      product_id,
+      AND: [
+        {
+          product_id,
+        },
+        {
+          date_action: {
+            gte: fromDate,
+            lte: toDate,
+          },
+        },
+      ],
     },
   });
 
@@ -168,11 +185,26 @@ export async function confirmWithdrawForProduct(
 export async function getMovementsForProduct(
   product_id: number,
   currentPage: number,
+  dates: { from: string; to: string },
 ) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  const fromDate = new Date(dates.from);
+  const toDate = addHours(new Date(dates.to), 46.99);
+
   return await prisma.stockMovement.findMany({
     where: {
-      product_id,
+      AND: [
+        {
+          product_id,
+        },
+        {
+          date_action: {
+            gte: fromDate.toISOString(),
+            lte: toDate.toISOString(),
+          },
+        },
+      ],
     },
     include: {
       supplier: true,

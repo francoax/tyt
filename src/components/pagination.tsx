@@ -64,7 +64,7 @@ function PaginationNumber({
   href,
   isActive,
   position,
-  additionalUrl
+  additionalUrl = ''
 } : {
   page: number | string,
   href: string,
@@ -82,7 +82,7 @@ function PaginationNumber({
   return isActive || position === 'middle' ? (
     <div className={className}>{page}</div>
   ) : (
-    <Link href={`${href}${additionalUrl}`} className={className}>
+    <Link shallow scroll={false} href={`${href}${additionalUrl}`} className={className}>
       {page}
     </Link>
   )
@@ -92,7 +92,7 @@ function PaginationArrow({
   href,
   direction,
   isDisabled,
-  additionalUrl
+  additionalUrl = ''
 }: {
   href: string,
   direction: 'left' | 'right',
@@ -115,7 +115,7 @@ function PaginationArrow({
   return isDisabled ? (
     <div className={className}>{icon}</div>
   ) : (
-    <Link className={className} href={`${href}${additionalUrl}`}>{icon}</Link>
+    <Link shallow scroll={false} className={className} href={`${href}${additionalUrl}`}>{icon}</Link>
   )
 }
 
