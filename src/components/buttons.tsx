@@ -24,7 +24,7 @@ export function Button({ children, className, primary = false, ...rest }: Button
         'px-4 py-2 font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40',
         className,
         {
-          'hover:bg-gray-200' : primary === false
+          'text-white bg-zinc-400 hover:bg-zinc-300' : primary === false
         },
         {
           'text-white bg-blue-600 hover:bg-blue-500 focus:ring-blue-300 focus:ring-opacity-40' : primary === true
@@ -88,7 +88,10 @@ export function UpdateButton({ href }: { href: string }) {
     <Link
       href={href}
     >
-      <PencilIcon className="w-5 text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none" />
+      <p className='flex items-center gap-1 text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none'>
+        <span className='text-sm'>Editar</span>
+        <PencilIcon className="w-5" />
+      </p>
     </Link>
   );
 }
@@ -111,7 +114,10 @@ export function DeleteButton({ title, description, id, deleteAction }: { title:s
   return (
     <>
       <button onClick={() => setShowModal(true)}>
-        <TrashIcon className="w-5 text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none" />
+        <p className='flex items-center gap-1 text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none'>
+          <span className='text-sm'>Eliminar</span>
+          <TrashIcon className="w-5" />
+        </p>
       </button>
 
       <Modal show={showModal} title={title}>

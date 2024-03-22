@@ -6,7 +6,7 @@ import Modal from "../modal";
 import InitForm from "./forms/init-action-form";
 import { SM_DEPOSIT } from "@/lib/constants";
 import Link from "next/link";
-import { CheckIcon } from "@heroicons/react/24/outline";
+import { ArrowDownOnSquareIcon, ArrowUpOnSquareIcon, CheckIcon } from "@heroicons/react/24/outline";
 
 export function ActionButton({
   action
@@ -16,21 +16,26 @@ export function ActionButton({
 
   const [show, setShowModal] = useState(false)
 
-  const actionBody : { [key: string] : { title: string, button: string } } = {
+  const actionBody : { [key: string] : { title: string, button: string, icon: React.ReactNode } } = {
     WITHDRAW: {
       title: 'Retirar stock',
-      button: 'Retirar'
+      button: 'Retirar stock',
+      icon: <ArrowUpOnSquareIcon className="w-5 text-white" />
     },
     DEPOSIT: {
       title: 'Ingresar stock',
-      button: 'Ingresar'
+      button: 'Ingresar stock',
+      icon: <ArrowDownOnSquareIcon className="w-5 text-white" />
     }
   }
 
   return (
     <>
       <Button primary={action === SM_DEPOSIT} onClick={() => setShowModal(true)}>
-        {actionBody[action].button}
+        <p className="flex items-center gap-1">
+          {actionBody[action].button}
+          {actionBody[action].icon}
+        </p>
       </Button>
 
       <Modal

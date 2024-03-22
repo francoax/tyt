@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-[95svh] flex justify-center items-center">
+    <main className="min-h-screen flex justify-center items-center">
       <LoginForm />
     </main>
   );

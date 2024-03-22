@@ -8,7 +8,10 @@ export function DetailProduct({ id }: { id: number }) {
     <Link
       href={`${PRODUCTS_ROUTE}/${id}/detail`}
     >
-      <InformationCircleIcon className="w-5 text-gray-500 transition-colors duration-200 hover:text-blue-500 focus:outline-none" />
+      <p className="flex items-center gap-1 text-gray-500 transition-colors duration-200 hover:text-blue-500 focus:outline-none">
+        <span className="text-sm">Ver mas info</span>
+        <InformationCircleIcon className="w-5" />
+      </p>
     </Link>
   )
 }
