@@ -1,6 +1,6 @@
 'use client';
 
-import { addDays, format, lastDayOfMonth, startOfMonth } from "date-fns";
+import { addDays, format, formatISO, lastDayOfMonth, startOfMonth } from "date-fns";
 import { Input } from "../inputs";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Button } from "../buttons";
@@ -20,8 +20,8 @@ const getDatesOfCurrentMonth = (): Dates => {
   const lastDay = lastDayOfMonth(new Date())
 
   return {
-    date_from: new Date(firstDay.toLocaleDateString()),
-    date_to: new Date(lastDay.toLocaleDateString())
+    date_from: firstDay,
+    date_to: lastDay
   }
 }
 
@@ -33,13 +33,17 @@ export default function DateFilter() {
   const pathname = usePathname()
   const { replace } = useRouter()
 
-  useEffect(() => {
-    const params = new URLSearchParams()
-
+  const updateUrl = (params: any) => {
     params.set('from', format(dates.date_from, 'yyyy-MM-dd'))
     params.set('to', format(dates.date_to, 'yyyy-MM-dd'))
 
     replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }
+
+  useEffect(() => {
+    const params = new URLSearchParams()
+
+    updateUrl(params)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -57,21 +61,19 @@ export default function DateFilter() {
 
     setClearFilter(true)
 
-    params.set('from', format(dates.date_from, 'yyyy-MM-dd'))
-    params.set('to', format(dates.date_to, 'yyyy-MM-dd'))
-
-    replace(`${pathname}?${params.toString()}`, { scroll: false })
+    updateUrl(params)
   }
 
   const handleResetFilter = () => {
-    const params = new URLSearchParams()
     setClearFilter(false)
 
-    const dates = getDatesOfCurrentMonth()
-    setDates(dates)
+    const params = new URLSearchParams()
+    const datesCurrentMonth = getDatesOfCurrentMonth()
 
-    params.set('from', format(dates.date_from, 'yyyy-MM-dd'))
-    params.set('to', format(dates.date_to, 'yyyy-MM-dd'))
+    setDates(datesCurrentMonth)
+
+    params.set('from', format(datesCurrentMonth.date_from, 'yyyy-MM-dd'))
+    params.set('to', format(datesCurrentMonth.date_to, 'yyyy-MM-dd'))
 
     replace(`${pathname}?${params.toString()}`, { scroll: false })
   }
@@ -79,33 +81,33 @@ export default function DateFilter() {
   return (
     <div className="flex items-center flex-wrap gap-5 mt-5">
       <Input
-      name="date_from"
-      type="date"
-      placeholder="Seleccionar fecha"
-      label="Fecha desde"
-      value={format(dates.date_from, 'yyyy-MM-dd')}
-      helpMessage="El formato visto es mes/dia/año"
-      onChange={(e) => setDates((prev) => ({...prev, date_from: addDays(new Date(e.target.valueAsDate?.toLocaleDateString()!), 1)}))}
-    />
-    <Input
-      name="date_to"
-      type="date"
-      placeholder="Seleccionar fecha"
-      label="Fecha hasta"
-      helpMessage="El formato visto es mes/dia/año"
-      value={format(dates.date_to, 'yyyy-MM-dd')}
-      onChange={(e) => setDates((prev) => ({...prev, date_to: addDays(new Date(e.target.valueAsDate?.toLocaleDateString()!), 1)}))}
-    />
-    <Button onClick={handleDatesFilter} type="submit" className="bg-gray-300">
-      <MagnifyingGlassIcon className="w-4 inline-flex" /> Filtrar
-    </Button>
-    {
-      clearFilter && (
-        <Button onClick={handleResetFilter} type="button" className="bg-gray-300">
-          <XMarkIcon className="w-4 inline-flex" /> Resetear
-        </Button>
-      )
-    }
+        name="date_from"
+        type="date"
+        placeholder="Seleccionar fecha"
+        label="Fecha desde"
+        value={format(dates.date_from, 'yyyy-MM-dd')}
+        helpMessage="El formato visto es mes/dia/año"
+        onChange={(e) => setDates((prev) => ({...prev, date_from: addDays(new Date(e.target.valueAsDate?.toLocaleDateString()!), 1)}))}
+      />
+      <Input
+        name="date_to"
+        type="date"
+        placeholder="Seleccionar fecha"
+        label="Fecha hasta"
+        helpMessage="El formato visto es mes/dia/año"
+        value={format(dates.date_to, 'yyyy-MM-dd')}
+        onChange={(e) => setDates((prev) => ({...prev, date_to: addDays(new Date(e.target.valueAsDate?.toLocaleDateString()!), 1)}))}
+      />
+      <Button onClick={handleDatesFilter} type="submit" className="bg-gray-300">
+        <MagnifyingGlassIcon className="w-4 inline-flex" /> Filtrar
+      </Button>
+      {
+        clearFilter && (
+          <Button onClick={handleResetFilter} type="button" className="bg-gray-300">
+            <XMarkIcon className="w-4 inline-flex" /> Resetear
+          </Button>
+        )
+      }
     </div>
   )
 }
