@@ -14,3 +14,6 @@ export const PRODUCTS_ROUTE = "/home/products";
 export const SUPPLIERS_ROUTE = "/home/suppliers";
 export const UNITS_ROUTE = "/home/units";
 export const WORKPLACES_ROUTE = "/home/workplace";
+
+// Pagination
+export const ITEMS_PER_PAGE = 6;

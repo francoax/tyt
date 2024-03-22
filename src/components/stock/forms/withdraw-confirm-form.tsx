@@ -36,7 +36,7 @@ export default function WithdrawConfirmForm({ movement }: { movement: StockMovem
 
     setStockAfter(movement.product?.stock! + amount - realAmount)
 
-    replace(`${pathname}?${params.toString()}`)
+    replace(`${pathname}?${params.toString()}`, { scroll: false })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
@@ -49,7 +49,7 @@ export default function WithdrawConfirmForm({ movement }: { movement: StockMovem
       params.delete(input)
     }
 
-    replace(`${pathname}?${params.toString()}`)
+    replace(`${pathname}?${params.toString()}`, { scroll: false })
   }, 500)
 
   if(state.status === WARNING_STATUS) {

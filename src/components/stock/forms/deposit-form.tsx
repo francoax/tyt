@@ -32,7 +32,7 @@ export default function DepositForm(
     params.set('stock_after', (amount + product.stock).toString())
     setStockAfter(amount + product.stock)
 
-    replace(`${pathname}?${params.toString()}`)
+    replace(`${pathname}?${params.toString()}`, { scroll: false })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
@@ -45,7 +45,7 @@ export default function DepositForm(
       params.delete(input)
     }
 
-    replace(`${pathname}?${params.toString()}`)
+    replace(`${pathname}?${params.toString()}`, { scroll: false })
   }, 500)
 
   const suppliersOptions : SelectOption[] = product.suppliers!.map(s => ({ value: s.id.toString(), label: s.name }))

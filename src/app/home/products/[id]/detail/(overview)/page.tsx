@@ -1,23 +1,29 @@
 import { Button, ReturnButton, UpdateButton } from "@/components/buttons"
+import Pagination from "@/components/pagination"
 import ProductDetail, { StockMovements } from "@/components/products/detail"
 import { PRODUCTS_ROUTE } from "@/lib/constants"
 import { getProductById, hasPendingWithdraws } from "@/lib/data/products"
+import { getAmountOfMovementsByProduct } from "@/lib/data/stock"
 import { notFound } from "next/navigation"
 
-export default async function Page({ params }: { params: { id: string }}) {
+export default async function Page({ params, searchParams }: { params: { id: string }, searchParams: { page?: string, from: string, to: string  }}) {
   const { id } = params
   const product = await getProductById(Number.parseInt(id), true)
 
   if(!product) {
     notFound()
   }
-
   const hasPending = await hasPendingWithdraws(product.id)
+
+  const currentPage = Number(searchParams?.page) || 1
+
+  const from = searchParams.from
+  const to = searchParams.to
 
   return (
     <>
       <div>
-        <ReturnButton>
+        <ReturnButton href={PRODUCTS_ROUTE}>
           Volver
         </ReturnButton>
         <p className="m-5 mb-2 px-3 py-1 text-sm text-center text-blue-600 bg-blue-100 rounded-full">
@@ -51,7 +57,7 @@ export default async function Page({ params }: { params: { id: string }}) {
         </div>
       </div>
       <ProductDetail product={product as any} />
-      <StockMovements product={product as any} />
+      <StockMovements product_id={product.id} unit={product.unit.description} currentPage={currentPage} dates={{from, to}}/>
     </>
   )
 }
