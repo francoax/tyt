@@ -101,7 +101,7 @@ export default function DateFilter() {
     </Button>
     {
       clearFilter && (
-        <Button onClick={handleResetFilter} type="submit" className="bg-gray-300">
+        <Button onClick={handleResetFilter} type="button" className="bg-gray-300">
           <XMarkIcon className="w-4 inline-flex" /> Resetear
         </Button>
       )
