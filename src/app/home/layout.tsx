@@ -1,4 +1,3 @@
-import Script from "next/script";
 import SideBar from "../../components/sidebar";
 
 export default function Layout(
