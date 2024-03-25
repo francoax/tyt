@@ -8,38 +8,53 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  //directUrl = env("DIRECT_URL")
 }
 
 model User {
   id       Int    @id @default(autoincrement())
   username String @unique @db.VarChar(30)
   password String
+
+  @@map("users")
 }
 
 model Product {
-  id             Int                    @id @default(autoincrement())
-  name           String                 @unique @db.VarChar(30)
-  stock          Int                    @default(0)
-  category       Category               @relation(fields: [categoryId], references: [id])
-  categoryId     Int
-  unit           Unit                   @relation(fields: [unitId], references: [id])
-  unitId         Int
-  suppliers      ProductsPerSuppliers[]
-  stockMovements StockMovement[]
+  id              Int             @id @default(autoincrement())
+  name            String          @unique @db.VarChar(30)
+  stock           Int             @default(0)
+  category        Category        @relation(fields: [category_id], references: [id])
+  category_id     Int
+  unit            Unit            @relation(fields: [unit_id], references: [id])
+  unit_id         Int
+  suppliers       Supplier[]
+  stock_movements StockMovement[]
 
   @@map("products")
 }
 
 model StockMovement {
-  productId      Int         @id
-  dateAction     DateTime
-  typeAction     ActionTypes
-  amountInvolved Int
-  dollarAtDate   Int
-  totalPrice     Int
-  Product        Product     @relation(fields: [productId], references: [id])
+  id               Int         @default(autoincrement())
+  product_id       Int
+  date_action      DateTime    @default(now())
+  type_action      ActionTypes
+  amount_involved  Int?
+  real_amount_used Int?
+  date_confirmed   DateTime?
+  dollar_at_date   Int?
+  total_price      Int?
+  stock_before     Int?
+  stock_after      Int?
+  product          Product     @relation(fields: [product_id], references: [id])
+  workplace        Workplace?  @relation(fields: [workplace_id], references: [id])
+  supplier         Supplier?   @relation(fields: [supplier_id], references: [id])
+  workplace_id     Int?
+  budget_id        String?
+  supplier_id      Int?
+  description      String?
 
-  @@map("stockmovements")
+  @@id([id, product_id])
+  @@map("stock_movements")
 }
 
 enum ActionTypes {
@@ -47,9 +62,18 @@ enum ActionTypes {
   DEPOSIT
 }
 
+model Workplace {
+  id            Int             @id @default(autoincrement())
+  name          String          @unique @db.VarChar(30)
+  address       String?
+  StockMovement StockMovement[]
+
+  @@map("workplaces")
+}
+
 model Category {
   id          Int       @id @default(autoincrement())
-  description String    @db.VarChar(30)
+  description String    @unique @db.VarChar(30)
   products    Product[]
 
   @@map("categories")
@@ -64,21 +88,13 @@ model Unit {
 }
 
 model Supplier {
-  id       Int                    @id @default(autoincrement())
-  name     String                 @unique
-  email    String?                @unique
-  tel      String?
-  address  String?
-  products ProductsPerSuppliers[]
+  id            Int             @id @default(autoincrement())
+  name          String          @unique
+  email         String?
+  tel           String?
+  address       String?
+  products      Product[]
+  StockMovement StockMovement[]
 
   @@map("suppliers")
-}
-
-model ProductsPerSuppliers {
-  product    Product  @relation(fields: [productId], references: [id])
-  productId  Int
-  supplier   Supplier @relation(fields: [supplierId], references: [id])
-  supplierId Int
-
-  @@id([productId, supplierId])
 }

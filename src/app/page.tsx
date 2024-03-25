@@ -1,10 +1,17 @@
-import dotenv from "dotenv";
+import LoginForm from "@/components/login";
+import { Metadata } from "next";
 
-dotenv.config();
+export const metadata: Metadata = {
+  title: {
+    template: '%s | T&T',
+    default: 'Ingresar | T&T',
+  },
+};
 
 export default function Home() {
   return (
-    <main className="min-h-screen p-6">
+    <main className="flex items-center justify-center h-svh md:min-h-screen">
+      <LoginForm />
     </main>
   );
 }
