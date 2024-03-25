@@ -87,7 +87,7 @@ export default function DateFilter() {
         label="Fecha desde"
         value={format(dates.date_from, 'yyyy-MM-dd')}
         helpMessage="El formato visto es mes/dia/año"
-        onChange={(e) => setDates((prev) => ({...prev, date_from: addDays(new Date(e.target.valueAsDate?.toLocaleDateString()!), 1)}))}
+        onChange={(e) => setDates((prev) => ({...prev, date_from: addDays(new Date(e.target.valueAsDate?.toString()!), 1)}))}
       />
       <Input
         name="date_to"
@@ -96,7 +96,7 @@ export default function DateFilter() {
         label="Fecha hasta"
         helpMessage="El formato visto es mes/dia/año"
         value={format(dates.date_to, 'yyyy-MM-dd')}
-        onChange={(e) => setDates((prev) => ({...prev, date_to: addDays(new Date(e.target.valueAsDate?.toLocaleDateString()!), 1)}))}
+        onChange={(e) => setDates((prev) => ({...prev, date_to: addDays(new Date(e.target.valueAsDate?.toString()!), 1)}))}
       />
       <Button onClick={handleDatesFilter} type="submit" className="bg-gray-300">
         <MagnifyingGlassIcon className="w-4 inline-flex" /> Filtrar
