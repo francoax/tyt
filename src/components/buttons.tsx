@@ -107,8 +107,8 @@ export function DeleteButton({ title, description, id, deleteAction }: { title:s
     const res = await deleteProductWithId()
     toast.dismiss(deleting)
 
-    toast((t) => (
-      <Alert title={title} description={res.message} reason={res.status} />
+    toast.custom((t) => (
+      <Alert visible={t.visible} title={title} description={res.message} reason={res.status} />
     ))
   }
   return (

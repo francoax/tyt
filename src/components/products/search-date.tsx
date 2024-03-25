@@ -53,8 +53,8 @@ export default function DateFilter() {
 
 
     if(date_to < date_from) {
-      toast(() => (
-        <Alert title={'Filtrar fechas'} reason={ERROR_STATUS} description={'La fecha desde debe ser mayor.'} />
+      toast.custom((t) => (
+        <Alert visible={t.visible} title={'Filtrar fechas'} reason={ERROR_STATUS} description={'La fecha desde debe ser mayor.'} />
         ))
       return
     }
