@@ -13,11 +13,8 @@ export default async function Page({ params }: { params: { movementId: string }}
 
   return (
     <>
-      <ReturnButton>
-        Volver
-      </ReturnButton>
       <div>
-        <h2 className="text-lg font-medium text-gray-800 mt-5">
+        <h2 className="text-lg font-medium text-gray-800">
           Confirmar el retiro de stock para <span className="text-blue-400">{movement.product?.name.toUpperCase()}</span>
           <span className="ml-2 px-3 py-1 text-xs text-blue-500 bg-blue-200 rounded-full">
             (Stock actual {movement.product?.stock} {movement.product?.unit?.description})
