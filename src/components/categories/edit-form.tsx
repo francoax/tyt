@@ -4,7 +4,7 @@ import { updateCategoryAction } from "@/lib/actions/categories";
 import { Input } from "../inputs";
 import { Category } from "@prisma/client";
 import Form from "../form";
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 import { CATEGORIES_ROUTE } from "@/lib/constants";
 
 export default function EditCategoryForm({ category }: { category: Category }) {

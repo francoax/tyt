@@ -3,7 +3,7 @@
 import { createCategoryAction } from "@/lib/actions/categories";
 import { Input } from "../inputs";
 import Form from "../form";
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 import { CATEGORIES_ROUTE } from "@/lib/constants";
 
 

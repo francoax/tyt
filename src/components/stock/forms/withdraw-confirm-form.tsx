@@ -5,7 +5,7 @@ import { Input, TextareaInput } from "@/components/inputs";
 import { confirmWithdrawAction } from "@/lib/actions/stock";
 import { WARNING_STATUS } from "@/lib/constants";
 import { StockMovement } from "@/lib/definitions";
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";

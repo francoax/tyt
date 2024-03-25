@@ -1,6 +1,6 @@
 "use client";
 
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 import { Input } from "./inputs";
 import { signInAction } from "@/lib/actions/auth";
 import { Button } from './buttons';

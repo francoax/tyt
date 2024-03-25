@@ -4,7 +4,7 @@ import { SUPPLIERS_ROUTE } from "@/lib/constants";
 import Form from "../form";
 import { Input } from "../inputs";
 import { createSupplierAction } from "@/lib/actions/suppliers";
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 
 export default function SupplierCreateForm() {
   const [state, formAction] = useFormHandler('Crear proveedor', SUPPLIERS_ROUTE,  createSupplierAction)

@@ -15,7 +15,7 @@ const SideBar = () => {
       <button onClick={() => setShowSideBar(prevState => !prevState)} className="sm:hidden">
         <Bars3Icon className="w-10 h-10 m-2" />
       </button>
-      <aside onClick={() => setShowSideBar(prevState => !prevState)} className={`sm:flex flex-col w-full h-screen sm:w-64 px-5 py-4 overflow-y-auto bg-white border-r md:block ${showSideBar ? 'sm:slide-in absolute z-[1]' : 'sm:slide-out absolute z-[1]'}`}>
+      <aside onClick={() => setShowSideBar(prevState => !prevState)} className={`sm:flex flex-col w-full min-h-screen sm:w-64 px-5 py-4 overflow-y-auto bg-white border-r md:block ${showSideBar ? 'sm:slide-in absolute z-[1]' : 'sm:slide-out absolute z-[1]'}`}>
         <div className="flex flex-col justify-between flex-1 mt-6">
           <nav className="-mx-3 space-y-6">
             <NavLinks />

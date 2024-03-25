@@ -2,7 +2,7 @@
 
 import { Supplier } from "@/lib/definitions";
 import Form from "../form";
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 import { updateSupplierAction } from "@/lib/actions/suppliers";
 import { Input } from "../inputs";
 import { SUPPLIERS_ROUTE } from "@/lib/constants";

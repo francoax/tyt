@@ -20,7 +20,7 @@ export function ActionButton({
     WITHDRAW: {
       title: 'Retirar stock',
       button: 'Retirar stock',
-      icon: <ArrowUpOnSquareIcon className="w-5 text-white" />
+      icon: <ArrowUpOnSquareIcon className="w-5 text-gray-700" />
     },
     DEPOSIT: {
       title: 'Ingresar stock',

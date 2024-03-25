@@ -1,6 +1,6 @@
 "use client";
 
-import { ITEMS_PER_PAGE, SM_DEPOSIT, SM_WITHDRAW } from "@/lib/constants";
+import { SM_DEPOSIT, SM_WITHDRAW } from "@/lib/constants";
 import { Product, StockMovement } from "@/lib/definitions";
 import clsx from "clsx";
 import { format } from "date-fns";
@@ -12,29 +12,33 @@ import { useEffect, useState } from "react";
 import { getAmountOfMovementsByProduct, getMovementsForProduct } from "@/lib/data/stock";
 import DateFilter from "./search-date";
 import Pagination from "../pagination";
-import { useSearchParams } from "next/navigation";
 
 export default function ProductDetail({ product }: { product: Product}) {
   return (
-    <section className="flex items-center justify-between sm:justify-evenly flex-wrap gap-5 mt-5 p-6 rounded-md divide-gray-200 bg-gray-50">
+    <section
+      className="flex items-center justify-between sm:justify-around flex-wrap gap-5 mt-5 p-4 rounded-md divide-gray-200 bg-gray-50">
       <div>
-        <span className="mt-4 text-lg font-normal text-gray-500">ID</span>
-        <p className="mt-2 text-blue-500 uppercase">{product.id}</p>
+        <span className="mt-4 text-md font-normal text-gray-500">ID</span>
+        <p className="mt-2 text-sm text-blue-500 uppercase">{product.id}</p>
       </div>
       <div>
-        <span className="mt-4 text-lg font-normal text-gray-500">Nombre</span>
-        <p className="mt-2 text-blue-500 uppercase">{product.name}</p>
+        <span className="mt-4 text-md font-normal text-gray-500">Stock actual</span>
+        <p className="mt-2 text-sm text-blue-500 uppercase">{product.stock} {product.unit?.description}</p>
       </div>
       <div>
-        <span className="mt-4 text-lg font-normal text-gray-500">Categoria</span>
-        <p className="mt-2 text-blue-500 uppercase">{product.category?.description}</p>
+        <span className="mt-4 text-md font-normal text-gray-500">Nombre</span>
+        <p className="mt-2 text-sm text-blue-500 uppercase">{product.name}</p>
       </div>
       <div>
-        <span className="mt-4 text-lg font-normal text-gray-500">Unidad</span>
-        <p className="mt-2 text-blue-500 uppercase">{product.unit?.description}</p>
+        <span className="mt-4 text-md font-normal text-gray-500">Categoria</span>
+        <p className="mt-2 text-sm text-blue-500 uppercase">{product.category?.description}</p>
       </div>
       <div>
-        <span className="mt-4 text-lg font-normal text-gray-500">Proveedores</span>
+        <span className="mt-4 text-md font-normal text-gray-500">Unidad</span>
+        <p className="mt-2 text-sm text-blue-500 uppercase">{product.unit?.description}</p>
+      </div>
+      <div>
+        <span className="mt-4 text-md font-normal text-gray-500">Proveedores</span>
         {product.suppliers?.length === 0 &&
           <p className="mt-2 text-sm text-gray-500">Sin Proveedores</p>
         }
@@ -66,7 +70,7 @@ export function StockMovements({ product_id, unit, currentPage, dates }: { produ
           Movimientos de stock
         </h2>
         <p className="mt-1 text-sm text-gray-500">
-          Aquellos retiros que esten pendientes, seran marcados como pendientes de confirmacion. Una vez confirmado, se podra volver a retirar. El listado se filtrara por mes corriente.
+          Aquellos retiros que esten pendientes, seran marcados como pendientes de confirmacion. Una vez confirmado, se podra volver a retirar. El listado se filtrara por mes corriente automaticamente.
         </p>
       </div>
       <DateFilter />
@@ -230,11 +234,12 @@ function TableRow({ movement, unit }: { movement: StockMovement, unit: string })
         </td>
 
         <td className="text-sm font-medium text-gray-700 whitespace-nowrap">
-          <Button onClick={() => showModal(true)} primary type="button" className="transition-colors duration-200 hover:text-gray-200 focus:outline-none">
-            <div className="flex">
-              Mas info <InformationCircleIcon className="w-5 text-gray-50" />
-            </div>
-          </Button>
+          <button type="button" onClick={() => showModal(true)}>
+            <p className="flex items-center gap-1 text-gray-700 transition-colors duration-200 hover:text-blue-500 focus:outline-none">
+              <span className="text-sm">Ver mas info</span>
+              <InformationCircleIcon className="w-5" />
+            </p>
+          </button>
         </td>
       </tr>
 

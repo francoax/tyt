@@ -2,13 +2,14 @@
 
 import { Button } from "@/components/buttons";
 import { SelectInput } from "@/components/inputs";
+import { Spinner } from "@/components/loaders";
 import { initStockDepositAction, initStockWithdrawAction } from "@/lib/actions/stock";
-import { SM_DEPOSIT } from "@/lib/constants";
 import { getProductsForStockAction } from "@/lib/data/products";
 import { ProductForAction, SelectOption } from "@/lib/definitions";
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useFormStatus } from "react-dom";
 
 type initFormActions = {
   [key: string] : { title: string, serverAction: any }
@@ -58,10 +59,20 @@ export default function InitForm({ action, modalHandler }: { action: string, mod
         <Button type="button" onClick={() => modalHandler(false)}>
           Cancelar
         </Button>
-        <Button primary type="submit" className="inline-flex gap-2 items-center">
-          Continuar <ArrowRightIcon className="w-5 h-5" />
-        </Button>
+        <SubmitButton />
       </div>
     </form>
+  )
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus()
+  return (
+    <>
+      <Button primary type="submit" className="inline-flex gap-2 items-center" disabled={pending} aria-disabled={pending}>
+        Continuar <ArrowRightIcon className="w-5 h-5" />
+        {pending && <Spinner />}
+      </Button>
+    </>
   )
 }

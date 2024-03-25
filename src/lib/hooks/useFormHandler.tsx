@@ -1,10 +1,10 @@
 import { useFormState } from "react-dom";
-import { ServerActionResponse } from "./definitions";
+import { ServerActionResponse } from "../definitions";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import Alert from "@/components/alerts";
-import { SUCCESS_STATUS } from "./constants";
+import { SUCCESS_STATUS } from "../constants";
 
 export default function useFormHandler(
   toastTitle: string, returnOnSuccess: string, serverAction: any, initialState: ServerActionResponse = { message: '', status: '', errors: {}}
@@ -14,8 +14,8 @@ export default function useFormHandler(
 
   useEffect(() => {
     if (state.status && state.message) {
-      toast(() => (
-        <Alert title={toastTitle} reason={state.status} description={state.message} />
+      toast.custom((t) => (
+        <Alert visible={t.visible} title={toastTitle} reason={state.status} description={state.message} />
       ));
     }
 

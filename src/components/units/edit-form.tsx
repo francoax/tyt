@@ -4,7 +4,7 @@ import { Input } from "../inputs";
 import { Unit } from "@prisma/client";
 import { updateUnitAction } from "@/lib/actions/units";
 import Form from "../form";
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 import { UNITS_ROUTE } from "@/lib/constants";
 
 export default function EditUnitForm({ unit }: { unit: Unit }) {

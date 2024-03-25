@@ -5,7 +5,7 @@ import { Input, SelectInput, TextareaInput } from "@/components/inputs";
 import { depositAction } from "@/lib/actions/stock";
 import { SUPPLIERS_ROUTE, WORKPLACES_ROUTE } from "@/lib/constants";
 import { Product, SelectOption, Workplace } from "@/lib/definitions";
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

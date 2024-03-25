@@ -26,11 +26,8 @@ export default async function Page({ params }: { params: Params }) {
 
   return (
     <>
-      <ReturnButton>
-        Volver
-      </ReturnButton>
       <div>
-        <h2 className="text-lg font-medium text-gray-800 mt-5">
+        <h2 className="text-lg font-medium text-gray-800">
           Ingresar stock para <span className="text-blue-400">{product?.name.toUpperCase()}</span>
           <span className="ml-2 px-3 py-1 text-xs text-blue-500 bg-blue-200 rounded-full">
             (Stock actual {product?.stock} {product?.unit?.description})
