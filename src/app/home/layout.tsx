@@ -7,14 +7,16 @@ export default function Layout(
 ) {
   return (
     <>
-      <div className="flex flex-col">
-        <div className="flex flex-col md:flex-row md:overflow-hidden">
-          <div className="w-full flex-none md:w-64">
-            <SideBar />
-          </div>
-          <div className="flex-grow h-screen p-6 md:overflow-y-auto md:p-12">{children}</div>
+      <div className="flex flex-col md:flex-row md:overflow-hidden">
+        <div className="w-full flex-none md:w-64">
+          <SideBar />
         </div>
-        <Footer />
+        <div className="flex flex-col justify-between flex-grow h-screen md:overflow-y-auto">
+          <div className="p-6 md:p-12">
+            {children}
+          </div>
+          <Footer />
+        </div>
       </div>
     </>
   )

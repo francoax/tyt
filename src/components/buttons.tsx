@@ -24,7 +24,7 @@ export function Button({ children, className, primary = false, ...rest }: Button
         'px-4 py-2 font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40',
         className,
         {
-          'text-white bg-zinc-400 hover:bg-zinc-300' : primary === false
+          'text-gray-700 bg-white hover:bg-gray-300' : primary === false
         },
         {
           'text-white bg-blue-600 hover:bg-blue-500 focus:ring-blue-300 focus:ring-opacity-40' : primary === true

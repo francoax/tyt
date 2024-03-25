@@ -5,7 +5,7 @@ import { Product, ProductDataForCreationEdition, SelectOption } from "@/lib/defi
 import { Supplier } from "@prisma/client";
 import { updateProductAction } from "@/lib/actions/products";
 import Form from "../form";
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 import { PRODUCTS_ROUTE } from "@/lib/constants";
 
 export default function EditProductForm({ product, data } : { product: Product, data: ProductDataForCreationEdition}) {

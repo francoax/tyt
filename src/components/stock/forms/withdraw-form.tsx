@@ -4,7 +4,7 @@ import Form from "@/components/form";
 import { Input, SelectInput, TextareaInput } from "@/components/inputs";
 import { withdrawAction } from "@/lib/actions/stock";
 import { Product, SelectOption, Workplace } from "@/lib/definitions";
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";

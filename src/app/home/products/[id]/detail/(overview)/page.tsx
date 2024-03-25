@@ -22,39 +22,24 @@ export default async function Page({ params, searchParams }: { params: { id: str
 
   return (
     <>
-      <div>
-        <ReturnButton href={PRODUCTS_ROUTE}>
-          Volver
-        </ReturnButton>
-        <p className="m-5 mb-2 px-3 py-1 text-sm text-center text-blue-600 bg-blue-100 rounded-full">
-          Stock actual {product?.stock} {product?.unit.description}
+      <ReturnButton href={PRODUCTS_ROUTE}>
+        Volver
+      </ReturnButton>
+      <div className="sm:flex sm:flex-col sm:justify-between mt-5">
+        <div className="flex gap-5 items-center">
+          <h2 className="text-lg font-medium  text-gray-800">
+            Detalle del producto: <span className="text-blue-400">{product?.name.toUpperCase()}</span>
+          </h2>
+          <UpdateButton href={`${PRODUCTS_ROUTE}/${product.id}/edit`} />
+        </div>
+        <p className="mt-2 text-sm text-gray-500">
+          Informacion acerca del producto y sus movimientos de stock.
         </p>
         { hasPending === 1 &&
-          <p className="mx-5 mb-2 px-3 py-1 text-sm text-center text-red-600 bg-red-200 rounded-full">
+          <p className="mt-5 px-3 py-1 text-sm text-center text-red-600 bg-red-200 rounded-full">
             Retiro pendiente de confirmacion
           </p>
         }
-        <div className="sm:flex sm:items-center sm:justify-between">
-          <div>
-            <h2 className="text-lg font-medium  text-gray-800">
-              Detalle del producto: <span className="text-blue-400">{product?.name.toUpperCase()}</span>
-              <div className="inline-block ml-5">
-                <UpdateButton href={`${PRODUCTS_ROUTE}/${product.id}/edit`} />
-              </div>
-            </h2>
-            <p className="mt-1 text-sm text-gray-500">
-              Informacion acerca del producto y sus movimientos de stock.
-            </p>
-          </div>
-          <div className="mt-5 sm:mt-0 flex items-center justify-center gap-5">
-            <Button type="button">
-              Retirar
-            </Button>
-            <Button primary type="button">
-              Ingresar
-            </Button>
-          </div>
-        </div>
       </div>
       <ProductDetail product={product as any} />
       <StockMovements product_id={product.id} unit={product.unit.description} currentPage={currentPage} dates={{from, to}}/>

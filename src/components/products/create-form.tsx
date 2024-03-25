@@ -3,7 +3,7 @@
 import { CreatableSelectInput, Input, SelectInput } from "../inputs";
 import { ProductDataForCreationEdition, SelectOption } from "@/lib/definitions";
 import Form from "../form";
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 import { createProductAction } from "@/lib/actions/products";
 import { PRODUCTS_ROUTE } from "@/lib/constants";
 import { useEffect, useRef, useState } from "react";

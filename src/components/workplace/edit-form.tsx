@@ -2,7 +2,7 @@
 
 import { updateWorkplaceAction } from "@/lib/actions/workplace";
 import { WORKPLACES_ROUTE } from "@/lib/constants";
-import useFormHandler from "@/lib/hooks";
+import useFormHandler from "@/lib/hooks/useFormHandler";
 import Form from "../form";
 import { Input } from "../inputs";
 import { Workplace } from "@/lib/definitions";
