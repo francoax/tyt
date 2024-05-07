@@ -17,7 +17,7 @@ export async function signInAction(
   prevState: ServerActionResponse,
   data: FormData,
 ): Promise<ServerActionResponse> {
-  const credentialsValidated = SignInSchema.safeParse(
+  const credentialsValidated = await SignInSchema.safeParseAsync(
     Object.fromEntries(data.entries()),
   );
 

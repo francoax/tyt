@@ -28,7 +28,7 @@ export const {
 
         return {
           id: userToAuthorize.id.toString(),
-          username: userToAuthorize.username,
+          name: userToAuthorize.username,
         };
       },
     }),
