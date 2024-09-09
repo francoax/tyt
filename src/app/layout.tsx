@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from 'react-hot-toast';
 import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/lib/auth/auth';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default async function RootLayout({
               duration: 3000
             }}
           />
+          <SpeedInsights />
         </SessionProvider>
       </body>
     </html>

@@ -29,7 +29,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         return {
           id: userToAuthorize.id.toString(),
-          username: userToAuthorize.username,
+          name: userToAuthorize.username,
         };
       },
     })

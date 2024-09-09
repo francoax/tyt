@@ -17,7 +17,7 @@ export default function Footer() {
             </p>
           </div>
         </div>
-        <p className="mt-6 text-sm text-gray-400 lg:mt-0">v1.1.25324</p>
+        <p className="mt-6 text-sm text-gray-400 lg:mt-0">v1.1.07524</p>
       </div>
     </footer>
   )

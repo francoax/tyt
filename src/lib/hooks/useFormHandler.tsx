@@ -1,3 +1,5 @@
+"use client";
+
 import { useFormState } from "react-dom";
 import { ServerActionResponse } from "../definitions";
 import { useRouter } from "next/navigation";
