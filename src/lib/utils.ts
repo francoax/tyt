@@ -1,11 +1,11 @@
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import { z } from "zod";
 
 const saltRounds = 10;
 
 export async function hashPassword(plainPass: string): Promise<string> {
   try {
-    const hashedPassword = await bcrypt.hash(plainPass, saltRounds);
+    const hashedPassword = await bcryptjs.hash(plainPass, saltRounds);
     return hashedPassword;
   } catch (e) {
     console.log("Error hashing password -> ", e);
@@ -18,7 +18,7 @@ export async function comparePasswords(
   real: string,
 ): Promise<boolean> {
   try {
-    const comparedPasswords = await bcrypt.compare(entry, real);
+    const comparedPasswords = await bcryptjs.compare(entry, real);
     return comparedPasswords;
   } catch (e) {
     console.log("Error comparing password ->", e);
